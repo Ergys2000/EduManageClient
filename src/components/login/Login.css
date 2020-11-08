@@ -1,0 +1,11 @@
+.login-container{
+  width: 50%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  background-color: aqua;
+}
+.login-container input, .login-container button, .login-container p{
+  width: 50%;
+  margin: auto;
+}
