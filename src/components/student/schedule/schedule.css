@@ -1,0 +1,27 @@
+.schedule-container{
+	border: 1px solid red;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+.schedule-container table{
+	border-collapse: collapse;
+}
+
+/* The main table */
+.main-table{
+	width: 80%;
+}
+.main-table td, .main-table th{
+	border: 1px solid black;
+	height: 60px;
+}
+/* The main table */
+.timeline-table{
+	border: 1px solid purple;
+	margin-top: 30px;
+}
+.timeline-table td{
+	border: 1px solid yellow;
+	height: 60px;
+}

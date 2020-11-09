@@ -1,4 +1,5 @@
 import React from "react";
+import './grades.css';
 
 class Grades extends React.Component{
     constructor(props){

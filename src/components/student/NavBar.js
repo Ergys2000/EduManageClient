@@ -8,6 +8,7 @@ export default function NavBar(){
     return (
         <div className="sidenav">
             <Link to={`${match.url}/home`}>Home</Link>
+            <Link to={`${match.url}/schedule`}>Schedule</Link>
             <Link to={`${match.url}/grades`}>Grades</Link>
             <Link to={`${match.url}/courses`}>Courses</Link>
         </div>
