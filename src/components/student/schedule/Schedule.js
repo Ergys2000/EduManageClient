@@ -1,12 +1,15 @@
 import React from 'react';
 import './schedule.css';
-import Table from './Table';
+import TableContainer from './TableContainer';
 class Schedule extends React.Component{
+	constructor(props){
+		super(props);
+		this.id = props.id;
+	}
 	render(){
 		return(
 			<div className="option"> 
-				<h1>Schedule</h1>
-				<Table />
+				<TableContainer id={this.id}/>
 			</div>
 		);
 	}

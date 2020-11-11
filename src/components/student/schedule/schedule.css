@@ -1,27 +1,61 @@
-.schedule-container{
-	border: 1px solid red;
+h2{
+	height: 50px;
+}
+.table-container{
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 }
-.schedule-container table{
-	border-collapse: collapse;
+.timeline-column{
+	margin-top: 70px;
 }
-
-/* The main table */
-.main-table{
-	width: 80%;
+.timeline-column .element{
+	width: 80px;
+	height: 100px;
+	margin-bottom: 20px;
 }
-.main-table td, .main-table th{
-	border: 1px solid black;
-	height: 60px;
+.column .element{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	width: 200px;
+	height: 100px;
+	margin-bottom: 20px;
+	margin-right: 10px;
 }
-/* The main table */
-.timeline-table{
-	border: 1px solid purple;
-	margin-top: 30px;
+.column .element:nth-child(2){
+	background-color: yellow;
 }
-.timeline-table td{
-	border: 1px solid yellow;
-	height: 60px;
+.column .element:nth-child(3){
+	background-color: blue;
+}
+.column .element:nth-child(4){
+	background-color: green;
+}
+.column .element:nth-child(5){
+	background-color: violet;
+}
+.column .element:nth-child(6){
+	background-color: pink;
+}
+.column .element:nth-child(7){
+	background-color: red;
+}
+.column .element:nth-child(8){
+	background-color: yellow;
+}
+.column .element:nth-child(9){
+	background-color: blue;
+}
+.column .element:nth-child(10){
+	background-color: blueviolet;
+}
+.column .element:nth-child(11){
+	background-color: green;
+}
+.column .element:nth-child(12){
+	background-color: yellow;
+}
+.column .element:nth-child(13){
+	background-color: yellow;
 }
