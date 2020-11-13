@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import './grades.css';
+import CourseItem from './CourseItem';
 
 function Grades(props){
     const [grades, setGrades] = useState(null);
@@ -11,7 +12,7 @@ function Grades(props){
             .then(res => res.json())
             .then(grades => {
                 const organized_grades = organize(grades);
-                const gradeHolders = organized_grades.map(course => GradeList(course));
+                const gradeHolders = organized_grades.map(course => CourseItem(course));
                 setGrades(gradeHolders);
             });
     }
@@ -25,36 +26,6 @@ function Grades(props){
     );
 }
 
-function GradeList(course){
-    const name = course.courseName;
-    const grades = course.grades.map(grade => GradeItem(grade));
-    return (
-        <div className="course">
-            <h2>{name}</h2>
-            <table className="grades-table">
-                <tr>
-                    <th>Grade</th>
-                    <th>Weight</th>
-                    <th>Date</th>
-                </tr>
-                {grades}
-            </table>
-        </div>
-    );
-}
-
-function GradeItem(grade){
-    function stripDate(date){
-        return date.substring(0, date.indexOf('T'));
-    }
-    return(
-        <tr className="grade">
-            <td>{grade.grade}</td>
-            <td>{grade.weight}</td>
-            <td>{stripDate(grade.date)}</td>
-        </tr>
-    );
-}
 
 
 // this function organizes the list of grades in course specific grades

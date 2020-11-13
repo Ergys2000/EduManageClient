@@ -1,43 +1,56 @@
+:root{
+	--left-pane-background: #40376E;
+	--button-background-color: #36558F;
+}
 .login-container{
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  border: 1px solid #111;
-  background-color: white;
-  width: 50%;
-  height: 50%;
-  margin-left: 25%;
-  margin-top: 10%;
+	position: absolute;
+	display: flex;
+	flex-direction: row;
+	border: 1px solid #111;
+	background-color: white;
+	width: 50%;
+	height: 50%;
+	margin-left: 25%;
+	margin-top: 10%;
 }
 .left-pane{
-  width: 30%;
-  background-color: #111;
+	display: flex;
+	justify-content:center;
+	width: 30%;
+	background-color: var(--left-pane-background);
+	color: white;
+}
+.left-pane h2{
+	margin: auto;
 }
 .right-pane{
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 .right-pane input{
-  margin: 20px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: 1px solid #111;
-  outline: none;
+	margin: 20px;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-bottom: 1px solid #111;
+	outline: none;
+}
+.right-pane input:focus{
+	border-color: #25CED1;
 }
 .button-box{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
 }
 .button-box button{
-  background-color: #111;
-  border: none;
-  color: white;
-  width: 30%;
-  margin-top: 20px;
-  margin-left: 20px;
-  padding: 10px;
+	background-color: var(--button-background-color);
+	border: none;
+	color: white;
+	width: 30%;
+	margin-top: 20px;
+	margin-left: 20px;
+	padding: 10px;
 }

@@ -1,3 +1,6 @@
+:root{
+	--nav-background-color: #48233C;
+}
 .StudentPage{
 	position: absolute;
 	min-height: 100%;
@@ -11,7 +14,7 @@
 /* Side navigation bar css*/
 .sidenav {
 	flex-grow:1;
-    background-color: #111;
+    background-color: var(--nav-background-color);
     padding-top: 20px;
 }
 .sidenav a {
