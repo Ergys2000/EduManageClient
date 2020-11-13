@@ -12,9 +12,7 @@ class App extends React.Component {
                 <Router>
                     <Switch>
                         <Route exact path="/">
-                            <h1>Login</h1>
                             <Login/>
-                            <h2>LMS</h2>
                         </Route>
 
                         <Route path="/s/:id">

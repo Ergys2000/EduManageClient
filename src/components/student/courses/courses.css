@@ -1,0 +1,30 @@
+.Course-List{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+.Course-Item{
+	display: flex;
+	flex-direction: column;
+	height: 300px;
+	width: 300px;
+	margin: 10px;
+}
+.Course-Item .Course-Header{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-image: url("./course-background.jpg");
+	flex: 1;
+}
+.Course-Item .Course-Header a{
+	font-size: 2em;
+	color: lightgrey;
+}
+.Course-Item .Course-Body{
+	border-left: 2px solid blue;
+	border-right: 2px solid blue;
+	border-bottom: 2px solid blue;
+	flex: 2;
+}

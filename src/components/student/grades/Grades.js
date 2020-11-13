@@ -1,35 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import './grades.css';
 
-class Grades extends React.Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            grades: null,
-        };
-    }
-    componentDidMount(){
-        this.getGrades();
-    }
-    async getGrades(){
-        await fetch(`http://localhost:5000/students/${this.props.id}/grades`)
+function Grades(props){
+    const [grades, setGrades] = useState(null);
+    useEffect(() => {
+        getGrades();
+    },[]);
+    function getGrades(){
+        fetch(`http://localhost:5000/students/${props.id}/grades`)
             .then(res => res.json())
             .then(grades => {
                 const organized_grades = organize(grades);
                 const gradeHolders = organized_grades.map(course => GradeList(course));
-                this.setState({grades: gradeHolders});
+                setGrades(gradeHolders);
             });
     }
-    render(){
-        return (
-            <div className="option">
-                <h1>Grades</h1>
-                <div className="course-container">
-                    {(this.state.grades) ? this.state.grades: "Getting grades"}
-                </div>
+    return (
+        <div className="option">
+            <h1>Grades</h1>
+            <div className="course-container">
+                {grades? grades: "Getting grades"}
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 function GradeList(course){

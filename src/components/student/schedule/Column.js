@@ -1,21 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TableElement from './TableElement';
 
 
-export default class Column extends React.Component{
-	constructor(props){
-		super(props);
-		this.title = props.title;
-		this.id = props.id;
-		this.state = {
-			hours: null
-		};
-	}
-	componentDidMount(){
-		this.getDay();
-	}
-	getDay(){
-		fetch(`http://localhost:5000/day/${this.id}`)
+function Column(props) {
+	const [hours, setHours] = useState([]);
+	useEffect(() => {
+		getDay();
+	});
+	function getDay(){
+		fetch(`http://localhost:5000/day/${props.id}`)
 			.then(res => res.json())
 			.then(day => {
 				const hours = [
@@ -32,15 +25,14 @@ export default class Column extends React.Component{
 					<TableElement id={day.eleven}/>,
 					<TableElement id={day.twelve}/>,
 				];
-				this.setState({hours: hours});
+				setHours(hours);
 			});
 	}
-	render(){
-		return (
-			<div className="column">
-				<h2>{this.title}</h2>
-				{this.state.hours}
-			</div>
-		);
-	}
+	return (
+		<div className="column">
+			<h2>{props.title}</h2>
+			{hours}
+		</div>
+	);
 }
+export default Column;

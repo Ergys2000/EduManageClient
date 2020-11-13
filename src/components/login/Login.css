@@ -1,11 +1,43 @@
 .login-container{
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #111;
+  background-color: white;
   width: 50%;
   height: 50%;
+  margin-left: 25%;
+  margin-top: 10%;
+}
+.left-pane{
+  width: 30%;
+  background-color: #111;
+}
+.right-pane{
+  margin: auto;
   display: flex;
   flex-direction: column;
-  background-color: aqua;
+  justify-content: center;
 }
-.login-container input, .login-container button, .login-container p{
-  width: 50%;
-  margin: auto;
+.right-pane input{
+  margin: 20px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #111;
+  outline: none;
+}
+.button-box{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.button-box button{
+  background-color: #111;
+  border: none;
+  color: white;
+  width: 30%;
+  margin-top: 20px;
+  margin-left: 20px;
+  padding: 10px;
 }

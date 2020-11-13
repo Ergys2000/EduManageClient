@@ -1,6 +1,5 @@
 import React from 'react';
 import './Login.css';
-import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Switch, Route, useHistory} from 'react-router-dom';
 
 function Login(props){
@@ -37,13 +36,20 @@ function Login(props){
 
     return (
         <div className="login-container">
-            <input id="emailField" type="text" name="email"/>
-            <br></br>
-            <input id="passwordField" type="text" name="password"/>
-            <br></br>
-            <button onClick={() => authenticate_student()}>Login as student</button>
-            <br></br>
-            <button onClick={() => authenticate_teacher()}>Login as teacher</button>
+            <div className="left-pane">
+
+            </div>
+            <div className="right-pane">
+                <input id="emailField" type="text" name="email"/>
+                <br></br>
+                <input id="passwordField" type="text" name="password"/>
+                <br></br>
+                <div className="button-box">
+                    <button onClick={() => authenticate_student()}>Login as student</button>
+                    <br></br>
+                    <button onClick={() => authenticate_teacher()}>Login as teacher</button>
+                </div>
+            </div>
         </div>
     );
 }

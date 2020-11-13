@@ -1,33 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 
-export default class TableElement extends React.Component{
-	constructor(props){
-		super(props);
-		this.id = props.id;
-		this.state = {
-			course: {
-				name:null,
-				category: null
-			}
-		};
-	}
-	componentDidMount(){
-		this.getCourse();
-	}
-	async getCourse(){
-		await fetch(`http://localhost:5000/courses/${this.id}`)
+function TableElement(props){
+	const [course, setCourse] = useState({category: null, name: null});
+	useEffect(() => {
+		getCourse();
+	}, []);
+	function getCourse(){
+		fetch(`http://localhost:5000/courses/${props.id}`)
 			.then(res => res.json())
 			.then(course => {
-				this.setState({course: course});
+				setCourse(course);
 			});
 	}
-	render(){
-		return (
-			<div className="element">
-				<h4>{this.state.course.category}</h4>
-				<p>{this.state.course.name}</p>
-			</div>
-		);
-	}
+	return (
+		<div className="element">
+			<h4>{course.category}</h4>
+			<p>{course.name}</p>
+		</div>
+	);
 }
+export default TableElement;

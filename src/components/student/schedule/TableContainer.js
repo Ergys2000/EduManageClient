@@ -1,39 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Timeline from './Timeline';
 import Column from './Column';
 
 
-export default class TableContainer extends React.Component{
-	constructor(props){
-		super(props);
-		this.id = props.id;
-		this.state = {
-			columns: null
-		};
-	}
-	componentDidMount(){
-		this.getSchedule();
-	}
-	async getSchedule(){
-		await fetch(`http://localhost:5000/students/${this.id}/schedule`)
+function TableContainer(props){
+	const [days, setDays] = useState([]);
+	useEffect(() => {
+		getSchedule();
+	}, []);
+	
+	function getSchedule(){
+		fetch(`http://localhost:5000/students/${props.id}/schedule`)
 			.then(res => res.json())
 			.then(schedule => {
-				const columns = [
+				const days = [
 					<Column title="Monday" id={schedule.monday}/>,
 					<Column title="Tuesday" id={schedule.tuesday}/>,
 					<Column title="Wednesday" id={schedule.wednesday}/>,
 					<Column title="Thursday" id={schedule.thursday}/>,
 					<Column title="Friday" id={schedule.friday}/>
 				];
-				this.setState({columns: columns});
+				setDays(days);
 			});
 	}
-	render(){
-		return (
-			<div className="table-container">
-				<Timeline />
-				{this.state.columns}
-			</div>
-		);
-	}
+	return (
+		<div className="table-container">
+			<Timeline />
+			{days}
+		</div>
+	);
 }
+export default TableContainer;
