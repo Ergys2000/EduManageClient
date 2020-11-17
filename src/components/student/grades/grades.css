@@ -1,8 +1,11 @@
 .course-container{
     display: flex;
-	flex-wrap: wrap;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-around;
+	align-items: center;
+}
+.Course-Item{
+	width: 70%;
 }
 .Course-Item .head{
 	display: flex;
@@ -10,7 +13,6 @@
 	align-items: center;
 	color: white;
 	background-color: #40376E;
-	height: 50px;
 }
 .Course-Item .body{
 	width: 100%;
@@ -23,6 +25,7 @@
 }
 th, td{
 	border-bottom: 1px solid black;
+	padding: 20px;
 }
 tr:nth-child(odd){background-color: #f2f2f2;}
 tr:nth-child(even){background-color: #dbdbd9;}

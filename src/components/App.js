@@ -5,8 +5,7 @@ import './App.css';
 import Student from './student/Student';
 import Teacher from './teacher/Teacher';
 
-class App extends React.Component {
-    render(){
+function App(props) {
         return (
             <div className="app">
                 <Router>
@@ -27,7 +26,6 @@ class App extends React.Component {
                 </Router>
             </div>
         );
-    }
 }
 
 export default App;

@@ -24,17 +24,11 @@ function CourseItem(course){
 }
 
 function GradeRow(grade){
-	function stripDate(date){
-		if(date === null){
-			return 'No date';
-		}
-		return date.substring(0, date.indexOf('T'));
-	}
 	return(
 		<tr className="Grade-Row">
 			<td>{grade.grade}</td>
 			<td>{grade.weight}</td>
-			<td>{stripDate(grade.date)}</td>
+			<td>{grade.date}</td>
 		</tr>
 	);
 }
