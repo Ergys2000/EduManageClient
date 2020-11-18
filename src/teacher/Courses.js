@@ -1,7 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Link, Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
-import './courses.css';
-import Course from './Course';
 
 
 function Courses(props){
@@ -12,21 +10,19 @@ function Courses(props){
 		<div className="option">
 			<Switch>
 				<Route exact path={`${path}/`} >
-					<CourseList id={id}/>
+					<CourseList id={props.id}/>
 				</Route>
-
-				<Route path={`${path}/:courseId`} component={Course}/>
 			</Switch>
 		</div>
 	);
 }
 
 
-function CourseList(){
+function CourseList(props){
 	const {id} = useParams();
 	const [courses, setCourses] = useState([]);
 	useEffect(() => {
-		fetch(`http://localhost:5000/students/${id}/courses`)
+		fetch(`http://localhost:5000/teachers/${props.id}/courses`)
 		.then(res => res.json())
 		.then(courses => {
 			setCourses(courses);

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import PostList from './course_components/PostList';
-import FileList from './course_components/FileList';
+import PostList from './PostList';
+import FileList from './FileList';
 
 function Course(props){
-	const {id, courseId} = useParams();
+	const {courseId} = useParams();
 	const [course, setCourse] = useState({});
 	useEffect(() => {
 		fetch(`http://localhost:5000/courses/${courseId}`)

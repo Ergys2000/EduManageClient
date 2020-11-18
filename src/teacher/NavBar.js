@@ -10,6 +10,7 @@ export default function NavBar(){
             <Link to={`${match.url}/home`}>Home </Link>
             <Link to={`${match.url}/students`}>Students</Link>
             <Link to={`${match.url}/courses`}>My courses</Link>
+            <Link to={`${match.url}/schedule`}>My schedule</Link>
         </div>
     );
 }

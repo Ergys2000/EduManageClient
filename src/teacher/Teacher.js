@@ -1,6 +1,8 @@
 import React from 'react';
 import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
 import NavBar from './NavBar';
+import Schedule from './schedule/Schedule';
+import Courses from './Courses';
 import './teacher.css';
 
 function Teacher(){
@@ -18,6 +20,9 @@ function Teacher(){
                 </Route>
                 <Route path={`${match.url}/courses`}>
                     <Courses id={id}/>
+                </Route>
+                <Route path={`${match.url}/schedule`}>
+                    <Schedule id={id}/>
                 </Route>
             </Switch>
         </div>
@@ -41,11 +46,4 @@ function Students(props){
     );
 }
 
-function Courses(props){
-    return (
-		<div className="option">
-			<h1>Courses</h1>
-		</div>
-    );
-}
 export default Teacher;

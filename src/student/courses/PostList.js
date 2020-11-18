@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import PostItem from './PostItem';
-import './course.css';
+
 function PostList(props){
 	const [posts, setPosts] = useState([]);
 	useEffect(() => {
@@ -16,6 +15,19 @@ function PostList(props){
 	return (
 		<div className="Post-List">
 			{posts}
+		</div>
+	);
+}
+function PostItem(post){
+	return (
+		<div className="Post-Item">
+			<div className="header">
+				<p><b>{post.author}</b></p>
+				<p>{post.posted_on}</p>
+			</div>
+			<div className="body">
+					<p>{post.body}</p>
+			</div>
 		</div>
 	);
 }

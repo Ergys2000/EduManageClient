@@ -1,7 +1,7 @@
 :root{
-	--nav-background-color: #48233C;
+	--nav-background-color: #100007;
 }
-.StudentPage{
+.TeacherPage{
 	position: absolute;
 	min-height: 100%;
 	min-width: 100%;

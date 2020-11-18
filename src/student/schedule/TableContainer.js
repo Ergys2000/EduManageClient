@@ -51,8 +51,8 @@ function Column(props) {
 function TableElement(props){
 	return (
 		<div className="element">
-			<h4>{props.category}</h4>
-			<p>{props.name}</p>
+			<h4>{props.category }</h4>
+			<p>{props.name? props.name : "Empty"}</p>
 		</div>
 	);
 }
