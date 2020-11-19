@@ -1,16 +1,29 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
+import Course from './Course';
+import Attendance from './Attendance';
+import Session from './AttendanceSession';
 
 
 function Courses(props){
-	let {id} = useParams();
-	let {path, url}= useRouteMatch();
+	let {path, url} = useRouteMatch();
+	const id = props.id;
 
 	return (
 		<div className="option">
 			<Switch>
 				<Route exact path={`${path}/`} >
-					<CourseList id={props.id}/>
+					<CourseList id={id}/>
+				</Route>
+
+				<Route exact path={`${path}/:courseId`} >
+					<Course />
+				</Route>
+				<Route exact path={`${path}/:courseId/attendance`} >
+					<Attendance />
+				</Route>
+				<Route path={`${path}/:courseId/attendance/:sessionId`} >
+					<Session />
 				</Route>
 			</Switch>
 		</div>
@@ -19,7 +32,6 @@ function Courses(props){
 
 
 function CourseList(props){
-	const {id} = useParams();
 	const [courses, setCourses] = useState([]);
 	useEffect(() => {
 		fetch(`http://localhost:5000/teachers/${props.id}/courses`)

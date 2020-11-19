@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import './grades.css';
 import CourseItem from './CourseItem';
 
 function Grades(props){

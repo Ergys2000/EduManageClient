@@ -1,5 +1,4 @@
 import React from 'react';
-import './schedule.css';
 import TableContainer from './TableContainer';
 
 function Schedule(props){

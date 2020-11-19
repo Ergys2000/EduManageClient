@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {Link, Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
-import './courses.css';
 import Course from './Course';
 
 
 function Courses(props){
-	let {id} = useParams();
-	let {path, url} = useRouteMatch();
+	const id = props.id;
+	let {path} = useRouteMatch();
 
 	return (
 		<div className="option">
@@ -22,8 +21,8 @@ function Courses(props){
 }
 
 
-function CourseList(){
-	const {id} = useParams();
+function CourseList(props){
+	const id = props.id;
 	const [courses, setCourses] = useState([]);
 	useEffect(() => {
 		fetch(`http://localhost:5000/students/${id}/courses`)

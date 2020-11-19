@@ -2,8 +2,7 @@ import React from 'react';
 import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
 import NavBar from './NavBar';
 import Schedule from './schedule/Schedule';
-import Courses from './Courses';
-import './teacher.css';
+import Courses from './courses/CourseRoute';
 
 function Teacher(){
     let {id} = useParams();

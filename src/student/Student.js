@@ -3,7 +3,6 @@ import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
 import NavBar from './NavBar';
 import Home from './home/Home';
 import Grades from './grades/Grades';
-import './student.css';
 import Schedule from './schedule/Schedule';
 import Course from './courses/CourseRoute';
 

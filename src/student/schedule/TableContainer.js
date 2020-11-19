@@ -37,8 +37,9 @@ function Column(props) {
 		<TableElement />,
 		<TableElement />
 	];
+	console.log(props.hours);
 	for(let i=0; i<props.hours.length; i++){
-		const hour_index = props.hours[i].hour_order - 1;
+		const hour_index = props.hours[i].hour - 1;
 		hours[hour_index] = <TableElement category={props.hours[i].course_category} name={props.hours[i].course_name}/>;
 	}
 	return (
@@ -70,7 +71,7 @@ function organizeSchedule(schedule_data){
 			result[currDayIndex] = {name: lastDayName, hours: []};
 		}
 		result[currDayIndex].hours[currHourIndex] = {
-			hour_order: row.hour_order,
+			hour: row.hour,
 			course_name: row.course_name,
 			course_category: row.course_category,
 			courseID: row.courseID};
