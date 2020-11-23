@@ -39,4 +39,5 @@ function Course(props){
 	}, []);
 	return course;
 }
+
 export default Course;

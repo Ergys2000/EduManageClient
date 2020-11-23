@@ -6,17 +6,13 @@ function PostList(props){
 		if(props.courseID !== -1){
 			fetch(`http://localhost:5000/posts/${props.courseID}`)
 			.then(res => res.json())
-			.then(postList => {
-				console.log(postList);
-				const posts = postList.map(post => PostItem(post));
-				setPosts(posts);
-			});
+			.then(postList => setPosts(postList));
 		}
 	}, []);
 
 	return (
 		<div className="Post-List">
-			{posts}
+			{posts.map(post => PostItem(post))}
 		</div>
 	);
 }

@@ -6,16 +6,20 @@ $sidenavColor: #100007;
 	flex-grow:1;
     background-color: $sidenavColor;
     padding-top: 20px;
-}
-.sidenav a {
-    padding: 6px 6px 6px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-}
-.sidenav a:hover {
-    color: #f1f1f1;
+	li{
+		border: none;
+	}
+	a {
+		padding: 6px 6px 6px 32px;
+		text-decoration: none;
+		font-size: 25px;
+		color: #818181;
+		display: block;
+	}
+	a:hover, a:focus {
+		color: #f1f1f1;
+		background-color: #34003b;
+	}
 }
 
 .option{

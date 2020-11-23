@@ -6,26 +6,26 @@ import Student from './student/Student';
 import Teacher from './teacher/Teacher';
 
 function App(props) {
-        return (
-            <div className="app">
-                <Router>
-                    <Switch>
-                        <Route exact path="/">
-                            <Login/>
-                        </Route>
+	return (
+		<div className="app">
+			<Router>
+				<Switch>
+					<Route exact path="/">
+						<Login />
+					</Route>
 
-                        <Route path="/s/:id">
-                            <Student/>
-                        </Route>
+					<Route path="/s/:id">
+						<Student />
+					</Route>
 
-                        <Route path="/t/:id">
-                            <Teacher/>
-                        </Route>
+					<Route path="/t/:id">
+						<Teacher />
+					</Route>
 
-                    </Switch>
-                </Router>
-            </div>
-        );
+				</Switch>
+			</Router>
+		</div>
+	);
 }
 
 export default App;
