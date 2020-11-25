@@ -7,10 +7,22 @@ export default function NavBar(){
 
     return (
         <div className="sidenav">
-            <Link to={`${match.url}/home`}>Home </Link>
-            <Link to={`${match.url}/class`}>My class</Link>
-            <Link to={`${match.url}/courses`}>My courses</Link>
-            <Link to={`${match.url}/schedule`}>My schedule</Link>
+            <Link to={`${match.url}/home`}>
+				<i className="material-icons">home</i>
+				<p>Home</p>
+            </Link>
+            <Link to={`${match.url}/class`}>
+				<i className="material-icons">face</i>
+				<p>My class</p>
+            </Link>
+            <Link to={`${match.url}/courses`}>
+				<i className="material-icons">description</i>
+				<p>My Courses</p>
+            </Link>
+            <Link to={`${match.url}/schedule`}>
+				<i className="material-icons">schedule</i>
+				<p>Schedule</p>
+            </Link>
         </div>
     );
 }

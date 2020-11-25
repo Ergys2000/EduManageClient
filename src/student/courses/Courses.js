@@ -4,8 +4,8 @@ import Course from './Course';
 
 
 function Courses(props){
+	let {path, url} = useRouteMatch();
 	const id = props.id;
-	let {path} = useRouteMatch();
 
 	return (
 		<div className="option">
@@ -13,8 +13,9 @@ function Courses(props){
 				<Route exact path={`${path}/`} >
 					<CourseList id={id}/>
 				</Route>
-
-				<Route path={`${path}/:courseId`} component={Course}/>
+				<Route path={`${path}/:courseId`} >
+					<Course id={id}/>
+				</Route>
 			</Switch>
 		</div>
 	);
@@ -27,8 +28,10 @@ function CourseList(props){
 	useEffect(() => {
 		fetch(`http://localhost:5000/students/${id}/courses`)
 		.then(res => res.json())
-		.then(courses => {
-			setCourses(courses);
+		.then(res => {
+			if(res.status==="OK"){
+				setCourses(res.result);
+			}
 		});
 	}, []);
 	return (

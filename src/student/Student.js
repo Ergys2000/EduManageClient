@@ -4,7 +4,7 @@ import NavBar from './NavBar';
 import Home from './home/Home';
 import Grades from './grades/Grades';
 import Schedule from './schedule/Schedule';
-import Course from './courses/CourseRoute';
+import Course from './courses/Courses';
 
 function Student(){
 	const {id} = useParams();
@@ -19,7 +19,7 @@ function Student(){
 						<Course id={id}/>
 					</Route>
 
-					<Route path={`${path}/grades`}>
+					<Route exact path={`${path}/grades`}>
 						<Grades id={id}/>
 					</Route>
 
@@ -27,11 +27,11 @@ function Student(){
 						<Home id={id}/>
 					</Route>
 
-					<Route path={`${path}/home`}>
+					<Route exact path={`${path}/home`}>
 						<Home id={id}/>
 					</Route>
 
-					<Route path={`${path}/schedule`}>
+					<Route exact path={`${path}/schedule`}>
 						<Schedule id={id}/>
 					</Route>
 				</Switch>

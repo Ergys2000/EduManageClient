@@ -14,20 +14,32 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		background-color: #40376E;
+		background-color: $side-nav-focus-background;
 		flex: 1;
 	}
 	.Course-Header a{
 		font-size: 2em;
-		color: lightgrey;
+		color: $text-focus-color;
 	}
 	.Course-Body{
 		display: flex;
+		background-color: $element-background;
 		flex-direction: column;
-		border-left: 2px solid #40376E;
-		border-right: 2px solid #40376E;
-		border-bottom: 2px solid #40376E;
+		border-left: 2px solid $side-nav-focus-background;
+		border-right: 2px solid $side-nav-focus-background;
+		border-bottom: 2px solid $side-nav-focus-background;
 		flex: 2;
+		a{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			color: white;
+			text-decoration: none;
+			margin: 10px;
+			&:hover{
+				color: purple;
+			}
+		}
 	}
 }
 
@@ -35,17 +47,25 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	a{
-		border: none;
-		align-self: flex-start;
-		button{
-			padding: 10px 14px;
-			background-color: #40376E;
-			color: white;
-			border: none;
-		}
-		button:hover{
-			background-color: #7b0e9c;
+	.NavBar{
+		display: flex;
+		flex-direction: column;
+		ul{
+			display: flex;
+			align-self: center;
+			flex-direction: row;
+			list-style-type: none;
+			a{
+				border-bottom: 1px solid white;
+				padding: 30px;
+				color: $text-color;
+				text-decoration: none;
+				margin: 30px;
+				&:hover{
+					border-color: $side-nav-focus-background;
+					color: $side-nav-focus-background;
+				}
+			}
 		}
 	}
 }
@@ -54,10 +74,8 @@
 	flex-direction: column;
 	align-items: center;
 	.Post-Item{
-		border: 1px solid;
 		border-radius: 20px;
-		border-color: rgb(100, 100, 100);
-		background-color: white;
+		background-color: $element-background;
 		margin: 30px;
 		width: 50%;
 		.header{
@@ -76,20 +94,58 @@
 .Attendance-Sessions, .Attendance-Session{
 	width: 100%;
 	border-collapse: collapse;
-	tr:nth-child(even){background-color: #dbdbd9;}
+	margin-top: 50px;
+
 	th, td{
-		border-bottom: 1px solid black;
+		border-bottom: 1px solid $text-color;
 		padding: 20px;
+	}
+	td{
+		background-color: $element-background;
 	}
 	button{
 		padding: 8px 14px;
-		color: white;
+		color: $text-color;
 		border: none;
-		background-color: #40376E;
+		background-color: $button-background;
+		&:hover{
+			background-color: $button-focus-background;
+			color: $text-focus-color;
+		}
 	}
 }
 .Attendance-Session{
 	button{
-		font-size: 20px;
+		background-color: $element-background;
+		color: $button-background;
+		&:hover{
+			background-color: $button-focus-background;
+			color: $text-focus-color;
+		}
+	}
+}
+
+.File-List{
+	margin-top: 70px;
+	ul{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		list-style-type: none;
+		li{
+			margin: 10px;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			width: 30%;
+			padding: 20px;
+			background-color: $element-background;
+			a{
+				color: $text-color;
+				border-bottom: 1px solid $text-color;
+				text-decoration: none;
+			}
+		}
 	}
 }

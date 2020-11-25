@@ -5,6 +5,7 @@ function Home(props){
 	useEffect(() => {
 		fetch(`http://localhost:5000/students/${props.id}`)
 			.then(res => res.json())
+			.then(res => res.status === "OK"? res.result : null)
 			.then(student => setStudent(student));
 	}, []);
 	return (

@@ -1,43 +1,69 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useParams, useRouteMatch} from 'react-router-dom';
+import {Link, useParams, useRouteMatch, Route, Switch, Redirect} from 'react-router-dom';
 import PostList from './PostList';
 import FileList from './FileList';
 import FileForm from './FileForm';
+import Attendance from './Attendance';
+import Session from './AttendanceSession';
 
 function Course(props){
 	const {courseId} = useParams();
-	const {url} = useRouteMatch();
-	const [course, setCourse] = useState((
+	const {url, path} = useRouteMatch();
+	return (
 		<div className="Course">
-			<h2>Entering in the course...</h2>
+			<NavBar courseId={courseId}/>
+			<Switch>
+				<Route exact path={`${path}/`}>
+					<Redirect to={`${url}/home`} />
+				</Route>
+				<Route exact path={`${path}/home`}>
+					<h2></h2>
+				</Route>
+				<Route exact path={`${path}/posts`}>
+					<PostList courseId={courseId}/>
+				</Route>
+				<Route exact path={`${path}/files`}>
+					<FileList courseId={courseId} />
+				</Route>
+				<Route exact path={`${path}/attendance`} >
+					<Attendance courseId={courseId}/>
+				</Route>
+				<Route path={`${path}/attendance/:sessionId`} >
+					<Session courseId={courseId}/>
+				</Route>
+			</Switch>
 		</div>
-	));
-	useEffect(() => {
-		fetch(`http://localhost:5000/courses/${courseId}`)
-		.then(res => res.json())
-		.then(course => {
-			const new_course = (
-				<div className="Course">
-					<h1>{course.name}</h1>
-					<Link to={`${url}/attendance`} >
-						<button>Attendance</button>
-					</Link>
-					<FileList courseID={course.courseID} classInstanceID={course.classInstanceID} />
-					<FileForm courseID={course.courseID} classInstanceID={course.classInstanceID}/>
-					<PostList courseID={course.courseID}/>
-				</div>
-			);
-			setCourse(new_course);
-		}).catch(err => {
-			const new_course = (
-				<div>
-					<h1>There was a problem with entering the course.</h1>
-				</div>
-			);
-			setCourse(new_course);
-		});
-	}, []);
-	return course;
+	);
 }
 
+function NavBar(props){
+	const {url} = useRouteMatch();
+	const courseId = props.courseId;
+	const [courseName, setCourseName] = useState("Course name");
+	useEffect(() =>{
+		fetch(`http://localhost:5000/courses/${courseId}`)
+		.then(res => res.json())
+		.then(res => res.status === "OK" ? res.result : null)
+		.then(course => setCourseName(course.name));
+	}, []);
+	return (
+		<div className="NavBar">
+			<h1>{courseName}</h1>
+			<ul>
+				<li>
+					<Link to={`${url}/home`}>Home</Link>
+				</li>
+				<li>
+					<Link to={`${url}/posts`}>Posts</Link>
+				</li>
+				<li>
+					<Link to={`${url}/files`}>Files</Link>
+				</li>
+				<li>
+					<Link to={`${url}/attendance`}>Attendance</Link>
+				</li>
+			</ul>
+		</div>
+	);
+}
 export default Course;

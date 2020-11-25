@@ -1,5 +1,4 @@
 import React from 'react';
-import './Login.css';
 import {BrowserRouter as Router, Switch, Route, useHistory} from 'react-router-dom';
 
 function Login(props){
@@ -35,7 +34,7 @@ function Login(props){
     }
 
     return (
-        <div className="login-container">
+        <div className="Login">
             <div className="left-pane">
 				<h2>Login</h2>
             </div>

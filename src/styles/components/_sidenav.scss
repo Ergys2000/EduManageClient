@@ -1,24 +1,28 @@
-$sidenavColor: #100007;
-
-
 /* Side navigation bar css*/
 .sidenav {
 	flex-grow:1;
-    background-color: $sidenavColor;
+    background-color: $side-nav-background;
     padding-top: 20px;
+	text-align: left;
 	li{
 		border: none;
 	}
 	a {
+		display:flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: left;
 		padding: 6px 6px 6px 32px;
 		text-decoration: none;
-		font-size: 25px;
-		color: #818181;
-		display: block;
+		font-size: 20px;
+		color: $text-color;
+		i{
+			margin-right: 10px;
+		}
 	}
 	a:hover, a:focus {
-		color: #f1f1f1;
-		background-color: #34003b;
+		color: $text-focus-color;
+		background-color: $side-nav-focus-background;
 	}
 }
 

@@ -5,7 +5,15 @@ function TableContainer(props){
 	useEffect(() => {
 		fetch(`http://localhost:5000/teachers/${props.id}/schedule`)
 			.then(res => res.json())
-			.then(schedule_data => organizeSchedule(schedule_data))
+			.then(res => {
+				let schedule;
+				if(res.status === "OK"){
+					schedule = organizeSchedule(res.result)
+				}else{
+					schedule = [];
+				}
+				return schedule;
+			})
 			.then(schedule => {
 				const days = [];
 				for(let i=0; i<schedule.length; i++){
@@ -52,7 +60,7 @@ function TableElement(props){
 	return (
 		<div className="element">
 			<h4>{props.category }</h4>
-			<p>{props.name? props.name : "Empty"}</p>
+			<p>{props.name? props.name : ""}</p>
 		</div>
 	);
 }

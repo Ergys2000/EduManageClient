@@ -1,30 +1,37 @@
 import React, {useEffect, useState} from 'react';
+import FileForm from './FileForm';
 
 function FileList(props){
-	const courseID = props.courseID;
-	const classInstanceID = props.classInstanceID;
-
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
-		fetch(`http://localhost:5000/files/${classInstanceID}/${courseID}`)
+		fetch(`http://localhost:5000/files/${props.courseId}`)
 		.then(res => res.json())
-		.then(files => setFiles(files));
+		.then(res => {
+			if(res.status === "OK")
+				setFiles(res.result);
+		});
 	}, [])
 
 
 	return (
-		<ul>
-			{files.map(file => FileListItem(file))}
-		</ul>
+		<div className="File-List">
+			<FileForm courseId={props.courseId}/>
+			<ul>
+				{files.map(file => FileListItem(file))}
+			</ul>
+		</div>
 	);
 }
 
 function FileListItem(file){
-	const courseID = file.courseID;
+	const courseID = file.courseInstanceID;
 	const classInstanceID = file.classInstanceID;
 	const filename = file.filename;
 	return (
-		<li><a href={`http://localhost:5000/files/${classInstanceID}/${courseID}/${filename}`} target="_blank">{file.filename}</a></li>
+		<li id={file.id}>
+			<a href={`http://localhost:5000/files/${classInstanceID}/${courseID}/${filename}`} target="_blank">{file.filename}</a>
+			<i className="material-icons">download</i>
+		</li>
 	);
 }
 

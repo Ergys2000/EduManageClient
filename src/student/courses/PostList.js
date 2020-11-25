@@ -1,14 +1,17 @@
 import React, {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
 
 function PostList(props){
+	const courseId = props.courseId;
 	const [posts, setPosts] = useState([]);
 	useEffect(() => {
-		fetch(`http://localhost:5000/posts/${props.courseId}`)
+		fetch(`http://localhost:5000/posts/${courseId}`)
 		.then(res => res.json())
-		.then(postList => {
-			console.log(postList);
-			const posts = postList.map(post => PostItem(post));
-			setPosts(posts);
+		.then(res => {
+			if(res.status === "OK"){
+				const posts = res.result.map(post => PostItem(post));
+				setPosts(posts);
+			}
 		});
 	}, []);
 

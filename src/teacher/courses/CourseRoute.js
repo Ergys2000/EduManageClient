@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link, Route, Switch, useRouteMatch} from 'react-router-dom';
 import Course from './Course';
-import Attendance from './Attendance';
-import Session from './AttendanceSession';
 
 
 function Courses(props){
@@ -15,15 +13,8 @@ function Courses(props){
 				<Route exact path={`${path}/`} >
 					<CourseList id={id}/>
 				</Route>
-				
-				<Route exact path={`${path}/:courseId`} >
+				<Route path={`${path}/:courseId`}>
 					<Course id={id}/>
-				</Route>
-				<Route exact path={`${path}/:courseId/attendance`} >
-					<Attendance />
-				</Route>
-				<Route path={`${path}/:courseId/attendance/:sessionId`} >
-					<Session />
 				</Route>
 			</Switch>
 		</div>
@@ -36,9 +27,10 @@ function CourseList(props){
 	useEffect(() => {
 		fetch(`http://localhost:5000/teachers/${props.id}/courses`)
 		.then(res => res.json())
-		.then(courses => {
-			console.log(courses);
-			setCourses(courses);
+		.then(res => {
+			if(res.status === "OK"){
+				setCourses(res.result);
+			}
 		});
 	}, []);
 	return (

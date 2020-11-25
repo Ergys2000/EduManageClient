@@ -30,6 +30,7 @@ function CourseList(props) {
 	useEffect(() => {
 		fetch(`http://localhost:5000/teachers/${props.id}/class`)
 			.then(res => res.json())
+			.then(res => res.status==="OK"? res.result: [])
 			.then(courses => {
 				setCourses(courses);
 			});
@@ -51,8 +52,14 @@ function CourseListItem(props) {
 			</div>
 
 			<div className="Course-Body">
-				<Link to={`${url}/${props.course.id}/attendance`}>Attendance</Link>
-				<Link to={`${url}/${props.course.id}/grades`}>Grades</Link>
+				<Link to={`${url}/${props.course.id}/attendance`}>
+					<i className="material-icons">chevron_right</i>
+					<p>Attendance</p>
+				</Link>
+				<Link to={`${url}/${props.course.id}/grades`}>
+					<i className="material-icons">chevron_right</i>
+					<p>Grades</p>
+				</Link>
 				<p>Category: {props.course.category}</p>
 			</div>
 
