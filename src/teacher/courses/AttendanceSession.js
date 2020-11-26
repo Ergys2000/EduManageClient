@@ -6,7 +6,7 @@ function Session(props){
     const [students, setStudents] = useState([]);
 
     useEffect(() => {
-        fetch(`http://3.138.109.77:5000/courses/${courseId}/attendance/${sessionId}`)
+        fetch(`http://localhost:5000/courses/${courseId}/attendance/${sessionId}`)
             .then(res => res.json())
 			.then(res => res.status === "OK"? res.result : [])
             .then(students => {
@@ -37,7 +37,7 @@ function StudentRow(props){
             alert("You cannot increase any more!");
             return;
         } 
-        await fetch(`http://3.138.109.77:5000/courses/${courseId}/attendance/${sessionId}/${student.id}`, {
+        await fetch(`http://localhost:5000/courses/${courseId}/attendance/${sessionId}/${student.id}`, {
 
             method: "post",
             headers: {'Content-Type': 'application/json'},
@@ -57,7 +57,7 @@ function StudentRow(props){
             alert("You cannot decrease any more!");
             return;
         } 
-        await fetch(`http://3.138.109.77:5000/courses/${courseId}/attendance/${sessionId}/${student.id}`, {
+        await fetch(`http://localhost:5000/courses/${courseId}/attendance/${sessionId}/${student.id}`, {
 
             method: "post",
             headers: {'Content-Type': 'application/json'},

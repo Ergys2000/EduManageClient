@@ -28,7 +28,7 @@ function Class(props) {
 function CourseList(props) {
 	const [courses, setCourses] = useState([]);
 	useEffect(() => {
-		fetch(`http://3.138.109.77:5000/teachers/${props.id}/class`)
+		fetch(`http://localhost:5000/teachers/${props.id}/class`)
 			.then(res => res.json())
 			.then(res => res.status==="OK"? res.result: [])
 			.then(courses => {

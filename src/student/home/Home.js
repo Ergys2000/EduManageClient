@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 function Home(props){
 	const [student, setStudent] = useState(null);
 	useEffect(() => {
-		fetch(`http://3.138.109.77:5000/students/${props.id}`)
+		fetch(`http://localhost:5000/students/${props.id}`)
 			.then(res => res.json())
 			.then(res => res.status === "OK"? res.result : null)
 			.then(student => setStudent(student));

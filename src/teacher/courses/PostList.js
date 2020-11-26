@@ -5,7 +5,7 @@ function PostList(props){
 	const courseId = props.courseId;
 	const [posts, setPosts] = useState([]);
 	useEffect(() => {
-		fetch(`http://3.138.109.77:5000/posts/${courseId}`)
+		fetch(`http://localhost:5000/posts/${courseId}`)
 		.then(res => res.json())
 		.then(res => {
 			if(res.status === "OK"){

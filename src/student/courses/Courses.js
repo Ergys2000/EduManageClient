@@ -26,7 +26,7 @@ function CourseList(props){
 	const id = props.id;
 	const [courses, setCourses] = useState([]);
 	useEffect(() => {
-		fetch(`http://3.138.109.77:5000/students/${id}/courses`)
+		fetch(`http://localhost:5000/students/${id}/courses`)
 		.then(res => res.json())
 		.then(res => {
 			if(res.status==="OK"){
