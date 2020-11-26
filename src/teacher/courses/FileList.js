@@ -4,7 +4,7 @@ import FileForm from './FileForm';
 function FileList(props){
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
-		fetch(`http://localhost:5000/files/${props.courseId}`)
+		fetch(`http://3.138.109.77:5000/files/${props.courseId}`)
 		.then(res => res.json())
 		.then(res => {
 			if(res.status === "OK")
@@ -29,7 +29,7 @@ function FileListItem(file){
 	const filename = file.filename;
 	return (
 		<li id={file.id}>
-			<a href={`http://localhost:5000/files/${classInstanceID}/${courseID}/${filename}`} target="_blank">{file.filename}</a>
+			<a href={`http://3.138.109.77:5000/files/${classInstanceID}/${courseID}/${filename}`} target="_blank">{file.filename}</a>
 			<i className="material-icons">download</i>
 		</li>
 	);

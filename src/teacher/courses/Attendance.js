@@ -5,7 +5,7 @@ function Attendance(props) {
 	const {courseId} = useParams();
 	const [sessions, setSessions] = useState([]);
 	useEffect(() => {
-		fetch(`http://localhost:5000/courses/${courseId}/attendance`)
+		fetch(`http://3.138.109.77:5000/courses/${courseId}/attendance`)
 			.then(res => res.json())
 			.then(res => res.status === "OK" ? res.result : [])
 			.then(sessions => {
