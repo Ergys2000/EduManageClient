@@ -28,25 +28,42 @@ function Course(props){
 function NavBar(props){
 	const {url} = useRouteMatch();
 	const courseId = props.courseId;
+
 	const [courseName, setCourseName] = useState("Course name");
-	useEffect(() =>{
-		fetch(`http://3.138.109.77:5000/courses/${courseId}`)
-		.then(res => res.json())
-		.then(res => res.status === "OK" ? res.result : null)
-		.then(course => setCourseName(course.name));
+	useEffect( async () =>{
+		await fetch(`http://localhost:5000/courses/${courseId}`)
+			.then(res => res.json())
+			.then(res => res.status === "OK" ? res.result : null)
+			.then(course => setCourseName(course.name));
 	}, []);
+
+	const [onFocus, setFocus] = useState("home");
+
+
 	return (
 		<div className="NavBar">
 			<h1>{courseName}</h1>
 			<ul>
 				<li>
-					<Link to={`${url}/home`}>Home</Link>
+					<Link 
+						to={`${url}/home`} 
+						className={onFocus === "home" ? "active" : ""}
+						onClick={() => setFocus("home")}
+					>Home</Link>
 				</li>
 				<li>
-					<Link to={`${url}/posts`}>Posts</Link>
+					<Link 
+						to={`${url}/posts`} 
+						className={onFocus === "posts" ? "active" : ""}
+						onClick={() => setFocus("posts")}
+					>Posts</Link>
 				</li>
 				<li>
-					<Link to={`${url}/files`}>Files</Link>
+					<Link 
+						to={`${url}/files`} 
+						className={onFocus === "files" ? "active" : ""}
+						onClick={() => setFocus("files")}
+					>Files</Link>
 				</li>
 			</ul>
 		</div>

@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react';
 function TableContainer(props){
 	const [days, setDays] = useState([]);
 	useEffect(() => {
-		fetch(`http://3.138.109.77:5000/students/${props.id}/schedule`)
+		fetch(`http://localhost:5000/students/${props.id}/schedule`)
 			.then(res => res.json())
-			.then(schedule_data => organizeSchedule(schedule_data.result))
+			.then(res => res.status === "OK" ? res.result : [])
+			.then(schedule_data => organizeSchedule(schedule_data))
 			.then(schedule => {
 				const days = [];
 				for(let i=0; i<schedule.length; i++){
@@ -23,6 +24,7 @@ function TableContainer(props){
 	);
 }
 function Column(props) {
+	// we have 12 hours in a column
 	let hours = [
 		<TableElement />,
 		<TableElement />,
@@ -37,8 +39,10 @@ function Column(props) {
 		<TableElement />,
 		<TableElement />
 	];
-	console.log(props.hours);
+	// modify each table element to represent the correct hour of the day
+	// if there is no hour at that index, then it will be left empty
 	for(let i=0; i<props.hours.length; i++){
+		// the hour index is the hour in each row of the returned data.
 		const hour_index = props.hours[i].hour - 1;
 		hours[hour_index] = <TableElement category={props.hours[i].course_category} name={props.hours[i].course_name}/>;
 	}
@@ -49,6 +53,8 @@ function Column(props) {
 		</div>
 	);
 }
+
+// this simply renders an hour
 function TableElement(props){
 	return (
 		<div className="element">
@@ -58,16 +64,25 @@ function TableElement(props){
 	);
 }
 
+// this function is used to organize the schedule data into day specific data
 function organizeSchedule(schedule_data){
-	let result = [];
+	let result = []; // the final result
+	// the below variables determine where a new hour will be inserted
 	let currDayIndex = -1, currHourIndex = 0;
+	// lastDayName represents the name of the last day we were adding into
+	// we use it to determine when we need to insert hours into another day
 	let lastDayName = "";
 	for(let i=0; i<schedule_data.length; i++){
+
 		let row = schedule_data[i];
+
+		// if the day name has changed
 		if(lastDayName !== row.day_name){
+			// modify and increment the variables
 			lastDayName = row.day_name;
 			currDayIndex++;
 			currHourIndex = 0;
+			// initialize the day object in the correct index
 			result[currDayIndex] = {name: lastDayName, hours: []};
 		}
 		result[currDayIndex].hours[currHourIndex] = {
@@ -75,6 +90,7 @@ function organizeSchedule(schedule_data){
 			course_name: row.course_name,
 			course_category: row.course_category,
 			courseID: row.courseID};
+
 		currHourIndex++;
 	}
 	return result;

@@ -4,7 +4,7 @@ function FileList(props){
 	const courseId = props.courseId;
 	const [classInstanceID, setClassInstanceID] = useState(null);
 	useEffect(() => {
-		fetch(`http://3.138.109.77:5000/courses/${courseId}`)
+		fetch(`http://localhost:5000/courses/${courseId}`)
 		.then(res => res.json())
 		.then(res => res.status === "OK" ? res.result : null)
 		.then(course => setClassInstanceID(course.classInstanceID));
@@ -12,7 +12,7 @@ function FileList(props){
 
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
-		fetch(`http://3.138.109.77:5000/files/${courseId}`)
+		fetch(`http://localhost:5000/files/${courseId}`)
 		.then(res => res.json())
 		.then(res => {
 			if(res.status === "OK")
@@ -23,6 +23,7 @@ function FileList(props){
 
 	return (
 		<div className="File-List">
+			<p>Class id: {classInstanceID}</p>
 			<ul>
 				{files.map(file => FileListItem(file))}
 			</ul>
@@ -36,7 +37,7 @@ function FileListItem(file){
 	const filename = file.filename;
 	return (
 		<li id={file.id}>
-			<a href={`http://3.138.109.77:5000/files/${classInstanceID}/${courseID}/${filename}`} target="_blank">{file.filename}</a>
+			<a href={`http://localhost:5000/files/${classInstanceID}/${courseID}/${filename}`} target="_blank">{file.filename}</a>
 			<i className="material-icons">download</i>
 		</li>
 	);

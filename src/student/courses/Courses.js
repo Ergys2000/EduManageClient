@@ -25,14 +25,14 @@ function Courses(props){
 function CourseList(props){
 	const id = props.id;
 	const [courses, setCourses] = useState([]);
-	useEffect(() => {
-		fetch(`http://3.138.109.77:5000/students/${id}/courses`)
-		.then(res => res.json())
-		.then(res => {
-			if(res.status==="OK"){
-				setCourses(res.result);
-			}
-		});
+	useEffect(async () => {
+		await fetch(`http://localhost:5000/students/${id}/courses`)
+			.then(res => res.json())
+			.then(res => {
+				if(res.status==="OK"){
+					setCourses(res.result);
+				}
+			});
 	}, []);
 	return (
 		<div className="Course-List">

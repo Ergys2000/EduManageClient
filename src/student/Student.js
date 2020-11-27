@@ -14,27 +14,27 @@ function Student(){
 	return (
 		<div className="StudentPage">
 			<NavBar />
-				<Switch>
-					<Route path={`${path}/courses`}>
-						<Course id={id}/>
-					</Route>
+			<Switch>
+				<Route path={`${path}/courses`}>
+					<Course id={id}/>
+				</Route>
 
-					<Route exact path={`${path}/grades`}>
-						<Grades id={id}/>
-					</Route>
+				<Route exact path={`${path}/grades`}>
+					<Grades id={id}/>
+				</Route>
 
-					<Route exact path={`${path}/`}>
-						<Home id={id}/>
-					</Route>
+				<Route exact path={`${path}/`}>
+					<Home id={id}/>
+				</Route>
 
-					<Route exact path={`${path}/home`}>
-						<Home id={id}/>
-					</Route>
+				<Route exact path={`${path}/home`}>
+					<Home id={id}/>
+				</Route>
 
-					<Route exact path={`${path}/schedule`}>
-						<Schedule id={id}/>
-					</Route>
-				</Switch>
+				<Route exact path={`${path}/schedule`}>
+					<Schedule id={id}/>
+				</Route>
+			</Switch>
 		</div>
 	);
 

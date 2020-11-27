@@ -27,6 +27,7 @@
 		height: 100px;
 		margin-bottom: 20px;
 		margin-right: 10px;
+		transition: 0.1s;
 	}
 	.element:nth-child(even){
 		background-color: $side-nav-focus-background;
