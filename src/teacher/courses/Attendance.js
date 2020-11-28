@@ -39,7 +39,7 @@ function SessionRow(session) {
 			<td>{session.type}</td>
 			<td>{session.date}</td>
 			<td>{session.total}</td>
-			<td><button onClick={onClick}>View</button></td>
+			<td><button onClick={onClick}>VIEW</button></td>
 		</tr>
 	)
 }

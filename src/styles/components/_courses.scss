@@ -14,31 +14,31 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		color: $text-focus-color;
-		background-color: $side-nav-focus-background;
+		color: $onPrimary;
+		background-color: $primary;
 		flex: 1;
 	}
 	.Course-Header a{
 		font-size: 2em;
-		color: $text-focus-color;
+		color: $onPrimary;
 	}
 	.Course-Body{
 		display: flex;
-		background-color: $element-background;
+		background-color: $surface;
 		flex-direction: column;
-		border-left: 2px solid $side-nav-focus-background;
-		border-right: 2px solid $side-nav-focus-background;
-		border-bottom: 2px solid $side-nav-focus-background;
+		border-left: 2px solid $primary;
+		border-right: 2px solid $primary;
+		border-bottom: 2px solid $primary;
 		flex: 2;
 		a{
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			color: white;
+			color: $onSurface;
 			text-decoration: none;
 			margin: 10px;
-			&:hover{
-				color: purple;
+			&:hover {
+				color: $secondary;
 			}
 		}
 	}
@@ -59,19 +59,19 @@
 			a{
 				border-bottom: 1px solid white;
 				padding: 30px;
-				color: $text-color;
+				color: $onBackground;
 				text-decoration: none;
 				margin: 30px;
 				transition: 0.2s;
 				&:hover{
-					border-color: $side-nav-focus-background;
-					color: $side-nav-focus-background;
+					border-color: $secondary;
+					color: $onBackground;
 					border-width: 3px;
 					font-size: 20px;
 				}
 				&.active{
-					color: $side-nav-focus-background;
-					border-color: $side-nav-focus-background;
+					color: $onBackground;
+					border-color: $secondary;
 					border-width: 3px;
 					font-size: 20px;
 				}
@@ -85,7 +85,7 @@
 	align-items: center;
 	.Post-Item{
 		border-radius: 20px;
-		background-color: $element-background;
+		background-color: $surface;
 		margin: 30px;
 		width: 50%;
 		.header{
@@ -107,30 +107,31 @@
 	margin-top: 50px;
 
 	th, td{
-		border-bottom: 1px solid $text-color;
+		border-bottom: 1px solid $onBackground;
 		padding: 20px;
 	}
 	td{
-		background-color: $element-background;
+		background-color: $surface;
 	}
 	button{
 		padding: 8px 14px;
-		color: $text-color;
+		color: $onPrimary;
 		border: none;
-		background-color: $button-background;
+		background-color: $primary;
 		&:hover{
-			background-color: $button-focus-background;
-			color: $text-focus-color;
+			background-color: $secondary;
+			color: $onSecondary;
 		}
 	}
 }
 .Attendance-Session{
 	button{
-		background-color: $element-background;
-		color: $button-background;
+		border-radius: 50%;
+		background-color: $surface;
+		color: $onSurface;
 		&:hover{
-			background-color: $button-focus-background;
-			color: $text-focus-color;
+			background-color: $primary;
+			color: $onPrimary;
 		}
 	}
 }
@@ -150,10 +151,10 @@
 			align-items: center;
 			width: 30%;
 			padding: 20px;
-			background-color: $element-background;
+			background-color: $surface;
 			a{
-				color: $text-color;
-				border-bottom: 1px solid $text-color;
+				color: $onSurface;
+				border-bottom: 1px solid $onSurface;
 				text-decoration: none;
 			}
 		}

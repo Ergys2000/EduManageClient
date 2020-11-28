@@ -15,14 +15,14 @@
 	h2{
 		margin-right: 10px;
 		padding: 10px;
-		border-bottom: 1px solid white;
+		border-bottom: 1px solid $onBackground;
 	}
 	.element{
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
-		background-color: $element-background;
-		color: $text-color;
+		background-color: $surface;
+		color: $onSurface;
 		width: 200px;
 		height: 100px;
 		margin-bottom: 20px;
@@ -30,8 +30,8 @@
 		transition: 0.1s;
 	}
 	.element:nth-child(even){
-		background-color: $side-nav-focus-background;
-		color: $text-focus-color;
+		background-color: $secondary;
+		color: $onSecondary;
 	}
 
 }

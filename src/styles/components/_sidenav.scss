@@ -1,7 +1,7 @@
 /* Side navigation bar css*/
 .sidenav {
 	flex-grow:1;
-    background-color: $side-nav-background;
+    background-color: $primary;
     padding-top: 20px;
 	text-align: left;
 	li{
@@ -16,14 +16,14 @@
 		text-decoration: none;
 		font-size: 20px;
 		transition: 0.2s;
-		color: $text-color;
+		color: $onPrimary;
 		i{
 			margin-right: 10px;
 		}
-	}
-	a:hover, a:focus {
-		color: $text-focus-color;
-		background-color: $side-nav-focus-background;
+		&:hover, &.active{
+			color: $onSecondary;
+			background-color: $secondary;
+		}
 	}
 }
 

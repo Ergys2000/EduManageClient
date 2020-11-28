@@ -1,29 +1,39 @@
-// =========== Purple color scheme ==========================
 /*
-$window-background: #0f040d;
+// ============= Purple color scheme ================= 
+$primary: #462b61;
+$priaryVariant: white;
+$onPrimary: #ffffff;
 
-$side-nav-background: #100007;
-$side-nav-focus-background: #34003b;
+$secondary: #9269c4;
+$secondaryVariant: white;
+$onSecondary: black;
 
-$text-color: #b5b5b5;
-$text-focus-color: #b5b5b5;
+$background: #121212;
+$onBackground: #b5b5b5;
 
-$element-background: #0f0a0e;
+$surface: #2e2e2e;
+$onSurface: #b5b5b5;
 
-$button-background: #51085e;
-$button-focus-background: #27032e;
+$error: red;
+$onError: black;
+//==============================================================
 */
 
-// Another color scheme 
-$window-background: #121212;
 
-$side-nav-background: #1F1A24;
-$side-nav-focus-background: #BB86FC;
+// =============== White color scheme ==================
+$primary: #272727;
+$priaryVariant: white;
+$onPrimary: #ffffff;
 
-$text-color: #b5b5b5;
-$text-focus-color: black;
+$secondary: #5052c4;
+$secondaryVariant: white;
+$onSecondary: black;
 
-$element-background: #2e2e2e;
+$background: #dfdfdf;
+$onBackground: #1f1f1f;
 
-$button-background: #1f0342;
-$button-focus-background: #833bdb;
+$surface: #c2c2c2;
+$onSurface: #000000;
+
+$error: red;
+$onError: black;
