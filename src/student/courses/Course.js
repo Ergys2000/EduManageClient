@@ -31,7 +31,7 @@ function NavBar(props){
 
 	const [courseName, setCourseName] = useState("Course name");
 	useEffect( async () =>{
-		await fetch(`http://localhost:5000/courses/${courseId}`)
+		await fetch(`http://3.138.109.77:5000/courses/${courseId}`)
 			.then(res => res.json())
 			.then(res => res.status === "OK" ? res.result : null)
 			.then(course => setCourseName(course.name));
