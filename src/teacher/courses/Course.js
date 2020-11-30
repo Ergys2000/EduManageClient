@@ -13,24 +13,31 @@ function Course(props){
 		<div className="Course">
 			<NavBar courseId={courseId}/>
 			<Switch>
+
 				<Route exact path={`${path}/`}>
 					<Redirect to={`${url}/home`} />
 				</Route>
+
 				<Route exact path={`${path}/home`}>
 					<h2></h2>
 				</Route>
+
 				<Route exact path={`${path}/posts`}>
 					<PostList courseId={courseId}/>
 				</Route>
+
 				<Route exact path={`${path}/files`}>
 					<FileList courseId={courseId} />
 				</Route>
+
 				<Route exact path={`${path}/attendance`} >
 					<Attendance courseId={courseId}/>
 				</Route>
+
 				<Route path={`${path}/attendance/:sessionId`} >
 					<Session courseId={courseId}/>
 				</Route>
+
 			</Switch>
 		</div>
 	);
@@ -41,7 +48,7 @@ function NavBar(props){
 	const courseId = props.courseId;
 	const [courseName, setCourseName] = useState("Course name");
 	useEffect(() =>{
-		fetch(`http://3.138.109.77:5000/courses/${courseId}`)
+		fetch(`http://localhost:5000/courses/${courseId}`)
 		.then(res => res.json())
 		.then(res => res.status === "OK" ? res.result : null)
 		.then(course => setCourseName(course.name));
@@ -80,6 +87,13 @@ function NavBar(props){
 						className={onFocus === "attendance" ? "active" : ""}
 						onClick={() => setFocus("attendance")}
 					>Attendance</Link>
+				</li>
+				<li>
+					<Link 
+						to={`${url}/grades`} 
+						className={onFocus === "grades" ? "active" : ""}
+						onClick={() => setFocus("grades")}
+					>Grades</Link>
 				</li>
 			</ul>
 		</div>

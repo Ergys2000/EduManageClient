@@ -4,7 +4,7 @@ function FileList(props){
 	const courseId = props.courseId;
 	const [classInstanceID, setClassInstanceID] = useState(null);
 	useEffect(() => {
-		fetch(`http://3.138.109.77:5000/courses/${courseId}`)
+		fetch(`http://localhost:5000/courses/${courseId}`)
 		.then(res => res.json())
 		.then(res => res.status === "OK" ? res.result : null)
 		.then(course => setClassInstanceID(course.classInstanceID));
@@ -12,7 +12,7 @@ function FileList(props){
 
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
-		fetch(`http://3.138.109.77:5000/files/${courseId}`)
+		fetch(`http://localhost:5000/files/${courseId}`)
 		.then(res => res.json())
 		.then(res => {
 			if(res.status === "OK")
@@ -23,7 +23,7 @@ function FileList(props){
 
 	return (
 		<div className="File-List">
-			<p>Class id: {classInstanceID}</p>
+			<FileForm />
 			<ul>
 				{files.map(file => FileListItem(file))}
 			</ul>
@@ -37,10 +37,59 @@ function FileListItem(file){
 	const filename = file.filename;
 	return (
 		<li id={file.id}>
-			<a href={`http://3.138.109.77:5000/files/${classInstanceID}/${courseID}/${filename}`} target="_blank">{file.filename}</a>
+			<a href={`http://localhost:5000/files/${classInstanceID}/${courseID}/${filename}`} target="_blank">{file.filename}</a>
 			<i className="material-icons">download</i>
 		</li>
 	);
 }
 
-export default FileList;
+function StudentFileList(props){
+	const courseId = props.courseId;
+	const studentId = props.studentId;
+	const [files, setFiles] = useState([]);
+
+	useEffect(() => {
+			fetch(`http://localhost:5000/files/${courseId}/${studentId}`)
+				.then(res => res.json())
+				.then(res => {
+					console.log(res);
+					if(res.status === "OK")
+						setFiles(res.result);
+				});
+	}, []);
+
+
+
+	return (
+		<div className="File-List">
+			<FileForm />
+			<ul>
+				{files.map(file => StudentFile(file))}
+			</ul>
+		</div>
+	);
+}
+
+function StudentFile(file){
+	const courseID = file.courseInstanceID;
+	const classInstanceID = file.classInstanceID;
+	const studentID = file.studentID;
+	const filename = file.filename;
+	return (
+		<li id={file.id}>
+			<a href={`http://localhost:5000/files/${classInstanceID}/${courseID}/${studentID}/${filename}`} target="_blank">{file.filename}</a>
+			<i className="material-icons">download</i>
+		</li>
+	);
+}
+
+function FileForm(props){
+	return (
+		<form>
+			<input type="file"/>
+			<input type="submit"/>
+		</form>
+	)
+}
+
+export {FileList, StudentFileList};

@@ -1,7 +1,11 @@
 &{
 	position: absolute;
+
+	// flex settings
 	display: flex;
 	flex-direction: row;
+
+	// size and color
 	border: 1px solid black;
 	background-color: $surface;
 	width: 50%;
@@ -10,28 +14,38 @@
 	margin-top: 10%;
 
 	.left-pane{
+		// flex settings
 		display: flex;
 		justify-content:center;
+		// size and color
 		width: 30%;
 		background-color: $primary;
 		color: $onPrimary;
+
 		h2{
+			// center in parent
 			margin: auto;
 		}
 	}
 	.right-pane{
-		margin: auto;
+		// flex options
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+
+		margin: auto;// center in parent
+
 		input{
+			// size and color
 			margin: 20px;
 			background-color: $surface;
 			color: $onSurface;
+
 			border-top: none;
 			border-left: none;
 			border-right: none;
 			border-bottom: 3px solid #111;
+
 			outline: none;
 		}
 		input:focus{
@@ -39,9 +53,11 @@
 		}
 	}
 	.button-box{
+		// flex settings
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
+
 		button{
 			background-color: $secondary;
 			border: none;

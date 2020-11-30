@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams, useRouteMatch, Switch, Route, Link, Redirect} from 'react-router-dom';
 import PostList from './PostList';
-import FileList from './FileList';
+import {FileList, StudentFileList} from './FileList';
 
 function Course(props){
 	const studentId = props.id;
@@ -20,6 +20,9 @@ function Course(props){
 				<Route exact path={`${path}/files`}>
 					<FileList courseId={courseId}/>
 				</Route>
+				<Route exact path={`${path}/myfiles`}>
+					<StudentFileList studentId={studentId} courseId={courseId}/>
+				</Route>
 			</Switch>
 		</div>
 	);
@@ -31,7 +34,7 @@ function NavBar(props){
 
 	const [courseName, setCourseName] = useState("Course name");
 	useEffect( async () =>{
-		await fetch(`http://3.138.109.77:5000/courses/${courseId}`)
+		await fetch(`http://localhost:5000/courses/${courseId}`)
 			.then(res => res.json())
 			.then(res => res.status === "OK" ? res.result : null)
 			.then(course => setCourseName(course.name));
@@ -57,6 +60,13 @@ function NavBar(props){
 						className={onFocus === "posts" ? "active" : ""}
 						onClick={() => setFocus("posts")}
 					>Posts</Link>
+				</li>
+				<li>
+					<Link 
+						to={`${url}/myfiles`} 
+						className={onFocus === "myfiles" ? "active" : ""}
+						onClick={() => setFocus("myfiles")}
+					>My Files</Link>
 				</li>
 				<li>
 					<Link 

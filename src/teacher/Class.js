@@ -18,7 +18,7 @@ function Class(props) {
 					<Session />
 				</Route>
 				<Route exact path={`${path}/:courseId/grades`}>
-					<h2>Grades</h2>
+					<StudentList />
 				</Route>
 			</Switch>
 		</div>
@@ -28,7 +28,7 @@ function Class(props) {
 function CourseList(props) {
 	const [courses, setCourses] = useState([]);
 	useEffect(() => {
-		fetch(`http://3.138.109.77:5000/teachers/${props.id}/class`)
+		fetch(`http://localhost:5000/teachers/${props.id}/class`)
 			.then(res => res.json())
 			.then(res => res.status==="OK"? res.result: [])
 			.then(courses => {
@@ -67,20 +67,52 @@ function CourseListItem(props) {
 	);
 }
 
-// TODO display the grades of each student
-function Grades(props) {
+function StudentList(props){
 	return (
-		<div>
-
+		<div className="Student-List">
+			<Grades name="Ergys"/>
+			<Grades name="John"/>
 		</div>
 	);
 }
 
-function GradeItem(props) {
-	return (
-		<div>
+// TODO display the grades of each student
+function Grades(props) {
+	const grade = {grade: 1, weight: 0.2, date: "2020-14-5"};
 
+	const [hidden, setHidden] = useState(true);
+
+	return (
+		<div className="Grades">
+			<div className="head" onClick={() => setHidden(!hidden)}>
+				<h4>{props.name}</h4>
+			</div>
+			<div className="body">
+				<table className={hidden ? "hidden" : "shown"}>
+					<tr>
+						<th>Grade</th>
+						<th>Weight</th>
+						<th>Date</th>
+					</tr>
+					{GradeRow(grade)}
+					{GradeRow(grade)}
+					{GradeRow(grade)}
+					{GradeRow(grade)}
+					{GradeRow(grade)}
+					{GradeRow(grade)}
+				</table>
+			</div>
 		</div>
+	);
+}
+
+function GradeRow(grade) {
+	return (
+		<tr>
+			<td>{grade.grade}</td>
+			<td>{grade.weight}</td>
+			<td>{grade.date}</td>
+		</tr>
 	);
 }
 

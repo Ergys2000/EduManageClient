@@ -6,7 +6,7 @@ function Grades(props) {
 		getGrades();
 	}, []);
 	function getGrades() {
-		fetch(`http://3.138.109.77:5000/students/${props.id}/grades`)
+		fetch(`http://localhost:5000/students/${props.id}/grades`)
 			.then(res => res.json())
 			.then(res => {
 				if (res.status === "OK") {

@@ -1,6 +1,7 @@
 /* Side navigation bar css*/
 .sidenav {
 	flex-grow:1;
+
     background-color: $primary;
     padding-top: 20px;
 	text-align: left;
@@ -8,15 +9,18 @@
 		border: none;
 	}
 	a {
+		// flex settings
 		display:flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: left;
+		// padding and text settings
 		padding: 6px 6px 6px 32px;
 		text-decoration: none;
 		font-size: 20px;
-		transition: 0.2s;
 		color: $onPrimary;
+		// transition time for an animation effect
+		transition: 0.2s;
 		i{
 			margin-right: 10px;
 		}

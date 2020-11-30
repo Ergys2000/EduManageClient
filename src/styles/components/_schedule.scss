@@ -18,15 +18,19 @@
 		border-bottom: 1px solid $onBackground;
 	}
 	.element{
+		// flex settings
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
-		background-color: $surface;
-		color: $onSurface;
+		// size and background
 		width: 200px;
 		height: 100px;
 		margin-bottom: 20px;
 		margin-right: 10px;
+		background-color: $surface;
+
+		color: $onSurface;
+		// animation transition time
 		transition: 0.1s;
 	}
 	.element:nth-child(even){
