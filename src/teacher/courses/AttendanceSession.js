@@ -15,15 +15,19 @@ function Session(props){
     }, []);
 
     return (
-        <table className="Attendance-Session">
-            <tr>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Attended</th>
-                <th></th>
-                <th></th>
-            </tr>
-            {students.map(student => <StudentRow student={student} />)}
+		<table className="Attendance-Session">
+			<thead>
+				<tr>
+					<th>Firstname</th>
+					<th>Lastname</th>
+					<th>Attended</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{students.map(student => <StudentRow student={student} />)}
+			</tbody>
         </table>
     );
 }

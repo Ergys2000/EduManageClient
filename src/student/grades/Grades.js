@@ -69,20 +69,16 @@ function organize(grades) {
 
 		const currGrade = grades[i];
 
-		if (lastID === currGrade.courseID) { // if the id of the course has not changed
-			// just insert the current grade in the current course position
-			result[currPosition].grades.push(currGrade);
-
-		} else { // if the course if has now changed
-			lastID = currGrade.courseID; //set the id to this one
+		if (lastID !== currGrade.courseID) { // if the id of the course has changed
 			currPosition++; // increment the currPosition
-
+			lastID = currGrade.courseID; //set the id to this one
 			// add a new course in the result
 			result[currPosition] = {
 				courseName: currGrade.name,
-				grades: [currGrade]
+				grades: []
 			};
 		}
+		result[currPosition].grades.push(currGrade);
 	}
 	return result;
 }

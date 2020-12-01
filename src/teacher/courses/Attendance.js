@@ -14,15 +14,19 @@ function Attendance(props) {
 	});
 	return (
 		<table className="Attendance-Sessions">
-			<tr>
-				<th>Week</th>
-				<th>Topic</th>
-				<th>Type</th>
-				<th>Date</th>
-				<th>Hours</th>
-				<th></th>
-			</tr>
-			{sessions.map(session => SessionRow(session))}
+			<thead>
+				<tr>
+					<th>Week</th>
+					<th>Topic</th>
+					<th>Type</th>
+					<th>Date</th>
+					<th>Hours</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{sessions.map(session => SessionRow(session))}
+			</tbody>
 		</table>
 	);
 }

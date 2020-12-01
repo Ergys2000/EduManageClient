@@ -1,4 +1,5 @@
 .Student-List{
+	margin-top: 50px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -11,12 +12,10 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			border-radius: 10px 10px 0 0;
 			color: $onPrimary;
 			background-color: $primary;
 		}
 		.body{
-			transition: height 0.5s;
 			width: 100%;
 			height: 100%;
 			table.hidden{

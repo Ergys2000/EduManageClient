@@ -5,6 +5,7 @@ import FileList from './FileList';
 import FileForm from './FileForm';
 import Attendance from './Attendance';
 import Session from './AttendanceSession';
+import Grades from './Grades';
 
 function Course(props){
 	const {courseId} = useParams();
@@ -19,7 +20,7 @@ function Course(props){
 				</Route>
 
 				<Route exact path={`${path}/home`}>
-					<h2></h2>
+					<h2>Home page</h2>
 				</Route>
 
 				<Route exact path={`${path}/posts`}>
@@ -38,6 +39,10 @@ function Course(props){
 					<Session courseId={courseId}/>
 				</Route>
 
+				<Route path={`${path}/grades`} >
+					<Grades courseId={courseId}/>
+				</Route>
+
 			</Switch>
 		</div>
 	);
@@ -49,9 +54,9 @@ function NavBar(props){
 	const [courseName, setCourseName] = useState("Course name");
 	useEffect(() =>{
 		fetch(`http://localhost:5000/courses/${courseId}`)
-		.then(res => res.json())
-		.then(res => res.status === "OK" ? res.result : null)
-		.then(course => setCourseName(course.name));
+			.then(res => res.json())
+			.then(res => res.status === "OK" ? res.result : null)
+			.then(course => setCourseName(course.name));
 	}, []);
 
 	const [onFocus, setFocus] = useState("home");

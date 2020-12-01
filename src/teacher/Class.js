@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {Link, Switch, useRouteMatch, Route} from 'react-router-dom';
+import {useParams, Link, Switch, useRouteMatch, Route} from 'react-router-dom';
 import Attendance from './courses/Attendance';
 import Session from './courses/AttendanceSession';
 
@@ -30,7 +30,7 @@ function CourseList(props) {
 	useEffect(() => {
 		fetch(`http://localhost:5000/teachers/${props.id}/class`)
 			.then(res => res.json())
-			.then(res => res.status==="OK"? res.result: [])
+			.then(res => res.status === "OK" ? res.result : [])
 			.then(courses => {
 				setCourses(courses);
 			});
@@ -67,19 +67,34 @@ function CourseListItem(props) {
 	);
 }
 
-function StudentList(props){
+function StudentList(props) {
+	const {courseId} = useParams();
+	const [students, setStudents] = useState([]);
+	useEffect(async () => {
+		getCourseGrades();
+	}, []);
+
+	async function getCourseGrades() {
+		await fetch(`http://localhost:5000/courses/${courseId}/grades`)
+			.then(res => res.json())
+			.then(res => res.status === "OK" ? res.result : [])
+			.then(result => {
+				const students = organizeGrades(result);
+				const elements = students.map(student => (
+					<Grades name={student.firstname} grades={student.grades} key={student.id} />
+				));
+				setStudents(elements);
+			});
+	}
 	return (
 		<div className="Student-List">
-			<Grades name="Ergys"/>
-			<Grades name="John"/>
+			{students}
 		</div>
 	);
 }
 
 // TODO display the grades of each student
 function Grades(props) {
-	const grade = {grade: 1, weight: 0.2, date: "2020-14-5"};
-
 	const [hidden, setHidden] = useState(true);
 
 	return (
@@ -89,17 +104,16 @@ function Grades(props) {
 			</div>
 			<div className="body">
 				<table className={hidden ? "hidden" : "shown"}>
-					<tr>
-						<th>Grade</th>
-						<th>Weight</th>
-						<th>Date</th>
-					</tr>
-					{GradeRow(grade)}
-					{GradeRow(grade)}
-					{GradeRow(grade)}
-					{GradeRow(grade)}
-					{GradeRow(grade)}
-					{GradeRow(grade)}
+					<thead>
+						<tr>
+							<th>Grade</th>
+							<th>Weight</th>
+							<th>Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						{props.grades.map(grade => GradeRow(grade))}
+					</tbody>
 				</table>
 			</div>
 		</div>
@@ -108,12 +122,50 @@ function Grades(props) {
 
 function GradeRow(grade) {
 	return (
-		<tr>
+		<tr key={grade.id}>
 			<td>{grade.grade}</td>
 			<td>{grade.weight}</td>
 			<td>{grade.date}</td>
 		</tr>
 	);
 }
+
+function organizeGrades(grades) {
+	// the final result
+	let result = [];
+	// helps us determine if the grades have changed
+	let lastStudentId = -1;
+	// holds the current position in terms of student count
+	let currPosition = -1;
+
+	// for each grade in the list
+	for (let i = 0; i < grades.length; i++) {
+		// extract the current grade
+		const currGrade = grades[i];
+		// get only the neccessary information
+		const grade = {
+			id: currGrade.id,
+			grade: currGrade.grade,
+			weight: currGrade.weight,
+			date: currGrade.date
+		};
+		// if the student id has not changed
+		if (lastStudentId !== currGrade.studentID) {
+			// increment the counter to point to the other student
+			currPosition++;
+			lastStudentId = currGrade.studentID;
+			// create the other student entry
+			result[currPosition] = {
+				id: currGrade.studentID,
+				firstname: currGrade.firstname,
+				lastname: currGrade.lastname,
+				grades: []
+			}
+		}
+		result[currPosition].grades.push(grade);
+	}
+	return result;
+}
+
 
 export default Class;
