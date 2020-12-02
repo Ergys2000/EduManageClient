@@ -24,5 +24,5 @@ and students can see their own scheule.
 
 
 ## Under development
-This is still under development so except major changes to the design and
+This is still under development so expect major changes to the design and
 functionality.
