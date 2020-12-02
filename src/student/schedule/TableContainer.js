@@ -25,20 +25,11 @@ function TableContainer(props){
 }
 function Column(props) {
 	// we have 12 hours in a column
-	let hours = [
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />
-	];
+	let hours = [];
+	// fill the hours with empty table elements
+	for(let i=0; i<12; i++)
+		hours.push(<TableElement />);
+
 	// modify each table element to represent the correct hour of the day
 	// if there is no hour at that index, then it will be left empty
 	for(let i=0; i<props.hours.length; i++){
@@ -85,6 +76,7 @@ function organizeSchedule(schedule_data){
 			// initialize the day object in the correct index
 			result[currDayIndex] = {name: lastDayName, hours: []};
 		}
+
 		result[currDayIndex].hours[currHourIndex] = {
 			hour: row.hour,
 			course_name: row.course_name,
@@ -97,47 +89,17 @@ function organizeSchedule(schedule_data){
 }
 
 function Timeline(props){
+	const timestamps = [];
+
+	const start = 8;
+
+	for(let i=0; i<12; i++){
+		timestamps.push(<div className="element">{start+i}:00</div>)
+	}
+
 	return (
 		<div className="timeline-column">
-			<div className="element">
-				8:00
-			</div>
-			<div className="element">
-				9:00
-			</div>
-			<div className="element">
-				10:00
-			</div>
-			<div className="element">
-				11:00
-			</div>
-			<div className="element">
-				12:00
-			</div>
-			<div className="element">
-				13:00
-			</div>
-			<div className="element">
-				14:00
-			</div>
-			<div className="element">
-				15:00
-			</div>
-			<div className="element">
-				16:00
-			</div>
-			<div className="element">
-				17:00
-			</div>
-			<div className="element">
-				18:00
-			</div>
-			<div className="element">
-				19:00
-			</div>
-			<div className="element">
-				20:00
-			</div>
+			{timestamps}
 		</div>
 	);
 }

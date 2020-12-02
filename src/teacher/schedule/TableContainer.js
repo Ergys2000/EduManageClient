@@ -97,7 +97,7 @@ function Timeline(props) {
 	const timestamps = [];
 	const start = 8;
 	for(let i=0; i<12; i++){
-		timestamps.push(<div className="timeline-column">{start+i}:00</div>)
+		timestamps.push(<div className="element">{start+i}:00</div>)
 	}
 	return (
 		<div className="timeline-column">
