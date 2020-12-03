@@ -34,20 +34,19 @@ function Login(props){
     }
 
     return (
-        <div className="Login">
-            <div className="left-pane">
-				<h2>Login</h2>
-            </div>
-            <div className="right-pane">
+        <div style={{backgroundColor: "white", borderRadius: "12px"}} className="Login">
+           
+            <div  className="right-pane">
 				<h2>Learning Management System</h2>
-                <input id="emailField" placeholder="Email..." type="text" name="email"/>
+                <h2 style={{textAlign: "center"}}>Login</h2>
+                <input style={{backgroundColor: "white"}} id="emailField" placeholder="Email..." type="text" name="email"/>
                 <br></br>
-                <input id="passwordField" placeholder="Password..." type="password" name="password"/>
+                <input style={{backgroundColor: "white"}} id="passwordField" placeholder="Password..." type="password" name="password"/>
                 <br></br>
                 <div className="button-box">
-                    <button onClick={() => authenticate_student()}>Login as student</button>
+                    <button style={{color:"white", fontWeight: "bold"}} onClick={() => authenticate_student()}>Login as student</button>
                     <br></br>
-                    <button onClick={() => authenticate_teacher()}>Login as teacher</button>
+                    <button style={{color:"white", fontWeight: "bold"}} onClick={() => authenticate_teacher()}>Login as teacher</button>
                 </div>
             </div>
         </div>
