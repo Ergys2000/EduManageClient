@@ -38,15 +38,16 @@ function Login(props){
            
             <div  className="right-pane">
 				<h2>Learning Management System</h2>
-                <h2 style={{textAlign: "center"}}>Login</h2>
+                <br></br>
+                <h2>Login</h2>
                 <input  id="emailField" placeholder="Email..." type="text" name="email"/>
                 <br></br>
                 <input  id="passwordField" placeholder="Password..." type="password" name="password"/>
                 <br></br>
                 <div className="button-box">
-                    <button style={{fontWeight: "bold"}} onClick={() => authenticate_student()}>Login as student</button>
+                    <button onClick={() => authenticate_student()}>Login as student</button>
                     <br></br>
-                    <button style={{fontWeight: "bold"}} onClick={() => authenticate_teacher()}>Login as teacher</button>
+                    <button onClick={() => authenticate_teacher()}>Login as teacher</button>
                 </div>
             </div>
         </div>
