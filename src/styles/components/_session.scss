@@ -1,0 +1,13 @@
+.add-session{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 50px;
+}
+.horizontal-divider{
+	width: 100%;
+	height: 1px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	background-color: $secondary;
+}

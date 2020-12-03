@@ -5,6 +5,7 @@ import FileList from './FileList';
 import FileForm from './FileForm';
 import Attendance from './Attendance';
 import Session from './AttendanceSession';
+import AddSession from './AddSession';
 import Grades from './Grades';
 
 function Course(props){
@@ -33,6 +34,10 @@ function Course(props){
 
 				<Route exact path={`${path}/attendance`} >
 					<Attendance courseId={courseId}/>
+				</Route>
+
+				<Route exact path={`${path}/attendance/add`} >
+					<AddSession courseId={courseId}/>
 				</Route>
 
 				<Route path={`${path}/attendance/:sessionId`} >
