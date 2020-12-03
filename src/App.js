@@ -18,6 +18,7 @@ function App(props) {
 						<Student />
 					</Route>
 
+
 					<Route path="/t/:id">
 						<Teacher />
 					</Route>

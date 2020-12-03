@@ -1,28 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
-function TableContainer(props){
+function TableContainer(props) {
 	const [days, setDays] = useState([]);
 	useEffect(() => {
 		fetch(`http://localhost:5000/teachers/${props.id}/schedule`)
 			.then(res => res.json())
-			.then(res => {
-				let schedule;
-				if(res.status === "OK"){
-					schedule = organizeSchedule(res.result)
-				}else{
-					schedule = [];
-				}
-				return schedule;
-			})
-			.then(schedule => {
+			.then(res => res.status === "OK" ? res.result : [])
+			.then(scheduleRaw => {
 				const days = [];
-				for(let i=0; i<schedule.length; i++){
-					days[i] = <Column title={schedule[i].name} hours={schedule[i].hours}/>
+				const schedule = organizeSchedule(scheduleRaw);
+				for (let i = 0; i < schedule.length; i++) {
+					days[i] = <Column title={schedule[i].name} hours={schedule[i].hours} />
 				}
 				setDays(days);
 			});
 	}, []);
-	
+
 	return (
 		<div className="table-container">
 			<Timeline />
@@ -30,24 +23,18 @@ function TableContainer(props){
 		</div>
 	);
 }
+
 function Column(props) {
-	let hours = [
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />,
-		<TableElement />
-	];
-	for(let i=0; i<props.hours.length; i++){
+	// will hold the hours for each day
+	let hours = [];
+	// insert twelve default hours for each day
+	for(let i=0; i<12; i++)
+		hours.push( <TableElement />)
+	// fill the hours if they are busy
+	for (let i = 0; i < props.hours.length; i++) {
 		const hour_index = props.hours[i].hour_order - 1;
-		hours[hour_index] = <TableElement category={props.hours[i].course_category} name={props.hours[i].course_name}/>;
+		hours[hour_index] = 
+			<TableElement category={props.hours[i].course_category} name={props.hours[i].course_name} />;
 	}
 	return (
 		<div className="column">
@@ -56,79 +43,65 @@ function Column(props) {
 		</div>
 	);
 }
-function TableElement(props){
+
+/* 
+ * The single square that holds represents 1 hour 
+ * Just takes as an argument a name and category
+ */
+function TableElement(props) {
 	return (
 		<div className="element">
-			<h4>{props.category }</h4>
-			<p>{props.name? props.name : ""}</p>
+			<h4>{props.category}</h4>
+			<p>{props.name ? props.name : ""}</p>
 		</div>
 	);
 }
-
-function organizeSchedule(schedule_data){
+/*
+ * the functions that organizes the schedule into day specific
+ * hours, so  that they are easier to represents
+*/
+function organizeSchedule(schedule_data) {
 	let result = [];
+	// dayIndex tells us on which day we are inserting
+	// hourIndex tells us on which hour we are inserting
 	let currDayIndex = -1, currHourIndex = 0;
 	let lastDayName = "";
-	for(let i=0; i<schedule_data.length; i++){
+	for (let i = 0; i < schedule_data.length; i++) {
+
 		let row = schedule_data[i];
-		if(lastDayName !== row.day_name){
+
+		if (lastDayName !== row.day_name) {
 			lastDayName = row.day_name;
 			currDayIndex++;
 			currHourIndex = 0;
 			result[currDayIndex] = {name: lastDayName, hours: []};
 		}
+
 		result[currDayIndex].hours[currHourIndex] = {
 			hour_order: row.hour_order,
 			course_name: row.course_name,
 			course_category: row.course_category,
-			courseID: row.courseID};
+			courseID: row.courseID
+		};
+
 		currHourIndex++;
 	}
 	return result;
 }
 
-function Timeline(props){
+/* 
+ * The timeline element that displays the timestamps for the start and end of
+ * an hour
+*/
+function Timeline(props) {
+	const timestamps = [];
+	const start = 8;
+	for(let i=0; i<12; i++){
+		timestamps.push(<div className="element">{start+i}:00</div>)
+	}
 	return (
 		<div className="timeline-column">
-			<div className="element">
-				8:00
-			</div>
-			<div className="element">
-				9:00
-			</div>
-			<div className="element">
-				10:00
-			</div>
-			<div className="element">
-				11:00
-			</div>
-			<div className="element">
-				12:00
-			</div>
-			<div className="element">
-				13:00
-			</div>
-			<div className="element">
-				14:00
-			</div>
-			<div className="element">
-				15:00
-			</div>
-			<div className="element">
-				16:00
-			</div>
-			<div className="element">
-				17:00
-			</div>
-			<div className="element">
-				18:00
-			</div>
-			<div className="element">
-				19:00
-			</div>
-			<div className="element">
-				20:00
-			</div>
+			{timestamps}
 		</div>
 	);
 }

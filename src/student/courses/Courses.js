@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Link, Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
+import {Link, Route, Switch, useRouteMatch} from 'react-router-dom';
 import Course from './Course';
 
 
 function Courses(props){
-	let {path, url} = useRouteMatch();
+	let {path} = useRouteMatch();
 	const id = props.id;
 
 	return (
@@ -26,6 +26,10 @@ function CourseList(props){
 	const id = props.id;
 	const [courses, setCourses] = useState([]);
 	useEffect(async () => {
+		getCourses();
+	}, []);
+	
+	async function getCourses(){
 		await fetch(`http://localhost:5000/students/${id}/courses`)
 			.then(res => res.json())
 			.then(res => {
@@ -33,7 +37,7 @@ function CourseList(props){
 					setCourses(res.result);
 				}
 			});
-	}, []);
+	}
 	return (
 		<div className="Course-List">
 			{courses.map(x => CourseListItem({course: x}))}

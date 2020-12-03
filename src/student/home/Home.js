@@ -11,7 +11,6 @@ function Home(props){
 	return (
 		<div className="option">
 			<h1>Welcome {(student) ? student.firstname : "..."}</h1>
-			<p>adjfalkdsjflkdsajf</p>
 		</div>
 	);
 }

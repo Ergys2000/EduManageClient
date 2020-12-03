@@ -37,6 +37,7 @@ function FileListItem(file){
 	const courseID = file.courseInstanceID;
 	const classInstanceID = file.classInstanceID;
 	const filename = file.filename;
+
 	return (
 		<li id={file.id}>
 			<a href={`http://localhost:5000/files/${classInstanceID}/${courseID}/${filename}`} target="_blank">{file.filename}</a>

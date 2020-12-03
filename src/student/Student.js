@@ -6,7 +6,7 @@ import Grades from './grades/Grades';
 import Schedule from './schedule/Schedule';
 import Course from './courses/Courses';
 
-function Student(){
+function Student() {
 	const {id} = useParams();
 	const {path, url} = useRouteMatch();
 
@@ -16,23 +16,23 @@ function Student(){
 			<NavBar />
 			<Switch>
 				<Route path={`${path}/courses`}>
-					<Course id={id}/>
+					<Course id={id} />
 				</Route>
 
 				<Route exact path={`${path}/grades`}>
-					<Grades id={id}/>
+					<Grades id={id} />
 				</Route>
 
 				<Route exact path={`${path}/`}>
-					<Home id={id}/>
+					<Home id={id} />
 				</Route>
 
 				<Route exact path={`${path}/home`}>
-					<Home id={id}/>
+					<Home id={id} />
 				</Route>
 
 				<Route exact path={`${path}/schedule`}>
-					<Schedule id={id}/>
+					<Schedule id={id} />
 				</Route>
 			</Switch>
 		</div>

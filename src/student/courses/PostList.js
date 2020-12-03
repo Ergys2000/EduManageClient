@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
 
 function PostList(props){
 	const courseId = props.courseId;
