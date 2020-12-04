@@ -101,10 +101,12 @@
 	}
 }
 
-.Attendance-Sessions, .Attendance-Session{
-	width: 100%;
-	border-collapse: collapse;
+.sessions, .session{
 	margin-top: 50px;
+	table{
+		width: 100%;
+		border-collapse: collapse;
+	}
 
 	th, td{
 		border-bottom: 1px solid $onBackground;
@@ -113,18 +115,19 @@
 	td{
 		background-color: $surface;
 	}
-	button{
+	button, a{
 		padding: 8px 14px;
 		color: $onPrimary;
 		border: none;
 		background-color: $primary;
+		text-decoration: none;
 		&:hover{
 			background-color: $secondary;
 			color: $onSecondary;
 		}
 	}
 }
-.Attendance-Session{
+.session{
 	button{
 		border-radius: 50%;
 		background-color: $surface;

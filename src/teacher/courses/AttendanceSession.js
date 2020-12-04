@@ -15,25 +15,27 @@ function Session(props){
     }, []);
 
     return (
-		<table className="Attendance-Session">
-			<thead>
-				<tr>
-					<th>Firstname</th>
-					<th>Lastname</th>
-					<th>Attended</th>
-					<th></th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				{students.map(student => <StudentRow student={student} />)}
-			</tbody>
-        </table>
-    );
+		<div className="session">
+			<table>
+				<thead>
+					<tr>
+						<th>Firstname</th>
+						<th>Lastname</th>
+						<th>Attended</th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{students.map(student => <StudentRow student={student} />)}
+				</tbody>
+			</table>
+		</div>
+	);
 }
 
-function StudentRow(props){
-    const {courseId, sessionId} = useParams();
+function StudentRow(props) {
+	const {courseId, sessionId} = useParams();
     const [student, setStudent] = useState(props.student);
 
     async function incButton(){

@@ -5,24 +5,38 @@ const isNumeric = (string) => {
 }
 
 function NewSession(props) {
-	const [students, setStudents] = useState([]);
+
 	const courseId = props.courseId;
-	useEffect(() => {
-		fetch(`http://localhost:5000/courses/${courseId}/students`)
-			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : [])
-			.then(students => {
-				setStudents(students);
-				setAttendedList(new Array(students.length));
-			});
+
+	const [students, setStudents] = useState([]);
+	useEffect( () => {
+		const fetchStudents = async () => {
+
+			await fetch(`http://localhost:5000/courses/${courseId}/students`)
+				.then(res => res.json())
+				.then(res => res.status === "OK" ? res.result : [])
+				.then(students => {
+
+					setStudents(students);
+					const array = [];
+					for(let i=0; i<students.length; i++){
+						array[i] = 1;
+					}
+
+					setAttendedList(array);
+				});
+		}
+
+		fetchStudents();
+
 	}, []);
 
 	const [session, setSession] = useState({
 		week: 0,
 		topic: "",
 		type: "lecture",
-		length: 0,
-		date: null
+		length: 1,
+		date: ""
 	});
 
 	const [attendedList, setAttendedList] = useState([]);
@@ -39,11 +53,10 @@ function NewSession(props) {
 			if (!isNumeric(target.value)){
 				alert("It should be a number");
 				return;
-			} else {
-				if (parseInt(target.value) > 10){
+			} else if ( parseInt(target.value) > 10) {
 					alert("To big of a length");
 					return;
-				}
+			} else {
 				const array = [];
 				for(let i=0; i<students.length; i++) {
 					array.push(parseInt(target.value));
@@ -57,10 +70,11 @@ function NewSession(props) {
 		setSession({...session, [name] : target.value});
 	}
 
-	const onSubmit = (event) => {
+	const onSubmit = async (event) => {
 		// TODO submit the informatin into the api
 		event.preventDefault();
 		if (session.topic === "" ||
+			session.date === "" ||
 			session.type === "" ||
 			session.week <= 0 ||
 			session.length <= 0 ||
@@ -68,8 +82,8 @@ function NewSession(props) {
 
 			alert("Your input is wrong");
 			return;
-			}
-		fetch(`http://localhost:5000/courses/${courseId}/attendance`, {
+		}
+		await fetch(`http://localhost:5000/courses/${courseId}/attendance`, {
 			method: 'post',
             headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify(session)
@@ -79,9 +93,34 @@ function NewSession(props) {
 				if (res.status === "OK"){
 					// TODO now you should add the student entries
 					console.log(res.result.insertId);
+					submitStudents(res.result.insertId);
 				}
 			})
 	}
+
+
+	const submitStudents = async (sessionId) => {
+
+		const body = students.map( (student, key) => {
+			return ({id: student.id, length: attendedList[key]});
+		});
+
+		await fetch(`http://localhost:5000/courses/${courseId}/attendance/${sessionId}`,{
+			method: 'post',
+            headers: {'Content-Type': 'application/json'},
+			body: JSON.stringify(body)
+		})
+			.then(res => res.json())
+			.then(res => res.status === "OK" ? res.result: null)
+			.then(result => {
+
+				if(result.affectedRows === students.length){
+					alert("The session was successfully added");
+				}
+
+			})
+			.catch((err) => console.log(err));
+	};
 
 	const functionGenerator = (key) => {
 
@@ -156,7 +195,7 @@ function StudentRow(props){
 			<td>{student.id}</td>
             <td>{student.firstname}</td>
             <td>{student.lastname}</td>
-            <td>{props.length}</td>
+            <td>{typeof props.length !== "NaN" ? props.length : "Invalid"}</td>
             <td>
                 <button onClick={() => callback(-1)}><i className="material-icons">remove</i></button>
             </td>

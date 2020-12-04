@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {useHistory, useParams, useRouteMatch} from 'react-router-dom';
+import {useHistory, useParams, useRouteMatch, Link} from 'react-router-dom';
 
 function Attendance(props) {
 	const {courseId} = useParams();
+	const {url} = useRouteMatch();
+
 	const [sessions, setSessions] = useState([]);
 	useEffect(() => {
 		fetch(`http://localhost:5000/courses/${courseId}/attendance`)
@@ -12,9 +14,11 @@ function Attendance(props) {
 				setSessions(sessions);
 			});
 	});
+
 	return (
-		<div>
-			<table className="Attendance-Sessions">
+		<div className="sessions">
+			<Link to={`${url}/add`}>ADD SESSION</Link>
+			<table>
 				<thead>
 					<tr>
 						<th>Week</th>
