@@ -146,7 +146,7 @@ function NewSession(props) {
 		<div className="add-session">
 			<label>
 				Week:
-				<input name="week" placeholder="week" onChange={handleChange} value={session.week} />
+				<input name="week" placeholder="week" type="number" onChange={handleChange} value={session.week} />
 			</label>
 			<label>
 				Topic:
@@ -161,7 +161,7 @@ function NewSession(props) {
 			</label>
 			<label>
 				Length:
-				<input name="length" placeholder="length" onChange={handleChange} value={session.length} />
+				<input name="length" type="number" placeholder="length" onChange={handleChange} value={session.length} />
 			</label>
 			<label>
 				Date:
@@ -176,6 +176,8 @@ function NewSession(props) {
 						<th>Firstname</th>
 						<th>Lastname</th>
 						<th>Attended</th>
+						<th></th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>

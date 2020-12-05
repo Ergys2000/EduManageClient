@@ -8,14 +8,14 @@
 }
 
 .Login{
-	@import 'components/_login.scss';
+	@import 'components/login';
 }
 
 .StudentPage{
-	@import 'components/_sidenav.scss';
-	@import 'components/_schedule.scss';
-	@import 'components/_courses.scss';
-	@import 'components/_grades.scss';
+	@import 'components/sidenav';
+	@import 'components/schedule';
+	@import 'components/courses';
+	@import 'components/grades';
 	position: absolute;
 	min-height: 100%;
 	min-width: 100%;
@@ -25,9 +25,9 @@
     text-align: center;
 }
 .TeacherPage{
-	@import 'components/_sidenav.scss';
-	@import 'components/_schedule.scss';
-	@import 'components/_courses.scss';
+	@import 'components/sidenav';
+	@import 'components/schedule';
+	@import 'components/courses';
 	@import 'components/class';
 	@import 'components/session';
 	position: absolute;

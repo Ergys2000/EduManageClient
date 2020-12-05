@@ -1,0 +1,120 @@
+.Course{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	.NavBar{
+		display: flex;
+		flex-direction: column;
+		ul{
+			display: flex;
+			align-self: center;
+			flex-direction: row;
+			list-style-type: none;
+			a{
+				border-bottom: 1px solid white;
+				padding: 30px;
+				margin-left: 20px;
+				color: $onBackground;
+				text-decoration: none;
+				transition: 0.2s;
+				&:hover{
+					border-color: $secondary;
+					color: $onBackground;
+					border-width: 3px;
+					font-size: 20px;
+				}
+				&.active{
+					color: $onBackground;
+					border-color: $secondary;
+					border-width: 3px;
+					font-size: 20px;
+				}
+			}
+		}
+	}
+}
+.Post-List{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.Post-Item{
+		border-radius: 20px;
+		background-color: $surface;
+		margin: 30px;
+		width: 50%;
+		.header{
+			padding: 20px;
+			text-align: start;
+			align-self: flex-start;
+			border-bottom: 1px solid gray;
+		}
+		.body{
+			padding: 20px;
+			text-align: start;
+		}
+	}
+}
+
+.sessions, .session{
+	margin-top: 50px;
+	table{
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+	th, td{
+		border-bottom: 1px solid $onBackground;
+		padding: 20px;
+	}
+	td{
+		background-color: $surface;
+	}
+	button, a{
+		padding: 8px 14px;
+		color: $onPrimary;
+		border: none;
+		background-color: $primary;
+		text-decoration: none;
+		&:hover{
+			background-color: $secondary;
+			color: $onSecondary;
+		}
+	}
+}
+.session{
+	button{
+		border-radius: 50%;
+		background-color: $surface;
+		color: $onSurface;
+		&:hover{
+			background-color: $primary;
+			color: $onPrimary;
+		}
+	}
+}
+
+.File-List{
+	margin-top: 70px;
+	ul{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		list-style-type: none;
+		li{
+			margin: 10px;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			width: 30%;
+			padding: 20px;
+			background-color: $surface;
+			a{
+				color: $onSurface;
+				border-bottom: 1px solid $onSurface;
+				text-decoration: none;
+			}
+		}
+	}
+}
+

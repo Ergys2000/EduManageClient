@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {Link, useParams, useRouteMatch, Route, Switch, Redirect} from 'react-router-dom';
 import PostList from './PostList';
 import FileList from './FileList';
-import FileForm from './FileForm';
 import Attendance from './Attendance';
 import Session from './AttendanceSession';
 import AddSession from './AddSession';
 import Grades from './Grades';
+import AddGrades from './AddGrades';
 
 function Course(props){
 	const {courseId} = useParams();
@@ -44,8 +44,12 @@ function Course(props){
 					<Session courseId={courseId}/>
 				</Route>
 
-				<Route path={`${path}/grades`} >
+				<Route exact path={`${path}/grades`} >
 					<Grades courseId={courseId}/>
+				</Route>
+
+				<Route exact path={`${path}/grades/add`} >
+					<AddGrades courseId={courseId}/>
 				</Route>
 
 			</Switch>

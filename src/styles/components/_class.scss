@@ -3,6 +3,18 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	a{
+		margin: 10px;
+		padding: 8px 14px;
+		color: $onPrimary;
+		border: none;
+		background-color: $primary;
+		text-decoration: none;
+		&:hover{
+			background-color: $secondary;
+			color: $onSecondary;
+		}
+	}
 
 	.Grades{
 		width: 50%;
@@ -37,4 +49,9 @@
 		}
 	}
 }
-
+.add-grades{
+	margin-top: 50px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}

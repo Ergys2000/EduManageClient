@@ -1,7 +1,9 @@
+import {Link, useRouteMatch} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 
 function StudentList(props){
 	const courseId = props.courseId;
+	const {url} = useRouteMatch();
 	const [students, setStudents] = useState([]);
 	useEffect(async () => {
 		getCourseGrades();
@@ -21,6 +23,7 @@ function StudentList(props){
 	}
 	return (
 		<div className="Student-List">
+			<Link to={`${url}/add`}>ADD GRADES</Link>
 			{students}
 		</div>
 	);
