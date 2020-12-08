@@ -1,25 +1,30 @@
 import React, {useEffect, useState} from 'react';
-import FileForm from './FileForm';
 
 function FileList(props){
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
-		fetch(`http://localhost:5000/files/${props.courseId}`)
-		.then(res => res.json())
-		.then(res => {
-			if(res.status === "OK")
-				setFiles(res.result);
-		});
+		const fetchFiles = async () => {
+			fetch(`http://localhost:5000/files/${props.courseId}`)
+			.then(res => res.json())
+			.then(res => {
+				if(res.status === "OK")
+					setFiles(res.result);
+			});
+		}
+		fetchFiles();
 	}, [])
 
 	const [fileForm , setFileForm] = useState(null);
 	useEffect(() => {
-		fetch(`http://localhost:5000/courses/${props.courseId}`)
-			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : null)
-			.then(course => {
-				setFileForm(<FileForm courseId={course.courseID} classInstanceId={course.classInstanceID}/> );
-			})
+		const fetchFileForm = async () => {
+			fetch(`http://localhost:5000/courses/${props.courseId}`)
+				.then(res => res.json())
+				.then(res => res.status === "OK" ? res.result : null)
+				.then(course => {
+					setFileForm(<FileForm courseId={course.courseID} classInstanceId={course.classInstanceID}/> );
+				})
+		}
+		fetchFileForm();
 	}, []);
 
 
@@ -43,6 +48,22 @@ function FileListItem(file){
 			<a href={`http://localhost:5000/files/${classInstanceID}/${courseID}/${filename}`} target="_blank">{file.filename}</a>
 			<i className="material-icons">download</i>
 		</li>
+	);
+}
+
+
+function FileForm({classInstanceId, courseId}){
+	return (
+		<div className="File-Form">
+			<form
+				method="post"
+				action={`http://localhost:5000/files/${classInstanceId}/${courseId}`}
+				encType="multipart/form-data">
+
+				<input type="file" name="file" />
+				<input type="submit" value="Upload" />
+			</form>
+		</div>
 	);
 }
 

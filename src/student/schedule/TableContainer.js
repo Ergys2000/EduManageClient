@@ -3,19 +3,23 @@ import React, { useEffect, useState } from 'react';
 function TableContainer(props){
 	const [days, setDays] = useState([]);
 	useEffect(() => {
-		fetch(`http://localhost:5000/students/${props.id}/schedule`)
-			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : [])
-			.then(schedule_data => organizeSchedule(schedule_data))
-			.then(schedule => {
-				const days = [];
-				for(let i=0; i<schedule.length; i++){
-					days[i] = <Column title={schedule[i].name} hours={schedule[i].hours}/>
-				}
-				setDays(days);
-			});
+		const fetchDays = async () => {
+			fetch(`http://localhost:5000/students/${props.id}/schedule`)
+				.then(res => res.json())
+				.then(res => res.status === "OK" ? res.result : [])
+				.then(schedule_data => organizeSchedule(schedule_data))
+				.then(schedule => {
+					const days = [];
+					for (let i = 0; i < schedule.length; i++) {
+						days[i] = <Column title={schedule[i].name} hours={schedule[i].hours} />
+					}
+					setDays(days);
+				});
+		}
+
+		fetchDays();
 	}, []);
-	
+
 	return (
 		<div className="table-container">
 			<Timeline />

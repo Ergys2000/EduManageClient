@@ -1,26 +1,29 @@
 import {Link, useRouteMatch} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 
-function StudentList(props){
+function StudentList(props) {
 	const courseId = props.courseId;
 	const {url} = useRouteMatch();
 	const [students, setStudents] = useState([]);
-	useEffect(async () => {
+	useEffect(() => {
+
+		const getCourseGrades = async () => {
+			await fetch(`http://localhost:5000/courses/${courseId}/grades`)
+				.then(res => res.json())
+				.then(res => res.status === "OK" ? res.result : [])
+				.then(result => {
+					const students = organizeGrades(result);
+					const elements = students.map(student =>
+						<Grades name={student.firstname} grades={student.grades} key={student.id} />
+					);
+					setStudents(elements);
+				});
+		}
+
 		getCourseGrades();
+
 	}, []);
 
-	async function getCourseGrades(){
-		await fetch(`http://localhost:5000/courses/${courseId}/grades`)
-			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : [])
-			.then(result => {
-				const students = organizeGrades(result);
-				const elements = students.map(student => 
-					<Grades name={student.firstname} grades={student.grades} key={student.id}/>
-				);
-				setStudents(elements);
-			});
-	}
 	return (
 		<div className="Student-List">
 			<Link to={`${url}/add`}>ADD GRADES</Link>
@@ -65,7 +68,7 @@ function GradeRow(grade) {
 	);
 }
 
-function organizeGrades(grades){
+function organizeGrades(grades) {
 	// the final result
 	let result = [];
 	// helps us determine if the grades have changed
@@ -74,7 +77,7 @@ function organizeGrades(grades){
 	let currPosition = -1;
 
 	// for each grade in the list
-	for(let i=0; i<grades.length; i++){
+	for (let i = 0; i < grades.length; i++) {
 		// extract the current grade
 		const currGrade = grades[i];
 		// get only the neccessary information
@@ -85,7 +88,7 @@ function organizeGrades(grades){
 			date: currGrade.date
 		};
 		// if the student id has not changed
-		if(lastStudentId !== currGrade.studentID){
+		if (lastStudentId !== currGrade.studentID) {
 			// increment the counter to point to the other student
 			currPosition++;
 			lastStudentId = currGrade.studentID;

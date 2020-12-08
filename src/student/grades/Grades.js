@@ -3,19 +3,24 @@ import React, { useEffect, useState } from "react";
 function Grades(props) {
     const [grades, setGrades] = useState(null);
     useEffect(() => {
+
+		const getGrades = async () => {
+
+			await fetch(`http://localhost:5000/students/${props.id}/grades`)
+				.then(res => res.json())
+				.then(res => {
+					if (res.status === "OK") {
+						const organized_grades = organize(res.result);
+						const gradeHolders = organized_grades.map(course => CourseItem(course));
+						setGrades(gradeHolders);
+					}
+				});
+		}
+
         getGrades();
+
     }, []);
-    function getGrades() {
-        fetch(`http://localhost:5000/students/${props.id}/grades`)
-            .then(res => res.json())
-            .then(res => {
-                if (res.status === "OK") {
-                    const organized_grades = organize(res.result);
-                    const gradeHolders = organized_grades.map(course => CourseItem(course));
-                    setGrades(gradeHolders);
-                }
-            });
-    }
+
     return (
         <div className="option">
             <h1>Grades</h1>

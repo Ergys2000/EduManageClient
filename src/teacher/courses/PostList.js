@@ -5,14 +5,17 @@ function PostList(props){
 	const courseId = props.courseId;
 	const [posts, setPosts] = useState([]);
 	useEffect(() => {
-		fetch(`http://localhost:5000/posts/${courseId}`)
-		.then(res => res.json())
-		.then(res => {
-			if(res.status === "OK"){
-				const posts = res.result.map(post => PostItem(post));
-				setPosts(posts);
-			}
-		});
+		const fetchPosts = async () => {
+			await fetch(`http://localhost:5000/posts/${courseId}`)
+				.then(res => res.json())
+				.then(res => {
+					if (res.status === "OK") {
+						const posts = res.result.map(post => PostItem(post));
+						setPosts(posts);
+					}
+				});
+		}
+		fetchPosts();
 	}, []);
 
 	return (

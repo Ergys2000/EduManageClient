@@ -28,12 +28,15 @@ function Class(props) {
 function CourseList(props) {
 	const [courses, setCourses] = useState([]);
 	useEffect(() => {
-		fetch(`http://localhost:5000/teachers/${props.id}/class`)
-			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : [])
-			.then(courses => {
-				setCourses(courses);
-			});
+		const fetchCourses = async () => {
+			await fetch(`http://localhost:5000/teachers/${props.id}/class`)
+				.then(res => res.json())
+				.then(res => res.status === "OK" ? res.result : [])
+				.then(courses => {
+					setCourses(courses);
+				});
+		}
+		fetchCourses();
 	}, []);
 	return (
 		<div className="Course-List">
@@ -71,21 +74,21 @@ function StudentList(props) {
 	const {courseId} = useParams();
 	const [students, setStudents] = useState([]);
 	useEffect(async () => {
-		getCourseGrades();
+		const fetchCourseGrades = async () => {
+			await fetch(`http://localhost:5000/courses/${courseId}/grades`)
+				.then(res => res.json())
+				.then(res => res.status === "OK" ? res.result : [])
+				.then(result => {
+					const students = organizeGrades(result);
+					const elements = students.map(student => (
+						<Grades name={student.firstname} grades={student.grades} key={student.id} />
+					));
+					setStudents(elements);
+				});
+		}
+		fetchCourseGrades();
 	}, []);
 
-	async function getCourseGrades() {
-		await fetch(`http://localhost:5000/courses/${courseId}/grades`)
-			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : [])
-			.then(result => {
-				const students = organizeGrades(result);
-				const elements = students.map(student => (
-					<Grades name={student.firstname} grades={student.grades} key={student.id} />
-				));
-				setStudents(elements);
-			});
-	}
 	return (
 		<div className="Student-List">
 			{students}

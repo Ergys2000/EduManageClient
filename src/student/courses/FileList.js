@@ -6,12 +6,15 @@ function FileList(props) {
 
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
-		fetch(`http://localhost:5000/files/${courseId}`)
-			.then(res => res.json())
-			.then(res => {
-				if (res.status === "OK")
-					setFiles(res.result);
-			});
+		const fetchFiles = async () => {
+			await fetch(`http://localhost:5000/files/${courseId}`)
+				.then(res => res.json())
+				.then(res => {
+					if (res.status === "OK")
+						setFiles(res.result);
+				});
+		}
+		fetchFiles();
 	}, [])
 
 
@@ -42,25 +45,34 @@ function StudentFileList(props) {
 
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
-		fetch(`http://localhost:5000/files/${courseId}/${studentId}`)
-			.then(res => res.json())
-			.then(res => {
-				console.log(res);
-				if (res.status === "OK")
-					setFiles(res.result);
-			});
+		const fetchFiles = async () => {
+			fetch(`http://localhost:5000/files/${courseId}/${studentId}`)
+				.then(res => res.json())
+				.then(res => {
+					console.log(res);
+					if (res.status === "OK")
+						setFiles(res.result);
+				});
+		}
+
+		fetchFiles();
 	}, []);
 
 	// TODO use this to pass throught the fileform so that we know where the
 	// student should upload
 	const [fileForm,  setFileForm] = useState(null);
 	useEffect(() => {
-		fetch(`http://localhost:5000/courses/${courseId}`)
-			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : null)
-			.then(course => {
-				setFileForm(<FileForm studentId={studentId} courseId={courseId} classInstanceId={course.classInstanceID} />)
-			});
+		const fetchFileForm = async () => {
+
+			await fetch(`http://localhost:5000/courses/${courseId}`)
+				.then(res => res.json())
+				.then(res => res.status === "OK" ? res.result : null)
+				.then(course => {
+					setFileForm(<FileForm studentId={studentId} 
+						courseId={courseId} classInstanceId={course.classInstanceID} />);
+				});
+		}
+		fetchFileForm();
 	}, []);
 
 	return (

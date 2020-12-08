@@ -33,11 +33,14 @@ function NavBar(props) {
 	const courseId = props.courseId;
 
 	const [courseName, setCourseName] = useState("Course name");
-	useEffect(async () => {
-		await fetch(`http://localhost:5000/courses/${courseId}`)
-			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : null)
-			.then(course => setCourseName(course.name));
+	useEffect(() => {
+		const fetchCourseName = async () => {
+			await fetch(`http://localhost:5000/courses/${courseId}`)
+				.then(res => res.json())
+				.then(res => res.status === "OK" ? res.result : null)
+				.then(course => setCourseName(course.name));
+		}
+		fetchCourseName();
 	}, []);
 
 	const [onFocus, setFocus] = useState("home");

@@ -7,12 +7,15 @@ function Attendance(props) {
 
 	const [sessions, setSessions] = useState([]);
 	useEffect(() => {
-		fetch(`http://localhost:5000/courses/${courseId}/attendance`)
-			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : [])
-			.then(sessions => {
-				setSessions(sessions);
-			});
+		const fetchSessions = async () => {
+			fetch(`http://localhost:5000/courses/${courseId}/attendance`)
+				.then(res => res.json())
+				.then(res => res.status === "OK" ? res.result : [])
+				.then(sessions => {
+					setSessions(sessions);
+				});
+		}
+		fetchSessions();
 	});
 
 	return (
@@ -30,15 +33,16 @@ function Attendance(props) {
 					</tr>
 				</thead>
 				<tbody>
-					{sessions.map(session => SessionRow(session))}
+					{sessions.map(session => <SessionRow key={session.id} session={session} />)}
 				</tbody>
 			</table>
 		</div>
 	);
 }
 
-function SessionRow(session) {
+function SessionRow(props) {
 	const history = useHistory();
+	const session = props.session;
 	function onClick() {
 		history.push(`attendance/${session.id}`);
 	}

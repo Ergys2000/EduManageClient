@@ -93,7 +93,7 @@
 	}
 }
 
-.File-List{
+.File-List {
 	margin-top: 70px;
 	ul{
 		display: flex;
@@ -118,3 +118,41 @@
 	}
 }
 
+.student-files {
+	margin-top: 70px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.student{
+		width: 50%;
+		.head{
+			padding: 0.1vh;
+			background-color: $primary;
+			color: $onPrimary;
+		}
+		.body{
+			border: 1px solid $primary;
+		}
+	}
+	ul{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		list-style-type: none;
+		li{
+			margin: 10px;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			width: 60%;
+			padding: 20px;
+			background-color: $surface;
+			a{
+				color: $onSurface;
+				border-bottom: 1px solid $onSurface;
+				text-decoration: none;
+			}
+		}
+	}
+}

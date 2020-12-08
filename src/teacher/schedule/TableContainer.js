@@ -3,17 +3,22 @@ import React, {useEffect, useState} from 'react';
 function TableContainer(props) {
 	const [days, setDays] = useState([]);
 	useEffect(() => {
-		fetch(`http://localhost:5000/teachers/${props.id}/schedule`)
-			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : [])
-			.then(scheduleRaw => {
-				const days = [];
-				const schedule = organizeSchedule(scheduleRaw);
-				for (let i = 0; i < schedule.length; i++) {
-					days[i] = <Column title={schedule[i].name} hours={schedule[i].hours} />
-				}
-				setDays(days);
-			});
+		const fetchDays = async () => {
+			fetch(`http://localhost:5000/teachers/${props.id}/schedule`)
+				.then(res => res.json())
+				.then(res => res.status === "OK" ? res.result : [])
+				.then(scheduleRaw => {
+					const days = [];
+					const schedule = organizeSchedule(scheduleRaw);
+					for (let i = 0; i < schedule.length; i++) {
+						days[i] = <Column title={schedule[i].name} hours={schedule[i].hours} />
+					}
+					setDays(days);
+				});
+		}
+
+		fetchDays();
+
 	}, []);
 
 	return (
@@ -43,6 +48,7 @@ function Column(props) {
 		</div>
 	);
 }
+
 
 /* 
  * The single square that holds represents 1 hour 

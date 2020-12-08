@@ -6,12 +6,15 @@ function Session(props){
     const [students, setStudents] = useState([]);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/courses/${courseId}/attendance/${sessionId}`)
-            .then(res => res.json())
-			.then(res => res.status === "OK"? res.result : [])
-            .then(students => {
-                setStudents(students);
-            });
+		const fetchStudents = async () => {
+			fetch(`http://localhost:5000/courses/${courseId}/attendance/${sessionId}`)
+				.then(res => res.json())
+				.then(res => res.status === "OK"? res.result : [])
+				.then(students => {
+					setStudents(students);
+				});
+		}
+		fetchStudents();
     }, []);
 
     return (
@@ -38,7 +41,7 @@ function StudentRow(props) {
 	const {courseId, sessionId} = useParams();
     const [student, setStudent] = useState(props.student);
 
-    async function incButton(){
+    const incButton = async () => {
         if(student.attended == student.total){
             alert("You cannot increase any more!");
             return;
@@ -58,7 +61,7 @@ function StudentRow(props) {
         });
     }
 
-    async function decButton(){
+    const decButton = async () => {
         if(student.attended == 0){
             alert("You cannot decrease any more!");
             return;
