@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory, useParams, useRouteMatch, Link} from 'react-router-dom';
+import apiLink from "../../API";
 
 function Attendance(props) {
 	const {courseId} = useParams();
@@ -8,7 +9,7 @@ function Attendance(props) {
 	const [sessions, setSessions] = useState([]);
 	useEffect(() => {
 		const fetchSessions = async () => {
-			fetch(`http://localhost:5000/courses/${courseId}/attendance`)
+			fetch(`${apiLink}/courses/${courseId}/attendance`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(sessions => {

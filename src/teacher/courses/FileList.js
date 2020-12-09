@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
+import apiLink from "../../API";
 
 function FileList(props){
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
 		const fetchFiles = async () => {
-			fetch(`http://localhost:5000/files/${props.courseId}`)
+			fetch(`${apiLink}/files/${props.courseId}`)
 			.then(res => res.json())
 			.then(res => {
 				if(res.status === "OK")
@@ -17,7 +18,7 @@ function FileList(props){
 	const [fileForm , setFileForm] = useState(null);
 	useEffect(() => {
 		const fetchFileForm = async () => {
-			fetch(`http://localhost:5000/courses/${props.courseId}`)
+			fetch(`${apiLink}/courses/${props.courseId}`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : null)
 				.then(course => {
@@ -45,7 +46,7 @@ function FileListItem(file){
 
 	return (
 		<li id={file.id}>
-			<a href={`http://localhost:5000/files/${classInstanceID}/${courseID}/${filename}`} target="_blank">{file.filename}</a>
+			<a href={`${apiLink}/files/${classInstanceID}/${courseID}/${filename}`} target="_blank">{file.filename}</a>
 			<i className="material-icons">download</i>
 		</li>
 	);
@@ -57,7 +58,7 @@ function FileForm({classInstanceId, courseId}){
 		<div className="file-form">
 			<form
 				method="post"
-				action={`http://localhost:5000/files/${classInstanceId}/${courseId}`}
+				action={`${apiLink}/files/${classInstanceId}/${courseId}`}
 				encType="multipart/form-data">
 
 				<input type="file" name="file" />

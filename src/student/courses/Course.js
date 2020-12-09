@@ -3,6 +3,7 @@ import {useParams, useRouteMatch, Switch, Route, Link, Redirect} from 'react-rou
 import PostList from './PostList';
 import {FileList, StudentFileList} from './FileList';
 import Grades from '../grades/Grades';
+import apiLink from "../../API";
 
 function Course(props) {
 	const studentId = props.id;
@@ -45,7 +46,7 @@ function NavBar(props) {
 	const [courseName, setCourseName] = useState("Course name");
 	useEffect(() => {
 		const fetchCourseName = async () => {
-			await fetch(`http://localhost:5000/courses/${courseId}`)
+			await fetch(`${apiLink}/courses/${courseId}`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : null)
 				.then(course => setCourseName(course.name));

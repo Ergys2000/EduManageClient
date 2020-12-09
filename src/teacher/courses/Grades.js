@@ -1,5 +1,6 @@
 import {Link, useRouteMatch} from 'react-router-dom';
 import {useState, useEffect} from 'react';
+import apiLink from "../../API";
 
 function StudentList(props) {
 	const courseId = props.courseId;
@@ -8,7 +9,7 @@ function StudentList(props) {
 	useEffect(() => {
 
 		const getCourseGrades = async () => {
-			await fetch(`http://localhost:5000/courses/${courseId}/grades`)
+			await fetch(`${apiLink}/courses/${courseId}/grades`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(result => {

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Link, Route, Switch, useRouteMatch} from 'react-router-dom';
 import Course from './Course';
+import apiLink from "../../API";
 
 
 function Courses(props){
@@ -30,7 +31,7 @@ function CourseList(props){
 	}, []);
 	
 	async function getCourses(){
-		await fetch(`http://localhost:5000/students/${id}/courses`)
+		await fetch(`${apiLink}/students/${id}/courses`)
 			.then(res => res.json())
 			.then(res => {
 				if(res.status==="OK"){

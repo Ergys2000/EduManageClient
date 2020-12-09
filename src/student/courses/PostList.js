@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
+import apiLink from "../../API";
 
 function PostList(props){
 	const courseId = props.courseId;
 	const [posts, setPosts] = useState([]);
 	useEffect(() => {
 		const fetchPosts = async () => {
-			await fetch(`http://localhost:5000/posts/${courseId}`)
+			await fetch(`${apiLink}/posts/${courseId}`)
 				.then(res => res.json())
 				.then(res => {
 					if (res.status === "OK") {

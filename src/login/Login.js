@@ -1,5 +1,6 @@
 import React from 'react';
 import {BrowserRouter as Router, Switch, Route, useHistory} from 'react-router-dom';
+import apiLink from "../API";
 
 function Login(props){
 
@@ -8,7 +9,7 @@ function Login(props){
         const email = document.getElementById("emailField").value;
         const password = document.getElementById("passwordField").value;
 
-        const url = `http://localhost:5000/authenticate/auth_student?email=${email}&password=${password}`;
+        const url = `${apiLink}/authenticate/auth_student?email=${email}&password=${password}`;
         await fetch(url)
         .then(res => res.json())
 		.then(res => res.status === "OK" ? res.result : {})
@@ -23,7 +24,7 @@ function Login(props){
         const email = document.getElementById("emailField").value;
         const password = document.getElementById("passwordField").value;
 
-        const url = `http://localhost:5000/authenticate/auth_teacher?email=${email}&password=${password}`;
+        const url = `${apiLink}/authenticate/auth_teacher?email=${email}&password=${password}`;
         await fetch(url)
         .then(res => res.json())
 		.then(res => res.status === "OK" ? res.result : {})

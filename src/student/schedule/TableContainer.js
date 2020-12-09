@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import apiLink from "../../API";
 
 function TableContainer(props){
 	const [days, setDays] = useState([]);
 	useEffect(() => {
 		const fetchDays = async () => {
-			fetch(`http://localhost:5000/students/${props.id}/schedule`)
+			fetch(`${apiLink}/students/${props.id}/schedule`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(schedule_data => organizeSchedule(schedule_data))

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import apiLink from "../../API";
 
 function Session(props){
     const {sessionId, courseId} = useParams();
@@ -7,7 +8,7 @@ function Session(props){
 
     useEffect(() => {
 		const fetchStudents = async () => {
-			fetch(`http://localhost:5000/courses/${courseId}/attendance/${sessionId}`)
+			fetch(`${apiLink}/courses/${courseId}/attendance/${sessionId}`)
 				.then(res => res.json())
 				.then(res => res.status === "OK"? res.result : [])
 				.then(students => {
@@ -46,7 +47,7 @@ function StudentRow(props) {
             alert("You cannot increase any more!");
             return;
         } 
-        await fetch(`http://localhost:5000/courses/${courseId}/attendance/${sessionId}/${student.id}`, {
+        await fetch(`${apiLink}/courses/${courseId}/attendance/${sessionId}/${student.id}`, {
 
             method: "post",
             headers: {'Content-Type': 'application/json'},
@@ -66,7 +67,7 @@ function StudentRow(props) {
             alert("You cannot decrease any more!");
             return;
         } 
-        await fetch(`http://localhost:5000/courses/${courseId}/attendance/${sessionId}/${student.id}`, {
+        await fetch(`${apiLink}/courses/${courseId}/attendance/${sessionId}/${student.id}`, {
 
             method: "post",
             headers: {'Content-Type': 'application/json'},

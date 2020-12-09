@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import apiLink from "../../API";
 
 const isNumeric = (string) => {
 	return /^-?\d+$/.test(string) || string === "";
@@ -12,7 +13,7 @@ function NewSession(props) {
 	useEffect( () => {
 		const fetchStudents = async () => {
 
-			await fetch(`http://localhost:5000/courses/${courseId}/students`)
+			await fetch(`${apiLink}/courses/${courseId}/students`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(students => {
@@ -83,7 +84,7 @@ function NewSession(props) {
 			alert("Your input is wrong");
 			return;
 		}
-		await fetch(`http://localhost:5000/courses/${courseId}/attendance`, {
+		await fetch(`${apiLink}/courses/${courseId}/attendance`, {
 			method: 'post',
             headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify(session)
@@ -105,7 +106,7 @@ function NewSession(props) {
 			return ({id: student.id, length: attendedList[key]});
 		});
 
-		await fetch(`http://localhost:5000/courses/${courseId}/attendance/${sessionId}`,{
+		await fetch(`${apiLink}/courses/${courseId}/attendance/${sessionId}`,{
 			method: 'post',
             headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify(body)

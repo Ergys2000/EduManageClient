@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import apiLink from "../../API";
 
 function Grades(props) {
 	const studentId = props.studentId;
@@ -8,7 +9,7 @@ function Grades(props) {
 
 		const getGrades = async () => {
 
-			await fetch(`http://localhost:5000/students/${studentId}/grades/${courseId}`)
+			await fetch(`${apiLink}/students/${studentId}/grades/${courseId}`)
 				.then(res => res.json())
 				.then(res => {
 					if (res.status === "OK") {

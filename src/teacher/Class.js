@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react';
 import {useParams, Link, Switch, useRouteMatch, Route} from 'react-router-dom';
 import Attendance from './courses/Attendance';
 import Session from './courses/AttendanceSession';
+import apiLink from "../API";
 
 function Class(props) {
 	const {url, path} = useRouteMatch();
@@ -29,7 +30,7 @@ function CourseList(props) {
 	const [courses, setCourses] = useState([]);
 	useEffect(() => {
 		const fetchCourses = async () => {
-			await fetch(`http://localhost:5000/teachers/${props.id}/class`)
+			await fetch(`${apiLink}/teachers/${props.id}/class`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(courses => {
@@ -75,7 +76,7 @@ function StudentList(props) {
 	const [students, setStudents] = useState([]);
 	useEffect(async () => {
 		const fetchCourseGrades = async () => {
-			await fetch(`http://localhost:5000/courses/${courseId}/grades`)
+			await fetch(`${apiLink}/courses/${courseId}/grades`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(result => {

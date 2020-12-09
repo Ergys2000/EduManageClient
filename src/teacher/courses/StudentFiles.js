@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import apiLink from "../../API";
 
 
 function StudentFiles(props) {
@@ -7,7 +8,7 @@ function StudentFiles(props) {
 	const [students, setStudents] = useState([]);
 	useEffect( () => {
 		const fetchStudents = async () => {
-			await fetch(`http://localhost:5000/courses/${courseId}/studentfiles`)
+			await fetch(`${apiLink}/courses/${courseId}/studentfiles`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(fileList => {
@@ -51,7 +52,7 @@ function FileRow({file}) {
 	const courseId = file.courseInstanceID;
 	return (
 		<li id={file.id}>
-			<a href={`http://localhost:5000/files/${classInstanceId}/${courseId}/${studentId}/${filename}`} target="_blank">{file.filename}</a>
+			<a href={`${apiLink}/files/${classInstanceId}/${courseId}/${studentId}/${filename}`} target="_blank">{file.filename}</a>
 			<i className="material-icons">download</i>
 		</li>
 	);

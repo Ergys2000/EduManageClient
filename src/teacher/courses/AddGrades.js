@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import apiLink from "../../API";
 
 function AddGrades(props) {
 	const courseId = props.courseId;
@@ -7,7 +8,7 @@ function AddGrades(props) {
 	useEffect(() => {
 		const fetchStudents = async () => {
 
-			await fetch(`http://localhost:5000/courses/${courseId}/students`)
+			await fetch(`${apiLink}/courses/${courseId}/students`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(students => {
@@ -60,7 +61,7 @@ function AddGrades(props) {
 			date: session.date,
 			students: studentGradeList
 		};
-		await fetch(`http://localhost:5000/courses/${courseId}/grades`, {
+		await fetch(`${apiLink}/courses/${courseId}/grades`, {
 			method: 'post',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify(body)

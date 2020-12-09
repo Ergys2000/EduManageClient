@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import apiLink from "../../API";
 
 function FileList(props) {
 	const courseId = props.courseId;
@@ -7,7 +8,7 @@ function FileList(props) {
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
 		const fetchFiles = async () => {
-			await fetch(`http://localhost:5000/files/${courseId}`)
+			await fetch(`${apiLink}/files/${courseId}`)
 				.then(res => res.json())
 				.then(res => {
 					if (res.status === "OK")
@@ -33,7 +34,7 @@ function FileListItem(file) {
 	const filename = file.filename;
 	return (
 		<li id={file.id}>
-			<a href={`http://localhost:5000/files/${classInstanceID}/${courseID}/${filename}`} target="_blank">{file.filename}</a>
+			<a href={`${apiLink}/files/${classInstanceID}/${courseID}/${filename}`} target="_blank">{file.filename}</a>
 			<i className="material-icons">download</i>
 		</li>
 	);
@@ -46,7 +47,7 @@ function StudentFileList(props) {
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
 		const fetchFiles = async () => {
-			fetch(`http://localhost:5000/files/${courseId}/${studentId}`)
+			fetch(`${apiLink}/files/${courseId}/${studentId}`)
 				.then(res => res.json())
 				.then(res => {
 					console.log(res);
@@ -64,7 +65,7 @@ function StudentFileList(props) {
 	useEffect(() => {
 		const fetchFileForm = async () => {
 
-			await fetch(`http://localhost:5000/courses/${courseId}`)
+			await fetch(`${apiLink}/courses/${courseId}`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : null)
 				.then(course => {
@@ -92,7 +93,7 @@ function StudentFile(file) {
 	const filename = file.filename;
 	return (
 		<li id={file.id}>
-			<a href={`http://localhost:5000/files/${classInstanceID}/${courseID}/${studentID}/${filename}`} target="_blank">{file.filename}</a>
+			<a href={`${apiLink}/files/${classInstanceID}/${courseID}/${studentID}/${filename}`} target="_blank">{file.filename}</a>
 			<i className="material-icons">download</i>
 		</li>
 	);
@@ -104,7 +105,7 @@ function FileForm(props) {
 	const courseId = props.courseId;
 	return (
         <form
-            action={`http://localhost:5000/files/${classInstanceId}/${courseId}/${studentId}`}
+            action={`${apiLink}/files/${classInstanceId}/${courseId}/${studentId}`}
             method="post"
             encType="multipart/form-data">
 

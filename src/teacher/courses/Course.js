@@ -8,6 +8,7 @@ import Session from './AttendanceSession';
 import AddSession from './AddSession';
 import Grades from './Grades';
 import AddGrades from './AddGrades';
+import apiLink from "../../API";
 
 function Course(props){
 	const {courseId} = useParams();
@@ -68,7 +69,7 @@ function NavBar(props){
 	const [courseName, setCourseName] = useState("Course name");
 	useEffect(() =>{
 		const fetchCourseName = async () => {
-			await fetch(`http://localhost:5000/courses/${courseId}`)
+			await fetch(`${apiLink}/courses/${courseId}`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : null)
 				.then(course => setCourseName(course.name));
