@@ -20,7 +20,7 @@ function Student() {
 				</Route>
 
 				<Route exact path={`${path}/grades`}>
-					<Grades id={id} />
+					<Grades studentId={id} />
 				</Route>
 
 				<Route exact path={`${path}/`}>

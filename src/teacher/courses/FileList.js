@@ -29,7 +29,7 @@ function FileList(props){
 
 
 	return (
-		<div className="File-List">
+		<div className="file-list">
 			{fileForm}
 			<ul>
 				{files.map(file => FileListItem(file))}
@@ -54,7 +54,7 @@ function FileListItem(file){
 
 function FileForm({classInstanceId, courseId}){
 	return (
-		<div className="File-Form">
+		<div className="file-form">
 			<form
 				method="post"
 				action={`http://localhost:5000/files/${classInstanceId}/${courseId}`}

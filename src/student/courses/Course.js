@@ -2,27 +2,37 @@ import React, {useEffect, useState} from 'react';
 import {useParams, useRouteMatch, Switch, Route, Link, Redirect} from 'react-router-dom';
 import PostList from './PostList';
 import {FileList, StudentFileList} from './FileList';
+import Grades from '../grades/Grades';
 
 function Course(props) {
 	const studentId = props.id;
 	const {courseId} = useParams();
 	const {path, url} = useRouteMatch();
 	return (
-		<div className="Course">
+		<div className="course">
 			<NavBar courseId={courseId} />
 			<Switch>
+
 				<Route exact path={`${path}/`}>
 					<Redirect to={`${url}/home`} />
 				</Route>
+
 				<Route exact path={`${path}/posts`}>
 					<PostList courseId={courseId} />
 				</Route>
+
 				<Route exact path={`${path}/files`}>
 					<FileList courseId={courseId} />
 				</Route>
+
 				<Route exact path={`${path}/myfiles`}>
 					<StudentFileList studentId={studentId} courseId={courseId} />
 				</Route>
+
+				<Route exact path={`${path}/grades`}>
+					<Grades studentId={studentId} courseId={courseId} />
+				</Route>
+
 			</Switch>
 		</div>
 	);
@@ -47,7 +57,7 @@ function NavBar(props) {
 
 
 	return (
-		<div className="NavBar">
+		<div className="navbar">
 			<h1>{courseName}</h1>
 			<ul>
 				<li>
@@ -77,6 +87,13 @@ function NavBar(props) {
 						className={onFocus === "files" ? "active" : ""}
 						onClick={() => setFocus("files")}
 					>Files</Link>
+				</li>
+				<li>
+					<Link
+						to={`${url}/grades`}
+						className={onFocus === "grades" ? "active" : ""}
+						onClick={() => setFocus("grades")}
+					>Grades</Link>
 				</li>
 			</ul>
 		</div>

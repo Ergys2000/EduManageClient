@@ -18,14 +18,14 @@ function PostList(props){
 	}, []);
 
 	return (
-		<div className="Post-List">
+		<div className="post-list">
 			{posts}
 		</div>
 	);
 }
 function PostItem(post){
 	return (
-		<div className="Post-Item">
+		<div className="post-item">
 			<div className="header">
 				<p><b>{post.author}</b></p>
 				<p>{post.posted_on}</p>

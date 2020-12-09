@@ -13,7 +13,7 @@ function Course(props){
 	const {courseId} = useParams();
 	const {url, path} = useRouteMatch();
 	return (
-		<div className="Course">
+		<div className="course">
 			<NavBar courseId={courseId}/>
 			<Switch>
 
@@ -79,7 +79,7 @@ function NavBar(props){
 	const [onFocus, setFocus] = useState("home");
 
 	return (
-		<div className="NavBar">
+		<div className="navbar">
 			<h1>{courseName}</h1>
 			<ul>
 				<li>

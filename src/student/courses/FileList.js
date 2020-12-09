@@ -19,7 +19,7 @@ function FileList(props) {
 
 
 	return (
-		<div className="File-List">
+		<div className="file-list">
 			<ul>
 				{files.map(file => FileListItem(file))}
 			</ul>
@@ -76,7 +76,7 @@ function StudentFileList(props) {
 	}, []);
 
 	return (
-		<div className="File-List">
+		<div className="file-list">
 			{fileForm}
 			<ul>
 				{files.map(file => StudentFile(file))}

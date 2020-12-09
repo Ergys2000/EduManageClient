@@ -11,9 +11,10 @@ function Login(props){
         const url = `http://localhost:5000/authenticate/auth_student?email=${email}&password=${password}`;
         await fetch(url)
         .then(res => res.json())
-        .then(res => {
-            if(res.authenticated){
-                const id = res.id;
+		.then(res => res.status === "OK" ? res.result : {})
+        .then(result => {
+            if(result.authenticated){
+                const id = result.id;
                 history.push(`/s/${id}`);
             }
         });
@@ -25,9 +26,10 @@ function Login(props){
         const url = `http://localhost:5000/authenticate/auth_teacher?email=${email}&password=${password}`;
         await fetch(url)
         .then(res => res.json())
-        .then(res => {
-            if(res.authenticated){
-                const id = res.id;
+		.then(res => res.status === "OK" ? res.result : {})
+        .then(result => {
+            if(result.authenticated){
+                const id = result.id;
                 history.push(`/t/${id}`);
             }
         });

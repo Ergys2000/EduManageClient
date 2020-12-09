@@ -1,8 +1,8 @@
-.Course{
+.course{
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	.NavBar{
+	.navbar{
 		display: flex;
 		flex-direction: column;
 		ul{
@@ -33,11 +33,11 @@
 		}
 	}
 }
-.Post-List{
+.post-list{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	.Post-Item{
+	.post-item{
 		border-radius: 20px;
 		background-color: $surface;
 		margin: 30px;
@@ -93,7 +93,7 @@
 	}
 }
 
-.File-List {
+.file-list {
 	margin-top: 70px;
 	ul{
 		display: flex;
