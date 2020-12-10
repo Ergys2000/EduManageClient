@@ -8,6 +8,7 @@ import Session from './AttendanceSession';
 import AddSession from './AddSession';
 import Grades from './Grades';
 import AddGrades from './AddGrades';
+import Home from './Home';
 import apiLink from "../../API";
 
 function Course(props){
@@ -23,7 +24,7 @@ function Course(props){
 				</Route>
 
 				<Route exact path={`${path}/home`}>
-					<h2>Home page</h2>
+					<Home courseId={courseId} />
 				</Route>
 
 				<Route exact path={`${path}/posts`}>

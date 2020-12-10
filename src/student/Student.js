@@ -19,10 +19,6 @@ function Student() {
 					<Course id={id} />
 				</Route>
 
-				<Route exact path={`${path}/grades`}>
-					<Grades studentId={id} />
-				</Route>
-
 				<Route exact path={`${path}/`}>
 					<Home id={id} />
 				</Route>

@@ -23,13 +23,6 @@ export default function NavBar() {
 				<p>Schedule</p>
 			</Link>
 
-			<Link to={`${match.url}/grades`}
-				onClick={() => setFocus("grades")}
-				className={onFocus === "grades" ? "active" : ""}
-			>
-				<i className="material-icons">list</i>
-				<p>Grades</p>
-			</Link>
 			<Link to={`${match.url}/courses`}
 				onClick={() => setFocus("courses")}
 				className={onFocus === "courses" ? "active" : ""}

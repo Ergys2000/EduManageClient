@@ -26,7 +26,7 @@ function StudentList(props) {
 	}, []);
 
 	return (
-		<div className="Student-List">
+		<div className="student-list">
 			<Link to={`${url}/add`}>ADD GRADES</Link>
 			{students}
 		</div>
@@ -37,7 +37,7 @@ function Grades(props) {
 	const [hidden, setHidden] = useState(true);
 
 	return (
-		<div className="Grades">
+		<div className="grades">
 			<div className="head" onClick={() => setHidden(!hidden)}>
 				<h4>{props.name}</h4>
 			</div>
