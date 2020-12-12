@@ -4,12 +4,13 @@ import apiLink from "../../API";
 
 function StudentList(props) {
 	const courseId = props.courseId;
+	const teacherId = props.teacherId;
 	const {url} = useRouteMatch();
 	const [students, setStudents] = useState([]);
 	useEffect(() => {
 
 		const getCourseGrades = async () => {
-			await fetch(`${apiLink}/courses/${courseId}/grades`)
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/grades`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(result => {

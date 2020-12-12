@@ -11,7 +11,7 @@ function Course(props) {
 	const {path, url} = useRouteMatch();
 	return (
 		<div className="course">
-			<NavBar courseId={courseId} />
+			<NavBar courseId={courseId} studentId={studentId} />
 			<Switch>
 
 				<Route exact path={`${path}/`}>
@@ -19,11 +19,11 @@ function Course(props) {
 				</Route>
 
 				<Route exact path={`${path}/posts`}>
-					<PostList courseId={courseId} />
+					<PostList courseId={courseId} studentId={studentId} />
 				</Route>
 
 				<Route exact path={`${path}/files`}>
-					<FileList courseId={courseId} />
+					<FileList courseId={courseId} studentId={studentId} />
 				</Route>
 
 				<Route exact path={`${path}/myfiles`}>
@@ -42,14 +42,23 @@ function Course(props) {
 function NavBar(props) {
 	const {url} = useRouteMatch();
 	const courseId = props.courseId;
+	const studentId = props.studentId;
 
 	const [courseName, setCourseName] = useState("Course name");
 	useEffect(() => {
 		const fetchCourseName = async () => {
-			await fetch(`${apiLink}/courses/${courseId}`)
+
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+
+			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : null)
-				.then(course => setCourseName(course.name));
+				.then(course => setCourseName(course ? course.name : null));
 		}
 		fetchCourseName();
 	}, []);

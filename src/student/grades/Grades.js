@@ -8,10 +8,16 @@ function Grades(props) {
     useEffect(() => {
 
 		const getGrades = async () => {
-
-			await fetch(`${apiLink}/students/${studentId}/grades/${courseId}`)
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}/grades`,{
+				headers: {
+					'Authorization': bearer
+				}
+			})
 				.then(res => res.json())
 				.then(res => {
+					console.log(res);
 					if (res.status === "OK") {
 						const organized_grades = organize(res.result);
 						const gradeHolders = organized_grades.map(course => CourseItem(course));

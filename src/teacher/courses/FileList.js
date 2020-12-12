@@ -2,10 +2,13 @@ import React, {useEffect, useState} from 'react';
 import apiLink from "../../API";
 
 function FileList(props){
+	const teacherId = props.studentId;
+	const courseId = props.courseId;
+
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
 		const fetchFiles = async () => {
-			fetch(`${apiLink}/files/${props.courseId}`)
+			fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/files`)
 			.then(res => res.json())
 			.then(res => {
 				if(res.status === "OK")

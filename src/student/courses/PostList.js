@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import apiLink from "../../API";
-
 function PostList(props){
 	const courseId = props.courseId;
+	const studentId = props.studentId;
 	const [posts, setPosts] = useState([]);
 	useEffect(() => {
 		const fetchPosts = async () => {
-			await fetch(`${apiLink}/posts/${courseId}`)
+			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}/posts`)
 				.then(res => res.json())
 				.then(res => {
 					if (res.status === "OK") {
@@ -24,6 +24,7 @@ function PostList(props){
 		</div>
 	);
 }
+
 function PostItem(post){
 	return (
 		<div className="post-item">

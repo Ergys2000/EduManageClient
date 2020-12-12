@@ -2,13 +2,12 @@ import React from 'react';
 import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
 import NavBar from './NavBar';
 import Home from './home/Home';
-import Grades from './grades/Grades';
 import Schedule from './schedule/Schedule';
 import Course from './courses/Courses';
 
 function Student() {
 	const {id} = useParams();
-	const {path, url} = useRouteMatch();
+	const {path} = useRouteMatch();
 
 
 	return (

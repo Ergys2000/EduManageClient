@@ -3,12 +3,12 @@ import apiLink from "../../API";
 
 function FileList(props) {
 	const courseId = props.courseId;
-
+	const studentId = props.studentId;
 
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
 		const fetchFiles = async () => {
-			await fetch(`${apiLink}/files/${courseId}`)
+			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}/files`)
 				.then(res => res.json())
 				.then(res => {
 					if (res.status === "OK")
@@ -47,7 +47,7 @@ function StudentFileList(props) {
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
 		const fetchFiles = async () => {
-			fetch(`${apiLink}/files/${courseId}/${studentId}`)
+			fetch(`${apiLink}/students/${studentId}/courses/${courseId}/studentfiles`)
 				.then(res => res.json())
 				.then(res => {
 					console.log(res);

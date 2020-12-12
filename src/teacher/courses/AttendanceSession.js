@@ -3,12 +3,13 @@ import { useParams } from "react-router-dom";
 import apiLink from "../../API";
 
 function Session(props){
+	const teacherId = props.teacherId;
     const {sessionId, courseId} = useParams();
     const [students, setStudents] = useState([]);
 
     useEffect(() => {
 		const fetchStudents = async () => {
-			fetch(`${apiLink}/courses/${courseId}/attendance/${sessionId}`)
+			fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance/${sessionId}`)
 				.then(res => res.json())
 				.then(res => res.status === "OK"? res.result : [])
 				.then(students => {
@@ -31,7 +32,7 @@ function Session(props){
 					</tr>
 				</thead>
 				<tbody>
-					{students.map(student => <StudentRow student={student} />)}
+					{students.map(student => <StudentRow key={student.id} student={student} teacherId={teacherId}/>)}
 				</tbody>
 			</table>
 		</div>
@@ -39,6 +40,7 @@ function Session(props){
 }
 
 function StudentRow(props) {
+	const teacherId = props.teacherId;
 	const {courseId, sessionId} = useParams();
     const [student, setStudent] = useState(props.student);
 
@@ -47,7 +49,7 @@ function StudentRow(props) {
             alert("You cannot increase any more!");
             return;
         } 
-        await fetch(`${apiLink}/courses/${courseId}/attendance/${sessionId}/${student.id}`, {
+        await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance/${sessionId}/${student.id}`, {
 
             method: "post",
             headers: {'Content-Type': 'application/json'},

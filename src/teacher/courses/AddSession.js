@@ -8,12 +8,13 @@ const isNumeric = (string) => {
 function NewSession(props) {
 
 	const courseId = props.courseId;
+	const teacherId = props.teacherId;
 
 	const [students, setStudents] = useState([]);
 	useEffect( () => {
 		const fetchStudents = async () => {
 
-			await fetch(`${apiLink}/courses/${courseId}/students`)
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/students`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(students => {
@@ -72,7 +73,6 @@ function NewSession(props) {
 	}
 
 	const onSubmit = async (event) => {
-		// TODO submit the informatin into the api
 		event.preventDefault();
 		if (session.topic === "" ||
 			session.date === "" ||
@@ -84,7 +84,7 @@ function NewSession(props) {
 			alert("Your input is wrong");
 			return;
 		}
-		await fetch(`${apiLink}/courses/${courseId}/attendance`, {
+		await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance`, {
 			method: 'post',
             headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify(session)
@@ -92,8 +92,8 @@ function NewSession(props) {
 			.then(res => res.json())
 			.then(res => {
 				if (res.status === "OK"){
-					// TODO now you should add the student entries
-					console.log(res.result.insertId);
+					// we now use the insertId returned by our request to
+					// insert the students into that session
 					submitStudents(res.result.insertId);
 				}
 			})
@@ -106,7 +106,7 @@ function NewSession(props) {
 			return ({id: student.id, length: attendedList[key]});
 		});
 
-		await fetch(`${apiLink}/courses/${courseId}/attendance/${sessionId}`,{
+		await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance/${sessionId}`,{
 			method: 'post',
             headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify(body)

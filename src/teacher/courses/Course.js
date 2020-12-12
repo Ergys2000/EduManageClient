@@ -12,11 +12,14 @@ import Home from './Home';
 import apiLink from "../../API";
 
 function Course(props){
+	const teacherId = props.id;
 	const {courseId} = useParams();
 	const {url, path} = useRouteMatch();
 	return (
 		<div className="course">
-			<NavBar courseId={courseId}/>
+
+			<NavBar courseId={courseId} teacherId={teacherId} />
+
 			<Switch>
 
 				<Route exact path={`${path}/`}>
@@ -24,39 +27,39 @@ function Course(props){
 				</Route>
 
 				<Route exact path={`${path}/home`}>
-					<Home courseId={courseId} />
+					<Home courseId={courseId} teacherId={teacherId} />
 				</Route>
 
 				<Route exact path={`${path}/posts`}>
-					<PostList courseId={courseId}/>
+					<PostList courseId={courseId} teacherId={teacherId} />
 				</Route>
 
 				<Route exact path={`${path}/studentfiles`}>
-					<StudentFiles courseId={courseId} />
+					<StudentFiles courseId={courseId} teacherId={teacherId} />
 				</Route>
 
 				<Route exact path={`${path}/files`}>
-					<FileList courseId={courseId} />
+					<FileList courseId={courseId} teacherId={teacherId} />
 				</Route>
 
 				<Route exact path={`${path}/attendance`} >
-					<Attendance courseId={courseId}/>
+					<Attendance courseId={courseId} teacherId={teacherId} />
 				</Route>
 
 				<Route exact path={`${path}/attendance/add`} >
-					<AddSession courseId={courseId}/>
+					<AddSession courseId={courseId} teacherId={teacherId} />
 				</Route>
 
 				<Route path={`${path}/attendance/:sessionId`} >
-					<Session courseId={courseId}/>
+					<Session courseId={courseId} teacherId={teacherId} />
 				</Route>
 
 				<Route exact path={`${path}/grades`} >
-					<Grades courseId={courseId}/>
+					<Grades courseId={courseId} teacherId={teacherId} />
 				</Route>
 
 				<Route exact path={`${path}/grades/add`} >
-					<AddGrades courseId={courseId}/>
+					<AddGrades courseId={courseId} teacherId={teacherId} />
 				</Route>
 
 			</Switch>
@@ -67,10 +70,11 @@ function Course(props){
 function NavBar(props){
 	const {url} = useRouteMatch();
 	const courseId = props.courseId;
+	const teacherId = props.teacherId;
 	const [courseName, setCourseName] = useState("Course name");
 	useEffect(() =>{
 		const fetchCourseName = async () => {
-			await fetch(`${apiLink}/courses/${courseId}`)
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : null)
 				.then(course => setCourseName(course.name));

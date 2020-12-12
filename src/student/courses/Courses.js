@@ -31,7 +31,13 @@ function CourseList(props){
 	}, []);
 	
 	async function getCourses(){
-		await fetch(`${apiLink}/students/${id}/courses`)
+		const token = sessionStorage.getItem("jwt");
+		const bearer = 'Bearer ' + token;
+		await fetch(`${apiLink}/students/${id}/courses`,{
+			headers: {
+				'Authorization': bearer
+			}
+		})
 			.then(res => res.json())
 			.then(res => {
 				if(res.status==="OK"){

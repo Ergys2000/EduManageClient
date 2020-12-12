@@ -3,13 +3,14 @@ import {useHistory, useParams, useRouteMatch, Link} from 'react-router-dom';
 import apiLink from "../../API";
 
 function Attendance(props) {
+	const teacherId = props.teacherId;
 	const {courseId} = useParams();
 	const {url} = useRouteMatch();
 
 	const [sessions, setSessions] = useState([]);
 	useEffect(() => {
 		const fetchSessions = async () => {
-			fetch(`${apiLink}/courses/${courseId}/attendance`)
+			fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance`)
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(sessions => {
