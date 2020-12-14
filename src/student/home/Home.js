@@ -4,7 +4,7 @@ import apiLink from "../../API";
 function Home(props){
 	const [student, setStudent] = useState(null);
 	useEffect(() => {
-		const token = sessionStorage.get("jwt");
+		const token = sessionStorage.getItem("jwt");
 		const bearer = "Bearer " + token;
 		fetch(`${apiLink}/students/${props.id}`,{
 			headers: {
