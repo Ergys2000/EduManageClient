@@ -10,7 +10,14 @@ function Attendance(props) {
 	const [sessions, setSessions] = useState([]);
 	useEffect(() => {
 		const fetchSessions = async () => {
-			fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance`)
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+
+			fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(sessions => {

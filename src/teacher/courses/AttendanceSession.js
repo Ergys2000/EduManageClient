@@ -9,7 +9,14 @@ function Session(props){
 
     useEffect(() => {
 		const fetchStudents = async () => {
-			fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance/${sessionId}`)
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+
+			fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance/${sessionId}`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
 				.then(res => res.json())
 				.then(res => res.status === "OK"? res.result : [])
 				.then(students => {
@@ -49,10 +56,16 @@ function StudentRow(props) {
             alert("You cannot increase any more!");
             return;
         } 
+		const token = sessionStorage.getItem("jwt");
+		const bearer = 'Bearer ' + token;
+
         await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance/${sessionId}/${student.id}`, {
 
             method: "post",
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+				'Content-Type': 'application/json',
+				'Authorization': bearer
+			},
             body: JSON.stringify({length: student.attended+1})
 
         })
@@ -69,10 +82,16 @@ function StudentRow(props) {
             alert("You cannot decrease any more!");
             return;
         } 
-        await fetch(`${apiLink}/courses/${courseId}/attendance/${sessionId}/${student.id}`, {
+		const token = sessionStorage.getItem("jwt");
+		const bearer = 'Bearer ' + token;
+
+        await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance/${sessionId}/${student.id}`, {
 
             method: "post",
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+				'Content-Type': 'application/json',
+				'Authorization': bearer
+			},
             body: JSON.stringify({length: student.attended-1})
 
         })

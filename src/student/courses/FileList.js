@@ -8,7 +8,13 @@ function FileList(props) {
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
 		const fetchFiles = async () => {
-			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}/files`)
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}/files`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
 				.then(res => res.json())
 				.then(res => {
 					if (res.status === "OK")
@@ -47,7 +53,13 @@ function StudentFileList(props) {
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
 		const fetchFiles = async () => {
-			fetch(`${apiLink}/students/${studentId}/courses/${courseId}/studentfiles`)
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+			fetch(`${apiLink}/students/${studentId}/courses/${courseId}/studentfiles`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
 				.then(res => res.json())
 				.then(res => {
 					console.log(res);
@@ -65,12 +77,20 @@ function StudentFileList(props) {
 	useEffect(() => {
 		const fetchFileForm = async () => {
 
-			await fetch(`${apiLink}/courses/${courseId}`)
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : null)
 				.then(course => {
-					setFileForm(<FileForm studentId={studentId} 
-						courseId={courseId} classInstanceId={course.classInstanceID} />);
+					if(course !== null) {
+						setFileForm(<FileForm studentId={studentId} 
+							courseId={courseId} classInstanceId={course.classInstanceID} />);
+					}
 				});
 		}
 		fetchFileForm();

@@ -9,7 +9,13 @@ function StudentFiles(props) {
 	const [students, setStudents] = useState([]);
 	useEffect( () => {
 		const fetchStudents = async () => {
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/studentfiles`)
+			const token = sessionStorage.getItem("jwt");
+			const bearer = "Bearer " + token;
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/studentfiles`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(fileList => {

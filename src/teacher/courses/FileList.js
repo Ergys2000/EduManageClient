@@ -2,15 +2,23 @@ import React, {useEffect, useState} from 'react';
 import apiLink from "../../API";
 
 function FileList(props){
-	const teacherId = props.studentId;
+	const teacherId = props.teacherId;
 	const courseId = props.courseId;
 
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
 		const fetchFiles = async () => {
-			fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/files`)
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+
+			fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/files`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
 			.then(res => res.json())
 			.then(res => {
+				console.log(res);
 				if(res.status === "OK")
 					setFiles(res.result);
 			});
@@ -21,11 +29,20 @@ function FileList(props){
 	const [fileForm , setFileForm] = useState(null);
 	useEffect(() => {
 		const fetchFileForm = async () => {
-			fetch(`${apiLink}/courses/${props.courseId}`)
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${props.courseId}`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : null)
 				.then(course => {
-					setFileForm(<FileForm courseId={course.courseID} classInstanceId={course.classInstanceID}/> );
+					if(course){
+						setFileForm(<FileForm courseId={course.courseID} classInstanceId={course.classInstanceID}/> );
+					}
 				})
 		}
 		fetchFileForm();

@@ -1,11 +1,12 @@
-import {useState, useEffect} from 'react';
-import {useParams, Link, Switch, useRouteMatch, Route} from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, Link, Switch, useRouteMatch, Route } from 'react-router-dom';
 import Attendance from './courses/Attendance';
 import Session from './courses/AttendanceSession';
 import apiLink from "../API";
 
 function Class(props) {
-	const {url, path} = useRouteMatch();
+	const { path } = useRouteMatch();
+	const teacherId = props.id;
 	return (
 		<div className="option">
 			<Switch>
@@ -19,7 +20,7 @@ function Class(props) {
 					<Session />
 				</Route>
 				<Route exact path={`${path}/:courseId/grades`}>
-					<StudentList />
+					<StudentList teacherId={teacherId}/>
 				</Route>
 			</Switch>
 		</div>
@@ -30,7 +31,13 @@ function CourseList(props) {
 	const [courses, setCourses] = useState([]);
 	useEffect(() => {
 		const fetchCourses = async () => {
-			await fetch(`${apiLink}/teachers/${props.id}/class`)
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+			await fetch(`${apiLink}/teachers/${props.id}/class`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(courses => {
@@ -41,13 +48,13 @@ function CourseList(props) {
 	}, []);
 	return (
 		<div className="Course-List">
-			{courses.map(x => CourseListItem({course: x}))}
+			{courses.map(x => CourseListItem({ course: x }))}
 		</div>
 	);
 }
 
 function CourseListItem(props) {
-	let {url} = useRouteMatch();
+	let { url } = useRouteMatch();
 	return (
 		<div className="Course-Info-Item">
 
@@ -72,11 +79,18 @@ function CourseListItem(props) {
 }
 
 function StudentList(props) {
-	const {courseId} = useParams();
+	const teacherId = props.teacherId;
+	const { courseId } = useParams();
 	const [students, setStudents] = useState([]);
 	useEffect(async () => {
 		const fetchCourseGrades = async () => {
-			await fetch(`${apiLink}/courses/${courseId}/grades`)
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/grades`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(result => {

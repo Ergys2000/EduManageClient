@@ -74,7 +74,14 @@ function NavBar(props){
 	const [courseName, setCourseName] = useState("Course name");
 	useEffect(() =>{
 		const fetchCourseName = async () => {
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}`)
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : null)
 				.then(course => setCourseName(course.name));

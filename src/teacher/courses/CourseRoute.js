@@ -5,7 +5,7 @@ import apiLink from "../../API";
 
 
 function Courses(props){
-	let {path, url} = useRouteMatch();
+	let {path} = useRouteMatch();
 	const id = props.id;
 
 	return (
@@ -26,13 +26,26 @@ function Courses(props){
 function CourseList(props){
 	const [courses, setCourses] = useState([]);
 	useEffect(() => {
-		fetch(`${apiLink}/teachers/${props.id}/courses`)
-		.then(res => res.json())
-		.then(res => {
-			if(res.status === "OK"){
-				setCourses(res.result);
-			}
-		});
+		
+		const fetchCourses = async () => {
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+
+			await fetch(`${apiLink}/teachers/${props.id}/courses`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
+			.then(res => res.json())
+			.then(res => {
+				console.log(res);
+				if(res.status === "OK"){
+					setCourses(res.result);
+				}
+			});
+		}
+		fetchCourses();
+
 	}, []);
 	return (
 		<div className="Course-List">

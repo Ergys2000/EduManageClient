@@ -5,7 +5,14 @@ function TableContainer(props) {
 	const [days, setDays] = useState([]);
 	useEffect(() => {
 		const fetchDays = async () => {
-			fetch(`${apiLink}/teachers/${props.id}/schedule`)
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+
+			fetch(`${apiLink}/teachers/${props.id}/schedule`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(scheduleRaw => {

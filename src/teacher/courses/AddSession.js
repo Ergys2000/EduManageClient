@@ -14,7 +14,14 @@ function NewSession(props) {
 	useEffect( () => {
 		const fetchStudents = async () => {
 
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/students`)
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/students`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(students => {
@@ -84,9 +91,15 @@ function NewSession(props) {
 			alert("Your input is wrong");
 			return;
 		}
+
+		const token = sessionStorage.getItem("jwt");
+		const bearer = 'Bearer ' + token;
 		await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance`, {
 			method: 'post',
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+				'Content-Type': 'application/json',
+				'Authorization': bearer
+			},
 			body: JSON.stringify(session)
 		})
 			.then(res => res.json())
@@ -106,9 +119,14 @@ function NewSession(props) {
 			return ({id: student.id, length: attendedList[key]});
 		});
 
+		const token = sessionStorage.getItem("jwt");
+		const bearer = 'Bearer ' + token;
 		await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance/${sessionId}`,{
 			method: 'post',
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+				'Content-Type': 'application/json',
+				'Authorization': bearer
+			},
 			body: JSON.stringify(body)
 		})
 			.then(res => res.json())

@@ -7,7 +7,14 @@ function PostList(props){
 	const [posts, setPosts] = useState([]);
 	useEffect(() => {
 		const fetchPosts = async () => {
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/posts`)
+			const token = sessionStorage.getItem("jwt");
+			const bearer = 'Bearer ' + token;
+
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/posts`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
 				.then(res => res.json())
 				.then(res => {
 					if (res.status === "OK") {
