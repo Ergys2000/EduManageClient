@@ -15,19 +15,19 @@ function Student() {
 			<NavBar />
 			<Switch>
 				<Route path={`${path}/courses`}>
-					<Course id={id} />
+					<Course studentId={id} />
 				</Route>
 
 				<Route exact path={`${path}/`}>
-					<Home id={id} />
+					<Home studentId={id} />
 				</Route>
 
 				<Route exact path={`${path}/home`}>
-					<Home id={id} />
+					<Home studentId={id} />
 				</Route>
 
 				<Route exact path={`${path}/schedule`}>
-					<Schedule id={id} />
+					<Schedule studentId={id} />
 				</Route>
 			</Switch>
 		</div>

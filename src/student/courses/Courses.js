@@ -6,16 +6,16 @@ import apiLink from "../../API";
 
 function Courses(props){
 	let {path} = useRouteMatch();
-	const id = props.id;
+	const studentId = props.studentId;
 
 	return (
 		<div className="option">
 			<Switch>
 				<Route exact path={`${path}/`} >
-					<CourseList id={id}/>
+					<CourseList studentId={studentId}/>
 				</Route>
 				<Route path={`${path}/:courseId`} >
-					<Course id={id}/>
+					<Course studentId={studentId}/>
 				</Route>
 			</Switch>
 		</div>
@@ -24,7 +24,7 @@ function Courses(props){
 
 
 function CourseList(props){
-	const id = props.id;
+	const studentId = props.studentId;
 	const [courses, setCourses] = useState([]);
 	useEffect(async () => {
 		getCourses();
@@ -33,7 +33,7 @@ function CourseList(props){
 	async function getCourses(){
 		const token = sessionStorage.getItem("jwt");
 		const bearer = 'Bearer ' + token;
-		await fetch(`${apiLink}/students/${id}/courses`,{
+		await fetch(`${apiLink}/students/${studentId}/courses`,{
 			headers: {
 				'Authorization': bearer
 			}

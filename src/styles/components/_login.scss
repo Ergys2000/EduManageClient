@@ -7,7 +7,7 @@
 
 	// size and color
 	border: 1px solid black;
-	background-color: $priaryVariant;
+	background-color: $primaryVariant;
 	width: 50%;
 	height: 50%;
 	margin-left: 25%;
@@ -39,7 +39,7 @@
 		input{
 			// size and color
 			margin: 20px;
-			background-color: $priaryVariant;
+			background-color: $primaryVariant;
 			color: $onSurface;
 
 			border-top: none;
@@ -67,7 +67,7 @@
 		button{
 			background-color: $secondary;
 			border: none;
-			color: $priaryVariant;
+			color: $primaryVariant;
 			width: 30%;
 			margin-top: 20px;
 			margin-left: 20px;

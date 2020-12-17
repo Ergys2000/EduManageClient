@@ -1,0 +1,77 @@
+.dashboard {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	.head{
+		background-color: $primaryVariant;
+		padding: 1vw;
+	}
+	.events{
+		display: flex;
+		flex-direction: column;
+		margin: 1vh;
+		.event {
+			background-color: $surface;
+			padding: 1vw;
+			border-bottom: 1px solid $primary;
+			transition: 0.3s;
+			&:hover{
+				background-color: $primary;
+				color: $onPrimary;
+			}
+		}
+	}
+	.profile {
+		margin: 1vh;
+		display: flex;
+		flex-direction: row;
+		background-color: $surface;
+		.labels {
+			margin: 1vh 3vw 1vh 3vh;
+			display: flex;
+			flex-direction: column;
+			align-items: left;
+		}
+		.values {
+			margin: 1vh 3vw 1vh 3vh;
+			display: flex;
+			flex-direction: column;
+			align-items: right;
+		}
+		.head {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			button {
+				background-color: $primary;
+				color: $onPrimary;
+				border: none;
+				padding: 1rem;
+				margin: 1rem;
+			}
+		}
+	}
+	.courses {
+		margin: 1vh;
+		display: flex;
+		flex-direction: column;
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			color: $onSurface;
+			background-color: $surface;
+		}
+		tr:hover{
+			td {
+				background-color: $primary;
+				color: $onPrimary;
+			}
+		}
+		th, td{
+			transition: 0.3s;
+			border-bottom: 1px solid $onSurface;
+			padding: 2vw;
+		}
+	}
+}

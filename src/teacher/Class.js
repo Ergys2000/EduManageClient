@@ -6,7 +6,7 @@ import apiLink from "../API";
 
 function Class(props) {
 	const { path } = useRouteMatch();
-	const teacherId = props.id;
+	const teacherId = props.teacherId;
 	return (
 		<div className="option">
 			<Switch>
@@ -14,10 +14,10 @@ function Class(props) {
 					<CourseList id={props.id} />
 				</Route>
 				<Route exact path={`${path}/:courseId/attendance`}>
-					<Attendance />
+					<Attendance teacherId={teacherId}/>
 				</Route>
 				<Route exact path={`${path}/:courseId/attendance/:sessionId`}>
-					<Session />
+					<Session teacherId={teacherId} />
 				</Route>
 				<Route exact path={`${path}/:courseId/grades`}>
 					<StudentList teacherId={teacherId}/>

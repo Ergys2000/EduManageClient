@@ -8,7 +8,7 @@ function TableContainer(props) {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = 'Bearer ' + token;
 
-			fetch(`${apiLink}/teachers/${props.id}/schedule`, {
+			fetch(`${apiLink}/teachers/${props.teacherId}/schedule`, {
 				headers: {
 					'Authorization': bearer
 				}

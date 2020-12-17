@@ -6,7 +6,7 @@ import Grades from '../grades/Grades';
 import apiLink from "../../API";
 
 function Course(props) {
-	const studentId = props.id;
+	const studentId = props.studentId;
 	const {courseId} = useParams();
 	const {path, url} = useRouteMatch();
 	return (

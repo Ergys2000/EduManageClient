@@ -12,7 +12,7 @@ import Home from './Home';
 import apiLink from "../../API";
 
 function Course(props){
-	const teacherId = props.id;
+	const teacherId = props.teacherId;
 	const {courseId} = useParams();
 	const {url, path} = useRouteMatch();
 	return (
@@ -68,9 +68,11 @@ function Course(props){
 }
 
 function NavBar(props){
-	const {url} = useRouteMatch();
 	const courseId = props.courseId;
 	const teacherId = props.teacherId;
+
+	const {url} = useRouteMatch();
+
 	const [courseName, setCourseName] = useState("Course name");
 	useEffect(() =>{
 		const fetchCourseName = async () => {
@@ -83,7 +85,7 @@ function NavBar(props){
 				}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : null)
+				.then(res => res.status === "OK" ? res.result : {})
 				.then(course => setCourseName(course.name));
 		}
 		fetchCourseName();

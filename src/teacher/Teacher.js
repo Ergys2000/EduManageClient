@@ -16,16 +16,16 @@ function Teacher(){
                     <Redirect to={`${match.url}/home`} />
                 </Route>
                 <Route path={`${match.path}/home`}>
-                    <Home id={id}/>
+                    <Home teacherId={id}/>
                 </Route>
                 <Route path={`${match.path}/class`}>
-                    <Class id={id}/>
+                    <Class teacherId={id}/>
                 </Route>
                 <Route path={`${match.path}/courses`}>
-                    <Courses id={id}/>
+                    <Courses teacherId={id}/>
                 </Route>
                 <Route path={`${match.path}/schedule`}>
-                    <Schedule id={id}/>
+                    <Schedule teacherId={id}/>
                 </Route>
             </Switch>
         </div>
