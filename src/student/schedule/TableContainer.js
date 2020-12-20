@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import apiLink from "../../API";
 
 function TableContainer(props) {
@@ -21,7 +21,7 @@ function TableContainer(props) {
 				.then(schedule => {
 					const days = [];
 					for (let i = 0; i < schedule.length; i++) {
-						days[i] = <Column title={schedule[i].name} hours={schedule[i].hours} />
+						days[i] = <Column key={schedule[i].id} title={schedule[i].name} hours={schedule[i].hours} />
 					}
 					setDays(days);
 				});
@@ -50,10 +50,10 @@ function Column(props) {
 	for (let i = 0; i < props.hours.length; i++) {
 		// the hour index is the hour in each row of the returned data.
 		const hour_index = props.hours[i].hour - 1;
-		hours[hour_index] = <TableElement key={props.hours[i].courseID} 
-								id={props.hours[i].courseID}
-								category={props.hours[i].course_category} 
-								name={props.hours[i].course_name} />;
+		hours[hour_index] = <TableElement key={props.hours[i].id}
+			id={props.hours[i].courseID}
+			category={props.hours[i].course_category}
+			name={props.hours[i].course_name} />;
 	}
 	return (
 		<div className="column">
@@ -65,7 +65,7 @@ function Column(props) {
 
 // this simply renders an hour
 function TableElement(props) {
-	/* use the history hook to redirect the user */	
+	/* use the history hook to redirect the user */
 	const history = useHistory();
 	return (
 		<div className="element" onClick={() => history.push(`courses/${props.id}`)}>

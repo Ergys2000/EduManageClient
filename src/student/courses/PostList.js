@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import apiLink from "../../API";
+
 function PostList(props){
 	const courseId = props.courseId;
 	const studentId = props.studentId;

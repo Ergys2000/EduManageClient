@@ -1,14 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {useParams, useRouteMatch, Switch, Route, Link, Redirect} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useRouteMatch, Switch, Route, Link, Redirect } from 'react-router-dom';
 import PostList from './PostList';
-import {FileList, StudentFileList} from './FileList';
+import { FileList } from './FileList';
+import { AssignmentList, Assignment } from './Assignments';
 import Grades from '../grades/Grades';
 import apiLink from "../../API";
 
 function Course(props) {
 	const studentId = props.studentId;
-	const {courseId} = useParams();
-	const {path, url} = useRouteMatch();
+	const { courseId } = useParams();
+	const { path, url } = useRouteMatch();
 	return (
 		<div className="course">
 			<NavBar courseId={courseId} studentId={studentId} />
@@ -22,12 +23,16 @@ function Course(props) {
 					<PostList courseId={courseId} studentId={studentId} />
 				</Route>
 
-				<Route exact path={`${path}/files`}>
-					<FileList courseId={courseId} studentId={studentId} />
+				<Route exact path={`${path}/assignments`}>
+					<AssignmentList courseId={courseId} studentId={studentId} />
 				</Route>
 
-				<Route exact path={`${path}/myfiles`}>
-					<StudentFileList studentId={studentId} courseId={courseId} />
+				<Route exact path={`${path}/assignments/:assignmentId`}>
+					<Assignment courseId={courseId} studentId={studentId} />
+				</Route>
+
+				<Route exact path={`${path}/files`}>
+					<FileList courseId={courseId} studentId={studentId} />
 				</Route>
 
 				<Route exact path={`${path}/grades`}>
@@ -40,7 +45,7 @@ function Course(props) {
 }
 
 function NavBar(props) {
-	const {url} = useRouteMatch();
+	const { url } = useRouteMatch();
 	const courseId = props.courseId;
 	const studentId = props.studentId;
 
@@ -86,10 +91,10 @@ function NavBar(props) {
 				</li>
 				<li>
 					<Link
-						to={`${url}/myfiles`}
-						className={onFocus === "myfiles" ? "active" : ""}
-						onClick={() => setFocus("myfiles")}
-					>My Files</Link>
+						to={`${url}/assignments`}
+						className={onFocus === "assignments" ? "active" : ""}
+						onClick={() => setFocus("assignments")}
+					>Assignments</Link>
 				</li>
 				<li>
 					<Link

@@ -17,7 +17,6 @@ function Grades(props) {
 			})
 				.then(res => res.json())
 				.then(res => {
-					console.log(res);
 					if (res.status === "OK") {
 						const organized_grades = organize(res.result);
 						const gradeHolders = organized_grades.map(course => CourseItem(course));

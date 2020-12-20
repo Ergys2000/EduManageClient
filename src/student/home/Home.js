@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useHistory} from 'react-router-dom';
 import apiLink from "../../API";
 
 function Home(props) {
@@ -24,7 +25,7 @@ function Home(props) {
 		<div className="option">
 			<h1>Welcome {(student) ? student.firstname : "..."}</h1>
 			<div className="dashboard">
-				<Events />
+				<Events studentId = {studentId} />
 				<div className="personal">
 					<Courses studentId={studentId} />
 					<ProfileInfo student={student} />
@@ -37,56 +38,156 @@ function Home(props) {
 
 /* this component is responsible for displaying the school events */
 function Events(props) {
+	const studentId = props.studentId;
+	const [events, setEvents] = useState([]);
+
+	useEffect(() => {
+		const fetchEvents = async () => {
+			const token = sessionStorage.getItem("jwt");
+			const bearer = "Bearer " + token;
+			await fetch(`${apiLink}/students/${studentId}/events`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
+				.then(res => res.json())
+				.then(res => res.status === "OK" ? res.result : [])
+				.then(events => {
+					setEvents(events);
+				})
+		}
+
+		fetchEvents();
+	}, []);
+
 	return (
 		<div className="events">
 			<div className="head">
 				<h3>Upcoming Events</h3>
 			</div>
-			<Event />
-			<Event />
-			<Event />
-			<Event />
+			{events.map(event => <Event key={event.id} event={event} />)}
 		</div>
 	);
 }
 
 /* displays a single event */
 function Event(props) {
+	const e = props.event;
 	return (
 		<div className="event">
-			<h4>Title</h4>
-			<p>This is an event with an description.</p>
+			<h4>{e.title}</h4>
+			<p><b>Due: </b>{e.due}</p>
+			<p><b>Category: </b> {e.classInstanceID ? "School" : "Class"}</p>
+			<p>{e.description}</p>
 		</div>
 	);
 }
 
 /* Displayes the list of the courses and the average grade */
 function Courses(props) {
+	const studentId = props.studentId;
+	const [courses, setCourses] = useState([]);
+	useEffect(() => {
+		const fetchCourses = async () => {
+			const token = sessionStorage.getItem("jwt");
+			const bearer = "Bearer " + token;
+			await fetch(`${apiLink}/students/${studentId}/courses`, {
+				headers: {
+					'Authorization': bearer
+				}
+			})
+				.then(res => res.json())
+				.then(res => res.status === "OK" ? res.result : [])
+				.then(courses => {
+					setCourses(courses);
+				})
+		}
+		fetchCourses();
+	}, []);
 	return (
 		<div className="courses">
 			<div className="head">
 				<h3>Course stats</h3>
 			</div>
 			<table>
-				<tr>
-					<th>Course name</th>
-					<th>Grade Average</th>
-					<th>Undone assignments</th>
-				</tr>
-				<CourseRow />
-				<CourseRow />
-				<CourseRow />
+				<thead>
+					<tr>
+						<th>Course name</th>
+						<th>Grade Average</th>
+						<th>Max. can get</th>
+					</tr>
+				</thead>
+				<tbody>
+					{courses.map(course => <CourseRow key={course.id} course={course} studentId={studentId} />)}
+				</tbody>
 			</table>
 		</div>
 	);
 }
+
 /* Responsible for displaying a course in a single row */
 function CourseRow(props) {
+	const studentId = props.studentId;
+	const course = props.course;
+
+	const history = useHistory();
+
+	const [average, setAverage] = useState(null);
+	const [maxAvg, setMaxAvg] = useState(null);
+	useEffect(() => {
+
+		const calculateAverages = (grades) => {
+					/* The sum will hold the weighted sum of grades */
+					let sum = 0;
+					/* weightSum will hold the sum of weights */
+					let weightSum = 0;
+
+					/* Loop throught the grades and calculate the weighted sum
+					 * and the sum of weights*/
+					grades.forEach(grade => {
+						sum += grade.grade*grade.weight
+						weightSum += grade.weight;
+					});
+					/* we scale the average according to the sum of the weights */
+					const avg = sum / weightSum;
+
+					/* Now we calculate the max can get value for the grade
+					 * average */
+					const maxGrade = 10;
+					const leftWeight = 1 - weightSum;
+					const maxAvg = sum + maxGrade * leftWeight;
+
+					return [avg, maxAvg];
+		}
+
+		const fetchGrades = async () => {
+			const token = sessionStorage.getItem("jwt");
+			const bearer = "Bearer " + token;
+			await fetch(`${apiLink}/students/${studentId}/courses/${course.id}/grades`,{
+				headers: {
+					'Authorization': bearer
+				}
+			})
+				.then(res => res.json())
+				.then(res => res.status === "OK" ? res.result : [])
+				.then(grades => {
+					const [avg, maxAvg] = calculateAverages(grades);
+					setAverage(avg);
+					setMaxAvg(maxAvg);
+				});
+		}
+
+		fetchGrades();
+	}, []);
+
+	const onClick = () => {
+		history.push(`courses/${course.id}`);
+	}
 	return (
-		<tr>
-			<td>Mathematics</td>
-			<td>7.0</td>
-			<td>3</td>
+		<tr onClick={onClick}>
+			<td>{course.name}</td>
+			<td>{average ? average.toFixed(2) : ""}</td>
+			<td>{maxAvg ? maxAvg.toFixed(2) : ""}</td>
 		</tr>
 	);
 }
