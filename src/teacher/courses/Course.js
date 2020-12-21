@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {Link, useParams, useRouteMatch, Route, Switch, Redirect} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams, useRouteMatch, Route, Switch, Redirect } from 'react-router-dom';
 import PostList from './PostList';
 import FileList from './FileList';
-import StudentFiles from './StudentFiles';
+import { AssignmentList, Assignment } from './Assignments';
 import Attendance from './Attendance';
 import Session from './AttendanceSession';
 import AddSession from './AddSession';
@@ -11,10 +11,10 @@ import AddGrades from './AddGrades';
 import Home from './Home';
 import apiLink from "../../API";
 
-function Course(props){
+function Course(props) {
 	const teacherId = props.teacherId;
-	const {courseId} = useParams();
-	const {url, path} = useRouteMatch();
+	const { courseId } = useParams();
+	const { url, path } = useRouteMatch();
 	return (
 		<div className="course">
 
@@ -34,8 +34,12 @@ function Course(props){
 					<PostList courseId={courseId} teacherId={teacherId} />
 				</Route>
 
-				<Route exact path={`${path}/studentfiles`}>
-					<StudentFiles courseId={courseId} teacherId={teacherId} />
+				<Route exact path={`${path}/assignments`}>
+					<AssignmentList courseId={courseId} teacherId={teacherId} />
+				</Route>
+
+				<Route exact path={`${path}/assignments/:assignmentId`}>
+					<Assignment courseId={courseId} teacherId={teacherId} />
 				</Route>
 
 				<Route exact path={`${path}/files`}>
@@ -67,14 +71,14 @@ function Course(props){
 	);
 }
 
-function NavBar(props){
+function NavBar(props) {
 	const courseId = props.courseId;
 	const teacherId = props.teacherId;
 
-	const {url} = useRouteMatch();
+	const { url } = useRouteMatch();
 
 	const [courseName, setCourseName] = useState("Course name");
-	useEffect(() =>{
+	useEffect(() => {
 		const fetchCourseName = async () => {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = 'Bearer ' + token;
@@ -98,43 +102,43 @@ function NavBar(props){
 			<h1>{courseName}</h1>
 			<ul>
 				<li>
-					<Link 
-						to={`${url}/home`} 
+					<Link
+						to={`${url}/home`}
 						className={onFocus === "home" ? "active" : ""}
 						onClick={() => setFocus("home")}
 					>Home</Link>
 				</li>
 				<li>
-					<Link 
-						to={`${url}/posts`} 
+					<Link
+						to={`${url}/posts`}
 						className={onFocus === "posts" ? "active" : ""}
 						onClick={() => setFocus("posts")}
 					>Posts</Link>
 				</li>
 				<li>
-					<Link 
-						to={`${url}/studentfiles`} 
-						className={onFocus === "studentfiles" ? "active" : ""}
-						onClick={() => setFocus("studentfiles")}
-					>Student Files</Link>
+					<Link
+						to={`${url}/assignments`}
+						className={onFocus === "assignments" ? "active" : ""}
+						onClick={() => setFocus("assignments")}
+					>Assignments</Link>
 				</li>
 				<li>
-					<Link 
-						to={`${url}/files`} 
+					<Link
+						to={`${url}/files`}
 						className={onFocus === "files" ? "active" : ""}
 						onClick={() => setFocus("files")}
 					>Files</Link>
 				</li>
 				<li>
-					<Link 
-						to={`${url}/attendance`} 
+					<Link
+						to={`${url}/attendance`}
 						className={onFocus === "attendance" ? "active" : ""}
 						onClick={() => setFocus("attendance")}
 					>Attendance</Link>
 				</li>
 				<li>
-					<Link 
-						to={`${url}/grades`} 
+					<Link
+						to={`${url}/grades`}
 						className={onFocus === "grades" ? "active" : ""}
 						onClick={() => setFocus("grades")}
 					>Grades</Link>

@@ -72,7 +72,6 @@ function FileListItem(file){
 	);
 }
 
-
 function FileForm({classInstanceId, courseId}){
 	return (
 		<div className="file-form">

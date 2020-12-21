@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import apiLink from "../../API";
 
+/* Checks whether a string can be converted to an integer */
 const isNumeric = (string) => {
 	return /^-?\d+$/.test(string) || string === "";
 }
@@ -10,6 +11,7 @@ function NewSession(props) {
 	const courseId = props.courseId;
 	const teacherId = props.teacherId;
 
+	/* Gets the list of students for a course */
 	const [students, setStudents] = useState([]);
 	useEffect( () => {
 		const fetchStudents = async () => {
@@ -25,13 +27,15 @@ function NewSession(props) {
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(students => {
-
+					/* Set the list of students to the recieved one */
 					setStudents(students);
+
+					/* Create an initial array that represents how many hours 
+					 * each student attended */
 					const array = [];
 					for(let i=0; i<students.length; i++){
 						array[i] = 1;
 					}
-
 					setAttendedList(array);
 				});
 		}
@@ -40,6 +44,8 @@ function NewSession(props) {
 
 	}, []);
 
+	/* This state holds session information, which will be manipulated by the
+	 * teacher */
 	const [session, setSession] = useState({
 		week: 0,
 		topic: "",
@@ -50,10 +56,13 @@ function NewSession(props) {
 
 	const [attendedList, setAttendedList] = useState([]);
 
+	/* Handles the changes in the input fields */
 	const handleChange = (event) => {
 
 		event.preventDefault();
-
+		/* target holds the field information, like it's value
+		 * and it's name, from which we distinguish which field it is
+		 * */
 		const target = event.target;
 		const name = target.name;
 
@@ -75,10 +84,11 @@ function NewSession(props) {
 			}
 
 		}
-
+		/* This updates only the `name` field of the session */
 		setSession({...session, [name] : target.value});
 	}
 
+	/* handles submitting the session information */
 	const onSubmit = async (event) => {
 		event.preventDefault();
 		if (session.topic === "" ||
@@ -112,7 +122,7 @@ function NewSession(props) {
 			})
 	}
 
-
+	/* Handles submitting the student information to the api */
 	const submitStudents = async (sessionId) => {
 
 		const body = students.map( (student, key) => {
@@ -141,6 +151,8 @@ function NewSession(props) {
 			.catch((err) => console.log(err));
 	};
 
+	/* generates a function for manipulating the correct element in the
+	 * attended list */
 	const functionGenerator = (key) => {
 
 		const changeStudentAttended = (delta) => {
@@ -207,6 +219,7 @@ function NewSession(props) {
 	);
 }
 
+/* Displays a table row that holds information about a student */
 function StudentRow(props){
 	const student = props.student;
 	const callback = props.callback;

@@ -27,6 +27,7 @@ function FileList(props) {
 
 	return (
 		<div className="file-list">
+			<h2>General course files</h2>
 			<ul>
 				{files.map(file => FileListItem(file))}
 			</ul>
@@ -46,4 +47,4 @@ function FileListItem(file) {
 	);
 }
 
-export { FileList };
+export { FileList, FileListItem };

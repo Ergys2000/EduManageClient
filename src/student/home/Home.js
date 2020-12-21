@@ -39,8 +39,9 @@ function Home(props) {
 /* this component is responsible for displaying the school events */
 function Events(props) {
 	const studentId = props.studentId;
-	const [events, setEvents] = useState([]);
 
+	/* Fetch the events from the api */
+	const [events, setEvents] = useState([]);
 	useEffect(() => {
 		const fetchEvents = async () => {
 			const token = sessionStorage.getItem("jwt");
@@ -135,7 +136,8 @@ function CourseRow(props) {
 	const [average, setAverage] = useState(null);
 	const [maxAvg, setMaxAvg] = useState(null);
 	useEffect(() => {
-
+		/* This function calculates the average grade so far 
+		 * and the max. can get grade */
 		const calculateAverages = (grades) => {
 					/* The sum will hold the weighted sum of grades */
 					let sum = 0;

@@ -9,7 +9,6 @@ function Student() {
 	const {id} = useParams();
 	const {path} = useRouteMatch();
 
-
 	return (
 		<div className="StudentPage">
 			<NavBar />
