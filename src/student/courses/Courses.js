@@ -1,30 +1,28 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {Link, Route, Switch, useRouteMatch} from 'react-router-dom';
 import Course from './Course';
 import apiLink from "../../API";
-
+import {StudentContext} from "../Student";
 
 function Courses(props){
 	let {path} = useRouteMatch();
-	const studentId = props.studentId;
 
 	return (
 		<div className="option">
 			<Switch>
 				<Route exact path={`${path}/`} >
-					<CourseList studentId={studentId}/>
+					<CourseList />
 				</Route>
 				<Route path={`${path}/:courseId`} >
-					<Course studentId={studentId}/>
+					<Course />
 				</Route>
 			</Switch>
 		</div>
 	);
 }
 
-
 function CourseList(props){
-	const studentId = props.studentId;
+	const studentId = useContext(StudentContext);
 	const [courses, setCourses] = useState([]);
 	useEffect(async () => {
 		getCourses();

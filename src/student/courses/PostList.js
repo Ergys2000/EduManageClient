@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import apiLink from "../../API";
+import {CourseContext} from './Course';
+import {StudentContext} from '../Student';
 
 function PostList(props){
-	const courseId = props.courseId;
-	const studentId = props.studentId;
+	const course = useContext(CourseContext);
+	const studentId = useContext(StudentContext);
 	const [posts, setPosts] = useState([]);
 
 	useEffect(() => {
@@ -12,7 +14,7 @@ function PostList(props){
 
 			const token = sessionStorage.getItem("jwt");
 			const bearer = 'Bearer ' + token;
-			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}/posts`, {
+			await fetch(`${apiLink}/students/${studentId}/courses/${course.id}/posts`, {
 				headers: {
 					'Authorization': bearer
 				}

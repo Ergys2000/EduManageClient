@@ -1,79 +1,85 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useRouteMatch, Switch, Route, Link, Redirect } from 'react-router-dom';
 import PostList from './PostList';
 import { FileList } from './FileList';
 import { AssignmentList, Assignment } from './Assignments';
-import Grades from '../grades/Grades';
+import Attendance from './Attendance';
+import Grades from './Grades';
 import apiLink from "../../API";
+import { StudentContext } from "../Student";
+
+export const CourseContext = React.createContext({});
 
 function Course(props) {
-	const studentId = props.studentId;
+	const studentId = useContext(StudentContext);
 	const { courseId } = useParams();
 	const { path, url } = useRouteMatch();
+
+	const [course, setCourse] = useState({});
+	useEffect(() => {
+		const fetchCourse = async () => {
+			const token = sessionStorage.getItem("jwt");
+			const bearer = "Bearer " + token;
+			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}`, {
+				headers: {'Authorization': bearer}
+			})
+				.then(res => res.json())
+				.then(res => res.status === "OK" ? res.result : {})
+				.then(course => setCourse(course));
+		}
+		fetchCourse();
+	}, []);
+
 	return (
-		<div className="course">
-			<NavBar courseId={courseId} studentId={studentId} />
-			<Switch>
+		<CourseContext.Provider value={course}>
+			<div className="course">
+				<NavBar />
+				<Switch>
 
-				<Route exact path={`${path}/`}>
-					<Redirect to={`${url}/home`} />
-				</Route>
+					<Route exact path={`${path}/`}>
+						<Redirect to={`${url}/home`} />
+					</Route>
 
-				<Route exact path={`${path}/posts`}>
-					<PostList courseId={courseId} studentId={studentId} />
-				</Route>
+					<Route exact path={`${path}/posts`}>
+						<PostList />
+					</Route>
 
-				<Route exact path={`${path}/assignments`}>
-					<AssignmentList courseId={courseId} studentId={studentId} />
-				</Route>
+					<Route exact path={`${path}/attendance`}>
+						<Attendance />
+					</Route>
 
-				<Route exact path={`${path}/assignments/:assignmentId`}>
-					<Assignment courseId={courseId} studentId={studentId} />
-				</Route>
+					<Route exact path={`${path}/assignments`}>
+						<AssignmentList />
+					</Route>
 
-				<Route exact path={`${path}/files`}>
-					<FileList courseId={courseId} studentId={studentId} />
-				</Route>
+					<Route exact path={`${path}/assignments/:assignmentId`}>
+						<Assignment />
+					</Route>
 
-				<Route exact path={`${path}/grades`}>
-					<Grades studentId={studentId} courseId={courseId} />
-				</Route>
+					<Route exact path={`${path}/files`}>
+						<FileList />
+					</Route>
 
-			</Switch>
-		</div>
+					<Route exact path={`${path}/grades`}>
+						<Grades />
+					</Route>
+
+				</Switch>
+			</div>
+		</CourseContext.Provider>
 	);
 }
 
 function NavBar(props) {
 	const { url } = useRouteMatch();
-	const courseId = props.courseId;
-	const studentId = props.studentId;
-
-	const [courseName, setCourseName] = useState("Course name");
-	useEffect(() => {
-		const fetchCourseName = async () => {
-
-			const token = sessionStorage.getItem("jwt");
-			const bearer = 'Bearer ' + token;
-
-			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}`, {
-				headers: {
-					'Authorization': bearer
-				}
-			})
-				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : null)
-				.then(course => setCourseName(course ? course.name : null));
-		}
-		fetchCourseName();
-	}, []);
+	const course = useContext(CourseContext);
 
 	const [onFocus, setFocus] = useState("home");
 
 
 	return (
 		<div className="navbar">
-			<h1>{courseName}</h1>
+			<h1>{course.name}</h1>
 			<ul>
 				<li>
 					<Link
@@ -109,6 +115,13 @@ function NavBar(props) {
 						className={onFocus === "grades" ? "active" : ""}
 						onClick={() => setFocus("grades")}
 					>Grades</Link>
+				</li>
+				<li>
+					<Link
+						to={`${url}/attendance`}
+						className={onFocus === "attendance" ? "active" : ""}
+						onClick={() => setFocus("attendance")}
+					>Attendance</Link>
 				</li>
 			</ul>
 		</div>

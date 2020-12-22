@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, useRouteMatch, useParams } from 'react-router-dom';
 import apiLink from "../../API";
 import { FileListItem } from "./FileList";
+import { CourseContext } from "./Course";
+import { StudentContext } from "../Student";
 
 /* Displays the list of assignments for this course */
 function AssignmentList(props) {
-	const studentId = props.studentId;
-	const courseId = props.courseId;
-	const [assignments, setAssignments] = useState([]);
+	const studentId = useContext(StudentContext);
+	const course = useContext(CourseContext);
 
+	const [assignments, setAssignments] = useState([]);
 	useEffect(() => {
 		const fetchAssignments = async () => {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = "Bearer " + token;
-			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}/assignments`, {
+			await fetch(`${apiLink}/students/${studentId}/courses/${course.id}/assignments`, {
 				headers: { 'Authorization': bearer }
 			})
 				.then(res => res.json())
@@ -44,33 +46,9 @@ function AssignmentItem(props) {
 
 /* The component that displays the information about an assignment */
 function Assignment(props) {
-	const studentId = props.studentId;
-	const courseId = props.courseId;
+	const studentId = useContext(StudentContext);
+	const course = useContext(CourseContext);
 	const { assignmentId } = useParams();
-
-	/* TODO: Use context api to not have to get the information of the student for
-	 * this */
-	const [fileForm, setFileForm] = useState(null);
-	useEffect(() => {
-		const fetchStudent = async () => {
-			const token = sessionStorage.getItem("jwt");
-			const bearer = "Bearer " + token;
-			await fetch(`${apiLink}/students/${studentId}`, {
-				headers: { 'Authorization': bearer }
-			})
-				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : null)
-				.then(student => {
-					if (student) {
-						setFileForm(
-							<FileForm classInstanceId={student.classInstanceID}
-								studentId={studentId} courseId={courseId} assignmentId={assignmentId} />
-						);
-					}
-				});
-		}
-		fetchStudent();
-	}, []);
 
 	/* The files that the student has uploaded so far */
 	const [files, setFiles] = useState([]);
@@ -79,7 +57,7 @@ function Assignment(props) {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = "Bearer " + token;
 			/* Retrieve them from the correct api endpoint */
-			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}/assignments/${assignmentId}/studentfiles`, {
+			await fetch(`${apiLink}/students/${studentId}/courses/${course.id}/assignments/${assignmentId}/studentfiles`, {
 				headers: { 'Authorization': bearer }
 			})
 				.then(res => res.json())
@@ -97,7 +75,7 @@ function Assignment(props) {
 		const fetchAssignment = async () => {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = "Bearer " + token;
-			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}/assignments/${assignmentId}`, {
+			await fetch(`${apiLink}/students/${studentId}/courses/${course.id}/assignments/${assignmentId}`, {
 				headers: { 'Authorization': bearer }
 			})
 				.then(res => res.json())
@@ -116,7 +94,7 @@ function Assignment(props) {
 		const fetchFiles = async () => {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = "Bearer " + token;
-			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}/assignments/${assignmentId}/files`, {
+			await fetch(`${apiLink}/students/${studentId}/courses/${course.id}/assignments/${assignmentId}/files`, {
 				headers: { "Authorization": bearer }
 			})
 				.then(res => res.json())
@@ -140,7 +118,8 @@ function Assignment(props) {
 				</div>
 				<div className="file-list">
 					<h4>My files</h4>
-					{fileForm}
+					<FileForm classInstanceId={course.classInstanceID}
+						studentId={studentId} courseId={course.id} assignmentId={assignmentId} />
 					<ul>
 						{files.map(file => StudentFile(file))}
 					</ul>

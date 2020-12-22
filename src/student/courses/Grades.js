@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import apiLink from "../../API";
+import {StudentContext} from '../Student';
+import {CourseContext} from './Course';
 
 function Grades(props) {
-	const studentId = props.studentId;
-	const courseId = props.courseId;
+	const course = useContext(CourseContext);
+	const studentId = useContext(StudentContext);
+
     const [grades, setGrades] = useState(null);
     useEffect(() => {
 
 		const getGrades = async () => {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = 'Bearer ' + token;
-			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}/grades`,{
+			await fetch(`${apiLink}/students/${studentId}/courses/${course.id}/grades`,{
 				headers: {
 					'Authorization': bearer
 				}

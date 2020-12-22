@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import apiLink from "../../API";
+import { StudentContext } from "../Student";
+import { CourseContext } from "./Course";
 
 function FileList(props) {
-	const courseId = props.courseId;
-	const studentId = props.studentId;
+	const course = useContext(CourseContext);
+	const studentId = useContext(StudentContext);
 
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
 		const fetchFiles = async () => {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = 'Bearer ' + token;
-			await fetch(`${apiLink}/students/${studentId}/courses/${courseId}/files`, {
+			await fetch(`${apiLink}/students/${studentId}/courses/${course.id}/files`, {
 				headers: {
 					'Authorization': bearer
 				}

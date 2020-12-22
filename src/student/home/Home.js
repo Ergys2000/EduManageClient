@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {useHistory} from 'react-router-dom';
 import apiLink from "../../API";
+import {StudentContext} from "../Student";
 
 function Home(props) {
-	const studentId = props.studentId;
+	const studentId = useContext(StudentContext);
 	/* This state is used to information about the student */
 	const [student, setStudent] = useState(null);
 
@@ -25,9 +26,9 @@ function Home(props) {
 		<div className="option">
 			<h1>Welcome {(student) ? student.firstname : "..."}</h1>
 			<div className="dashboard">
-				<Events studentId = {studentId} />
+				<Events />
 				<div className="personal">
-					<Courses studentId={studentId} />
+					<Courses />
 					<ProfileInfo student={student} />
 				</div>
 			</div>
@@ -38,7 +39,7 @@ function Home(props) {
 
 /* this component is responsible for displaying the school events */
 function Events(props) {
-	const studentId = props.studentId;
+	const studentId = useContext(StudentContext);
 
 	/* Fetch the events from the api */
 	const [events, setEvents] = useState([]);
@@ -86,7 +87,8 @@ function Event(props) {
 
 /* Displayes the list of the courses and the average grade */
 function Courses(props) {
-	const studentId = props.studentId;
+	const studentId = useContext(StudentContext);
+
 	const [courses, setCourses] = useState([]);
 	useEffect(() => {
 		const fetchCourses = async () => {
@@ -119,7 +121,7 @@ function Courses(props) {
 					</tr>
 				</thead>
 				<tbody>
-					{courses.map(course => <CourseRow key={course.id} course={course} studentId={studentId} />)}
+					{courses.map(course => <CourseRow key={course.id} course={course} />)}
 				</tbody>
 			</table>
 		</div>
@@ -128,7 +130,7 @@ function Courses(props) {
 
 /* Responsible for displaying a course in a single row */
 function CourseRow(props) {
-	const studentId = props.studentId;
+	const studentId = useContext(StudentContext);
 	const course = props.course;
 
 	const history = useHistory();
