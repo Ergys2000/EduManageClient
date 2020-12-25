@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, useParams, useRouteMatch, Route, Switch, Redirect } from 'react-router-dom';
 import PostList from './PostList';
 import FileList from './FileList';
@@ -10,64 +10,86 @@ import Grades from './Grades';
 import AddGrades from './AddGrades';
 import Home from './Home';
 import apiLink from "../../API";
+import { TeacherContext } from "../Teacher";
+
+export const CourseContext = React.createContext({});
 
 function Course(props) {
-	const teacherId = props.teacherId;
+	const teacherId = useContext(TeacherContext);
 	const { courseId } = useParams();
 	const { url, path } = useRouteMatch();
+
+	const [course, setCourse] = useState({});
+	useEffect(() => {
+		const token = sessionStorage.getItem("jwt");
+		const bearer = "Bearer " + token;
+		const fetchCourse = async () => {
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}`, {
+				headers: { 'Authorization': bearer }
+			})
+				.then(res => res.json())
+				.then(res => res.status === "OK" ? res.result : {})
+				.then(course => {
+					setCourse(course)
+				});
+		}
+		fetchCourse();
+	}, []);
+
 	return (
-		<div className="course">
+		<CourseContext.Provider value={course}>
+			<div className="course">
 
-			<NavBar courseId={courseId} teacherId={teacherId} />
+				<NavBar courseId={courseId} teacherId={teacherId} />
+				<Switch>
 
-			<Switch>
+					<Route exact path={`${path}/`}>
+						<Redirect to={`${url}/home`} />
+					</Route>
 
-				<Route exact path={`${path}/`}>
-					<Redirect to={`${url}/home`} />
-				</Route>
+					<Route exact path={`${path}/home`}>
+						<Home />
+					</Route>
 
-				<Route exact path={`${path}/home`}>
-					<Home courseId={courseId} teacherId={teacherId} />
-				</Route>
+					<Route exact path={`${path}/posts`}>
+						<PostList />
+					</Route>
 
-				<Route exact path={`${path}/posts`}>
-					<PostList courseId={courseId} teacherId={teacherId} />
-				</Route>
+					<Route exact path={`${path}/assignments`}>
+						<AssignmentList />
+					</Route>
 
-				<Route exact path={`${path}/assignments`}>
-					<AssignmentList courseId={courseId} teacherId={teacherId} />
-				</Route>
+					<Route exact path={`${path}/assignments/:assignmentId`}>
+						<Assignment />
+					</Route>
 
-				<Route exact path={`${path}/assignments/:assignmentId`}>
-					<Assignment courseId={courseId} teacherId={teacherId} />
-				</Route>
+					<Route exact path={`${path}/files`}>
+						<FileList />
+					</Route>
 
-				<Route exact path={`${path}/files`}>
-					<FileList courseId={courseId} teacherId={teacherId} />
-				</Route>
+					<Route exact path={`${path}/attendance`} >
+						<Attendance />
+					</Route>
 
-				<Route exact path={`${path}/attendance`} >
-					<Attendance courseId={courseId} teacherId={teacherId} />
-				</Route>
+					<Route exact path={`${path}/attendance/add`} >
+						<AddSession />
+					</Route>
 
-				<Route exact path={`${path}/attendance/add`} >
-					<AddSession courseId={courseId} teacherId={teacherId} />
-				</Route>
+					<Route path={`${path}/attendance/:sessionId`} >
+						<Session />
+					</Route>
 
-				<Route path={`${path}/attendance/:sessionId`} >
-					<Session courseId={courseId} teacherId={teacherId} />
-				</Route>
+					<Route exact path={`${path}/grades`} >
+						<Grades />
+					</Route>
 
-				<Route exact path={`${path}/grades`} >
-					<Grades courseId={courseId} teacherId={teacherId} />
-				</Route>
+					<Route exact path={`${path}/grades/add`} >
+						<AddGrades />
+					</Route>
 
-				<Route exact path={`${path}/grades/add`} >
-					<AddGrades courseId={courseId} teacherId={teacherId} />
-				</Route>
-
-			</Switch>
-		</div>
+				</Switch>
+			</div>
+		</CourseContext.Provider>
 	);
 }
 

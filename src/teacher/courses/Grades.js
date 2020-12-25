@@ -1,10 +1,12 @@
 import {Link, useRouteMatch} from 'react-router-dom';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import apiLink from "../../API";
+import {TeacherContext} from "../Teacher";
+import {CourseContext} from "./Course";
 
 function StudentList(props) {
-	const courseId = props.courseId;
-	const teacherId = props.teacherId;
+	const course = useContext(CourseContext);
+	const teacherId = useContext(TeacherContext);
 	const {url} = useRouteMatch();
 	const [students, setStudents] = useState([]);
 	useEffect(() => {
@@ -12,7 +14,7 @@ function StudentList(props) {
 		const getCourseGrades = async () => {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = 'Bearer ' + token;
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/grades`, {
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/grades`, {
 				headers: {
 					'Authorization': bearer
 				}

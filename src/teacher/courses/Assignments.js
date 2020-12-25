@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useRouteMatch, useParams } from 'react-router-dom';
 import apiLink from "../../API";
+import {CourseContext} from "./Course";
+import {TeacherContext} from "../Teacher";
 
 /* Displays the list of assignments for this course */
 function AssignmentList(props) {
-	const teacherId = props.teacherId;
-	const courseId = props.courseId;
+	const teacherId = useContext(TeacherContext);
+	const course = useContext(CourseContext);
 	const [assignments, setAssignments] = useState([]);
 
 	useEffect(() => {
 		const fetchAssignments = async () => {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = "Bearer " + token;
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/assignments`, {
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/assignments`, {
 				headers: { 'Authorization': bearer }
 			})
 				.then(res => res.json())
@@ -43,8 +45,8 @@ function AssignmentItem(props) {
 
 /* The component that displays the information about an assignment */
 function Assignment(props) {
-	const teacherId = props.teacherId;
-	const courseId = props.courseId;
+	const teacherId = useContext(TeacherContext);
+	const course = useContext(CourseContext);
 	const { assignmentId } = useParams();
 
 	const [assignment, setAssignment] = useState(null);
@@ -52,7 +54,7 @@ function Assignment(props) {
 		const fetchAssignment = async () => {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = "Bearer " + token;
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/assignments/${assignmentId}`, {
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/assignments/${assignmentId}`, {
 				headers: { 'Authorization': bearer }
 			})
 				.then(res => res.json())
@@ -69,7 +71,7 @@ function Assignment(props) {
 		const fetchFiles = async () => {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = "Bearer " + token;
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/assignments/${assignmentId}/files`,{
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/assignments/${assignmentId}/files`,{
 				headers: {"Authorization": bearer}
 			})
 				.then(res => res.json())
@@ -88,7 +90,7 @@ function Assignment(props) {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = 'Bearer ' + token;
 
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${props.courseId}`, {
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}`, {
 				headers: {
 					'Authorization': bearer
 				}
@@ -120,7 +122,7 @@ function Assignment(props) {
 				</div>
 				<div className="student-files">
 					<h4>Student files</h4>
-					<StudentList courseId={courseId} teacherId={teacherId} assignmentId={assignmentId} />
+					<StudentList courseId={course.id} teacherId={teacherId} assignmentId={assignmentId} />
 				</div>
 			</div>
 		</div>
@@ -209,7 +211,7 @@ function FileForm(props){
 				action={`${apiLink}/files/${classInstanceId}/${courseId}`}
 				encType="multipart/form-data">
 
-				<input name="assignmentID" value={assignmentId} hidden="true" type="text" readOnly="true" />
+				<input name="assignmentID" value={assignmentId} hidden={true} type="text" readOnly={true} />
 				<input name="file" type="file" />
 				<input type="submit" />
 			</form>

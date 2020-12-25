@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {useHistory} from 'react-router-dom';
 import apiLink from "../../API";
 
 function TableContainer(props) {
@@ -43,11 +44,15 @@ function Column(props) {
 	// insert twelve default hours for each day
 	for(let i=0; i<12; i++)
 		hours.push( <TableElement />)
+
 	// fill the hours if they are busy
 	for (let i = 0; i < props.hours.length; i++) {
-		const hour_index = props.hours[i].hour_order - 1;
+		const hour_index = props.hours[i].hour - 1;
 		hours[hour_index] = 
-			<TableElement category={props.hours[i].course_category} name={props.hours[i].course_name} />;
+			<TableElement key={props.hours[i].hour}
+				id={props.hours[i].courseID}
+				category={props.hours[i].course_category}
+				name={props.hours[i].course_name} />;
 	}
 	return (
 		<div className="column">
@@ -57,19 +62,20 @@ function Column(props) {
 	);
 }
 
-
 /* 
  * The single square that holds represents 1 hour 
  * Just takes as an argument a name and category
  */
 function TableElement(props) {
+	/* use the history hook to redirect the user */
+	const history = useHistory();
 	return (
-		<div className="element">
-			<h4>{props.category}</h4>
-			<p>{props.name ? props.name : ""}</p>
+		<div className="element" onClick={() => history.push(`courses/${props.id}`)}>
+			<h4>{props.name}</h4>
 		</div>
 	);
 }
+
 /*
  * the functions that organizes the schedule into day specific
  * hours, so  that they are easier to represents
@@ -92,7 +98,7 @@ function organizeSchedule(schedule_data) {
 		}
 
 		result[currDayIndex].hours[currHourIndex] = {
-			hour_order: row.hour_order,
+			hour: row.hour,
 			course_name: row.course_name,
 			course_category: row.course_category,
 			courseID: row.courseID

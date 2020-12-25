@@ -1,11 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {useHistory, useParams, useRouteMatch, Link} from 'react-router-dom';
+import React, { useEffect, useState, useContext } from 'react';
+import { useHistory, useRouteMatch, Link } from 'react-router-dom';
 import apiLink from "../../API";
+import { TeacherContext } from "../Teacher";
+import { CourseContext } from "./Course";
 
 function Attendance(props) {
-	const teacherId = props.teacherId;
-	const {courseId} = useParams();
-	const {url} = useRouteMatch();
+	const teacherId = useContext(TeacherContext);
+	const course = useContext(CourseContext);
+	const { url } = useRouteMatch();
 
 	const [sessions, setSessions] = useState([]);
 	useEffect(() => {
@@ -13,7 +15,7 @@ function Attendance(props) {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = 'Bearer ' + token;
 
-			fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance`, {
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/attendance`, {
 				headers: {
 					'Authorization': bearer
 				}

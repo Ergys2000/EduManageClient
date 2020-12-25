@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import apiLink from "../../API";
+import {TeacherContext} from "../Teacher";
+import {CourseContext} from "./Course";
 
 function Session(props){
-	const teacherId = props.teacherId;
-    const {sessionId, courseId} = useParams();
+	const teacherId = useContext(TeacherContext);
+	const course = useContext(CourseContext);
+    const {sessionId} = useParams();
     const [students, setStudents] = useState([]);
 
     useEffect(() => {
@@ -12,7 +15,7 @@ function Session(props){
 			const token = sessionStorage.getItem("jwt");
 			const bearer = 'Bearer ' + token;
 
-			fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance/${sessionId}`, {
+			fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/attendance/${sessionId}`, {
 				headers: {
 					'Authorization': bearer
 				}
@@ -39,7 +42,7 @@ function Session(props){
 					</tr>
 				</thead>
 				<tbody>
-					{students.map(student => <StudentRow key={student.id} student={student} teacherId={teacherId}/>)}
+					{students.map(student => <StudentRow key={student.id} student={student} />)}
 				</tbody>
 			</table>
 		</div>
@@ -47,8 +50,12 @@ function Session(props){
 }
 
 function StudentRow(props) {
-	const teacherId = props.teacherId;
-	const {courseId, sessionId} = useParams();
+
+	const teacherId = useContext(TeacherContext);
+	const course = useContext(CourseContext);
+
+	const {sessionId} = useParams();
+
     const [student, setStudent] = useState(props.student);
 
     const incButton = async () => {
@@ -59,7 +66,7 @@ function StudentRow(props) {
 		const token = sessionStorage.getItem("jwt");
 		const bearer = 'Bearer ' + token;
 
-        await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance/${sessionId}/${student.id}`, {
+        await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/attendance/${sessionId}/${student.id}`, {
 
             method: "post",
             headers: {
@@ -85,7 +92,7 @@ function StudentRow(props) {
 		const token = sessionStorage.getItem("jwt");
 		const bearer = 'Bearer ' + token;
 
-        await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance/${sessionId}/${student.id}`, {
+        await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/attendance/${sessionId}/${student.id}`, {
 
             method: "post",
             headers: {

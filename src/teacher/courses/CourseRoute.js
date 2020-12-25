@@ -1,30 +1,29 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {Link, Route, Switch, useRouteMatch} from 'react-router-dom';
 import Course from './Course';
 import apiLink from "../../API";
+import {TeacherContext} from "../Teacher";
 
 
 function Courses(props){
 	let {path} = useRouteMatch();
-	const teacherId = props.teacherId;
 
 	return (
 		<div className="option">
 			<Switch>
 				<Route exact path={`${path}/`} >
-					<CourseList teacherId={teacherId}/>
+					<CourseList />
 				</Route>
 				<Route path={`${path}/:courseId`}>
-					<Course teacherId={teacherId}/>
+					<Course />
 				</Route>
 			</Switch>
 		</div>
 	);
 }
 
-
 function CourseList(props){
-	const teacherId = props.teacherId;
+	const teacherId = useContext(TeacherContext);
 	const [courses, setCourses] = useState([]);
 	useEffect(() => {
 		
@@ -39,7 +38,6 @@ function CourseList(props){
 			})
 			.then(res => res.json())
 			.then(res => {
-				console.log(res);
 				if(res.status === "OK"){
 					setCourses(res.result);
 				}

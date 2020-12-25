@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import apiLink from "../../API";
+import { TeacherContext } from "../Teacher";
+import { CourseContext } from "./Course";
 
-function FileList(props){
-	const teacherId = props.teacherId;
-	const courseId = props.courseId;
+function FileList(props) {
+	const teacherId = useContext(TeacherContext);
+	const course = useContext(CourseContext);
 
 	const [files, setFiles] = useState([]);
 	useEffect(() => {
@@ -11,55 +13,32 @@ function FileList(props){
 			const token = sessionStorage.getItem("jwt");
 			const bearer = 'Bearer ' + token;
 
-			fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/files`, {
-				headers: {
-					'Authorization': bearer
-				}
-			})
-			.then(res => res.json())
-			.then(res => {
-				console.log(res);
-				if(res.status === "OK")
-					setFiles(res.result);
-			});
-		}
-		fetchFiles();
-	}, [])
-
-	const [fileForm , setFileForm] = useState(null);
-	useEffect(() => {
-		const fetchFileForm = async () => {
-			const token = sessionStorage.getItem("jwt");
-			const bearer = 'Bearer ' + token;
-
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${props.courseId}`, {
+			fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/files`, {
 				headers: {
 					'Authorization': bearer
 				}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : null)
-				.then(course => {
-					if(course){
-						setFileForm(<FileForm courseId={course.courseID} classInstanceId={course.classInstanceID}/> );
-					}
-				})
+				.then(res => {
+					if (res.status === "OK")
+						setFiles(res.result);
+				});
 		}
-		fetchFileForm();
-	}, []);
+		fetchFiles();
+	}, [])
 
 
 	return (
 		<div className="file-list">
-			{fileForm}
+			<FileForm classInstanceId={course.classInstanceID} courseId={course.id} />
 			<ul>
-				{files.map(file => FileListItem(file))}
+				{files.map(file => <FileListItem key={file.id} file={file} />)}
 			</ul>
 		</div>
 	);
 }
 
-function FileListItem(file){
+function FileListItem({ file }) {
 	const courseID = file.courseInstanceID;
 	const classInstanceID = file.classInstanceID;
 	const filename = file.filename;
@@ -72,7 +51,7 @@ function FileListItem(file){
 	);
 }
 
-function FileForm({classInstanceId, courseId}){
+function FileForm({ classInstanceId, courseId }) {
 	return (
 		<div className="file-form">
 			<form

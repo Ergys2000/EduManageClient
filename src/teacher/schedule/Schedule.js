@@ -1,11 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import TableContainer from './TableContainer';
+import {TeacherContext} from "../Teacher";
 
 
 function Schedule(props){
+	const teacherId = useContext(TeacherContext);
 	return (
 		<div className="option">
-			<TableContainer teacherId={props.teacherId} />
+			<TableContainer teacherId={teacherId} />
 		</div>
 	);
 }

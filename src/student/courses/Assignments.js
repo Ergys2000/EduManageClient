@@ -113,7 +113,7 @@ function Assignment(props) {
 				<div className="file-list">
 					<h4>Assignment files</h4>
 					<ul>
-						{assignmentFiles.map(file => FileListItem(file))}
+						{assignmentFiles.map(file => <FileListItem key={file.id} file={file} />)}
 					</ul>
 				</div>
 				<div className="file-list">
@@ -121,7 +121,7 @@ function Assignment(props) {
 					<FileForm classInstanceId={course.classInstanceID}
 						studentId={studentId} courseId={course.id} assignmentId={assignmentId} />
 					<ul>
-						{files.map(file => StudentFile(file))}
+						{files.map(file => <StudentFile key={file.id} file={file} />)}
 					</ul>
 				</div>
 			</div>
@@ -130,7 +130,7 @@ function Assignment(props) {
 }
 
 /* Displays a single student file */
-function StudentFile(file) {
+function StudentFile({file}) {
 	const courseID = file.courseInstanceID;
 	const classInstanceID = file.classInstanceID;
 	const studentID = file.studentID;

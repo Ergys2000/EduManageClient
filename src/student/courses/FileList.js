@@ -31,13 +31,13 @@ function FileList(props) {
 		<div className="file-list">
 			<h2>General course files</h2>
 			<ul>
-				{files.map(file => FileListItem(file))}
+				{files.map(file => <FileListItem key={file.id} file={file} />)}
 			</ul>
 		</div>
 	);
 }
 
-function FileListItem(file) {
+function FileListItem({ file }) {
 	const courseID = file.courseInstanceID;
 	const classInstanceID = file.classInstanceID;
 	const filename = file.filename;

@@ -1,5 +1,8 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect, useContext } from 'react';
+import {useHistory} from "react-router-dom";
 import apiLink from "../../API";
+import { TeacherContext } from "../Teacher";
+import { CourseContext } from "./Course";
 
 /* Checks whether a string can be converted to an integer */
 const isNumeric = (string) => {
@@ -8,18 +11,19 @@ const isNumeric = (string) => {
 
 function NewSession(props) {
 
-	const courseId = props.courseId;
-	const teacherId = props.teacherId;
+	const course = useContext(CourseContext);
+	const teacherId = useContext(TeacherContext);
+	const history = useHistory();
 
 	/* Gets the list of students for a course */
 	const [students, setStudents] = useState([]);
-	useEffect( () => {
+	useEffect(() => {
 		const fetchStudents = async () => {
 
 			const token = sessionStorage.getItem("jwt");
 			const bearer = 'Bearer ' + token;
 
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/students`, {
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/students`, {
 				headers: {
 					'Authorization': bearer
 				}
@@ -33,7 +37,7 @@ function NewSession(props) {
 					/* Create an initial array that represents how many hours 
 					 * each student attended */
 					const array = [];
-					for(let i=0; i<students.length; i++){
+					for (let i = 0; i < students.length; i++) {
 						array[i] = 1;
 					}
 					setAttendedList(array);
@@ -68,15 +72,15 @@ function NewSession(props) {
 
 		if (name === "length") {
 
-			if (!isNumeric(target.value)){
+			if (!isNumeric(target.value)) {
 				alert("It should be a number");
 				return;
-			} else if ( parseInt(target.value) > 10) {
-					alert("To big of a length");
-					return;
+			} else if (parseInt(target.value) > 10) {
+				alert("To big of a length");
+				return;
 			} else {
 				const array = [];
-				for(let i=0; i<students.length; i++) {
+				for (let i = 0; i < students.length; i++) {
 					array.push(parseInt(target.value));
 				}
 
@@ -85,7 +89,7 @@ function NewSession(props) {
 
 		}
 		/* This updates only the `name` field of the session */
-		setSession({...session, [name] : target.value});
+		setSession({ ...session, [name]: target.value });
 	}
 
 	/* handles submitting the session information */
@@ -104,9 +108,9 @@ function NewSession(props) {
 
 		const token = sessionStorage.getItem("jwt");
 		const bearer = 'Bearer ' + token;
-		await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance`, {
+		await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/attendance`, {
 			method: 'post',
-            headers: {
+			headers: {
 				'Content-Type': 'application/json',
 				'Authorization': bearer
 			},
@@ -114,7 +118,7 @@ function NewSession(props) {
 		})
 			.then(res => res.json())
 			.then(res => {
-				if (res.status === "OK"){
+				if (res.status === "OK") {
 					// we now use the insertId returned by our request to
 					// insert the students into that session
 					submitStudents(res.result.insertId);
@@ -125,26 +129,27 @@ function NewSession(props) {
 	/* Handles submitting the student information to the api */
 	const submitStudents = async (sessionId) => {
 
-		const body = students.map( (student, key) => {
-			return ({id: student.id, length: attendedList[key]});
+		const body = students.map((student, key) => {
+			return ({ id: student.id, length: attendedList[key] });
 		});
 
 		const token = sessionStorage.getItem("jwt");
 		const bearer = 'Bearer ' + token;
-		await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/attendance/${sessionId}`,{
+		await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/attendance/${sessionId}`, {
 			method: 'post',
-            headers: {
+			headers: {
 				'Content-Type': 'application/json',
 				'Authorization': bearer
 			},
 			body: JSON.stringify(body)
 		})
 			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result: null)
+			.then(res => res.status === "OK" ? res.result : null)
 			.then(result => {
 
-				if(result.affectedRows === students.length){
+				if (result.affectedRows === students.length) {
 					alert("The session was successfully added");
+					history.push(`/t/${teacherId}/courses/${course.id}/attendance`);
 				}
 
 			})
@@ -156,17 +161,17 @@ function NewSession(props) {
 	const functionGenerator = (key) => {
 
 		const changeStudentAttended = (delta) => {
-			
+
 			const newArray = [...attendedList];
 			const newValue = attendedList[key] + delta;
 
-			if(newValue > session.length || newValue < 0) {
+			if (newValue > session.length || newValue < 0) {
 				alert("Number not allowed");
 				return;
 			}
 
 			newArray[key] = newValue;
-			
+
 			setAttendedList(newArray);
 		}
 
@@ -212,7 +217,7 @@ function NewSession(props) {
 					</tr>
 				</thead>
 				<tbody>
-					{students.map( (student, key) => <StudentRow key={key} student={student} length={attendedList[key]} callback={functionGenerator(key)} />)}
+					{students.map((student, key) => <StudentRow key={key} student={student} length={attendedList[key]} callback={functionGenerator(key)} />)}
 				</tbody>
 			</table>
 		</div>
@@ -220,24 +225,24 @@ function NewSession(props) {
 }
 
 /* Displays a table row that holds information about a student */
-function StudentRow(props){
+function StudentRow(props) {
 	const student = props.student;
 	const callback = props.callback;
 
-    return (
-        <tr>
+	return (
+		<tr>
 			<td>{student.id}</td>
-            <td>{student.firstname}</td>
-            <td>{student.lastname}</td>
-            <td>{typeof props.length !== "NaN" ? props.length : "Invalid"}</td>
-            <td>
-                <button onClick={() => callback(-1)}><i className="material-icons">remove</i></button>
-            </td>
-            <td>
-                <button onClick={() => callback(1)}><i className="material-icons">add</i></button>
-            </td>
-        </tr>
-    );
+			<td>{student.firstname}</td>
+			<td>{student.lastname}</td>
+			<td>{typeof props.length !== "NaN" ? props.length : "Invalid"}</td>
+			<td>
+				<button onClick={() => callback(-1)}><i className="material-icons">remove</i></button>
+			</td>
+			<td>
+				<button onClick={() => callback(1)}><i className="material-icons">add</i></button>
+			</td>
+		</tr>
+	);
 }
 
 export default NewSession;

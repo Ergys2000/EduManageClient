@@ -1,9 +1,13 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect, useContext } from 'react';
 import apiLink from "../../API";
+import { useHistory } from 'react-router-dom';
+import { TeacherContext } from "../Teacher";
+import { CourseContext } from "./Course";
 
 function AddGrades(props) {
-	const courseId = props.courseId;
-	const teacherId = props.teacherId;
+	const course = useContext(CourseContext);
+	const teacherId = useContext(TeacherContext);
+	const history = useHistory();
 
 	const [students, setStudents] = useState([]);
 	useEffect(() => {
@@ -11,7 +15,7 @@ function AddGrades(props) {
 
 			const token = sessionStorage.getItem("jwt");
 			const bearer = 'Bearer ' + token;
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/students`, {
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/students`, {
 				headers: {
 					'Authorization': bearer
 				}
@@ -47,7 +51,7 @@ function AddGrades(props) {
 		const target = event.target;
 		const name = target.name;
 
-		setSession({...session, [name]: target.value});
+		setSession({ ...session, [name]: target.value });
 		event.preventDefault();
 	}
 
@@ -60,9 +64,16 @@ function AddGrades(props) {
 			alert("Date is not set or weight is wrong!");
 			return;
 		}
+		/* Creates an array where each element an object with a student id and
+		 * a grade, this array is created from two existing arrays:
+		 *      1. The students array from which we map
+		 *      2. The grades array where grades[i] belongs to students[i]
+		 *          
+		 * */
 		const studentGradeList = students.map((student, key) => {
-			return {id: student.id, grade: grades[key]};
+			return { id: student.id, grade: grades[key] };
 		});
+		/* Creates the body of the post request */
 		const body = {
 			weight: session.weight,
 			date: session.date,
@@ -71,7 +82,7 @@ function AddGrades(props) {
 
 		const token = sessionStorage.getItem("jwt");
 		const bearer = "Bearer " + token;
-		await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}/grades`, {
+		await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/grades`, {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json',
@@ -81,12 +92,17 @@ function AddGrades(props) {
 		})
 			.then(res => res.json())
 			.then(res => res.status === "OK" ? res.result : res.message)
-			.then(result => console.log(result))
+			.then(result => {
+				if (result.affectedRows === students.length) {
+					alert("Grades were added successfully!");
+					history.push(`/t/${teacherId}/courses/${course.id}/grades`);
+				}
+			})
 			.catch((err) => console.log(err));
 	}
 
 	// creates a different callback function for each student row
-	// to modify itself
+	// to modify it's own grade via the two buttons provided 
 	const functionGenerator = (key) => {
 
 		const callback = (delta) => {

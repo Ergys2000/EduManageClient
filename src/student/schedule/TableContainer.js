@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import apiLink from "../../API";
 
+/* The component which displays the whole table */
 function TableContainer(props) {
 	const studentId = props.studentId;
 	const [days, setDays] = useState([]);
@@ -21,7 +22,7 @@ function TableContainer(props) {
 				.then(schedule => {
 					const days = [];
 					for (let i = 0; i < schedule.length; i++) {
-						days[i] = <Column key={schedule[i].id} title={schedule[i].name} hours={schedule[i].hours} />
+						days[i] = <Column key={schedule[i].day} title={schedule[i].name} hours={schedule[i].hours} />
 					}
 					setDays(days);
 				});
@@ -50,10 +51,12 @@ function Column(props) {
 	for (let i = 0; i < props.hours.length; i++) {
 		// the hour index is the hour in each row of the returned data.
 		const hour_index = props.hours[i].hour - 1;
-		hours[hour_index] = <TableElement key={props.hours[i].id}
-			id={props.hours[i].courseID}
-			category={props.hours[i].course_category}
-			name={props.hours[i].course_name} />;
+		hours[hour_index] =
+			<TableElement
+				key={hour_index}
+				id={props.hours[i].courseID}
+				category={props.hours[i].course_category}
+				name={props.hours[i].course_name} />;
 	}
 	return (
 		<div className="column">
@@ -76,12 +79,15 @@ function TableElement(props) {
 
 // this function is used to organize the schedule data into day specific data
 function organizeSchedule(schedule_data) {
+
 	let result = []; // the final result
 	// the below variables determine where a new hour will be inserted
 	let currDayIndex = -1, currHourIndex = 0;
+
 	// lastDayName represents the name of the last day we were adding into
 	// we use it to determine when we need to insert hours into another day
 	let lastDayName = "";
+
 	for (let i = 0; i < schedule_data.length; i++) {
 
 		let row = schedule_data[i];
@@ -93,7 +99,7 @@ function organizeSchedule(schedule_data) {
 			currDayIndex++;
 			currHourIndex = 0;
 			// initialize the day object in the correct index
-			result[currDayIndex] = { name: lastDayName, hours: [] };
+			result[currDayIndex] = { name: lastDayName, hours: [], day: row.day };
 		}
 
 		result[currDayIndex].hours[currHourIndex] = {
@@ -114,7 +120,7 @@ function Timeline(props) {
 	const start = 8;
 
 	for (let i = 0; i < 12; i++) {
-		timestamps.push(<div className="element">{start + i}:00</div>)
+		timestamps.push(<div key={i} className="element">{start + i}:00</div>)
 	}
 
 	return (
