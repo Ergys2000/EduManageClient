@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useHistory }  from 'react-router-dom';
 import apiLink from "../../API";
 import { TeacherContext } from "../Teacher";
 
@@ -89,11 +90,12 @@ function Event(props) {
 /* Displays profile information about the teacher */
 function ProfileInfo(props) {
 	const teacher = props.teacher ? props.teacher : {};
+	const history = useHistory();
 	return (
 		<div className="profile">
 			<div className="head">
 				<h3>Profile information</h3>
-				<button>Update</button>
+				<button onClick={() => history.push('home/profile')}>Update</button>
 			</div>
 			<div className="labels">
 				<p>Name: </p>

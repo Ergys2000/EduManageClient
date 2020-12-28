@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import apiLink from "../../API";
+import { organizeSchedule } from '../../Utils';
 
 function TableContainer(props) {
 	const [days, setDays] = useState([]);
@@ -74,39 +75,6 @@ function TableElement(props) {
 			<h4>{props.name}</h4>
 		</div>
 	);
-}
-
-/*
- * the functions that organizes the schedule into day specific
- * hours, so  that they are easier to represents
-*/
-function organizeSchedule(schedule_data) {
-	let result = [];
-	// dayIndex tells us on which day we are inserting
-	// hourIndex tells us on which hour we are inserting
-	let currDayIndex = -1, currHourIndex = 0;
-	let lastDayName = "";
-	for (let i = 0; i < schedule_data.length; i++) {
-
-		let row = schedule_data[i];
-
-		if (lastDayName !== row.day_name) {
-			lastDayName = row.day_name;
-			currDayIndex++;
-			currHourIndex = 0;
-			result[currDayIndex] = {name: lastDayName, hours: []};
-		}
-
-		result[currDayIndex].hours[currHourIndex] = {
-			hour: row.hour,
-			course_name: row.course_name,
-			course_category: row.course_category,
-			courseID: row.courseID
-		};
-
-		currHourIndex++;
-	}
-	return result;
 }
 
 /* 

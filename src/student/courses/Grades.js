@@ -7,7 +7,7 @@ function Grades(props) {
 	const course = useContext(CourseContext);
 	const studentId = useContext(StudentContext);
 
-	const [grades, setGrades] = useState(null);
+	const [grades, setGrades] = useState([]);
 	useEffect(() => {
 
 		const getGrades = async () => {
@@ -21,9 +21,7 @@ function Grades(props) {
 				.then(res => res.json())
 				.then(res => {
 					if (res.status === "OK") {
-						const organized_grades = organize(res.result);
-						const gradeHolders = organized_grades.map(course => <CourseItem course={course} />);
-						setGrades(gradeHolders);
+						setGrades(res.result);
 					}
 				});
 		}
@@ -34,21 +32,18 @@ function Grades(props) {
 
 	return (
 		<div className="option">
-			<h1>Grades</h1>
 			<div className="course-container">
-				{grades ? grades : "Getting grades"}
+				<CourseItem grades={grades} />
 			</div>
 		</div>
 	);
 }
 
-function CourseItem({ course }) {
-	const name = course.courseName;
-	const grades = course.grades.map(grade => <GradeRow key={grade.id} grade={grade} />);
+function CourseItem({ grades }) {
 	return (
 		<div className="Course-Item">
 			<div className="head">
-				<h4>{name}</h4>
+				<h4>{grades[0] ? grades[0].name : ""}</h4>
 			</div>
 			<div className="body">
 				<table className="table">
@@ -60,7 +55,7 @@ function CourseItem({ course }) {
 						</tr>
 					</thead>
 					<tbody>
-						{grades}
+						{grades.map(grade => <GradeRow key={grade.id} grade={grade} />)}
 					</tbody>
 				</table>
 			</div>
@@ -76,31 +71,6 @@ function GradeRow({ grade }) {
 			<td>{grade.date}</td>
 		</tr>
 	);
-}
-
-// this function organizes the list of grades in course specific grades
-// the time complexity is O(n)
-function organize(grades) {
-	let result = [];
-	let lastID = -1; // holds the last courseID encountered in the list
-	let currPosition = -1; // holds the current position in terms of different courses
-
-	for (let i = 0; i < grades.length; i++) {
-
-		const currGrade = grades[i];
-
-		if (lastID !== currGrade.courseID) { // if the id of the course has changed
-			currPosition++; // increment the currPosition
-			lastID = currGrade.courseID; //set the id to this one
-			// add a new course in the result
-			result[currPosition] = {
-				courseName: currGrade.name,
-				grades: []
-			};
-		}
-		result[currPosition].grades.push(currGrade);
-	}
-	return result;
 }
 
 export default Grades;

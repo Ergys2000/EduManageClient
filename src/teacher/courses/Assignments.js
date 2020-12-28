@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useRouteMatch, useParams } from 'react-router-dom';
 import apiLink from "../../API";
-import {CourseContext} from "./Course";
-import {TeacherContext} from "../Teacher";
+import { CourseContext } from "./Course";
+import { TeacherContext } from "../Teacher";
+import { organizeStudents } from '../../Utils';
 
 /* Displays the list of assignments for this course */
 function AssignmentList(props) {
@@ -49,6 +50,10 @@ function Assignment(props) {
 	const course = useContext(CourseContext);
 	const { assignmentId } = useParams();
 
+	/* Used to update the assignment page after a file upload */
+	const [shouldUpdate, setShouldUpdate] = useState(0);
+
+	/* Used to get infomation about the assignment */
 	const [assignment, setAssignment] = useState(null);
 	useEffect(() => {
 		const fetchAssignment = async () => {
@@ -64,15 +69,16 @@ function Assignment(props) {
 				});
 		}
 		fetchAssignment();
-	}, []);
+	}, [shouldUpdate]);
 
+	/* used to get the assignment files */
 	const [assignmentFiles, setAssignmentFiles] = useState([]);
 	useEffect(() => {
 		const fetchFiles = async () => {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = "Bearer " + token;
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/assignments/${assignmentId}/files`,{
-				headers: {"Authorization": bearer}
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/assignments/${assignmentId}/files`, {
+				headers: { "Authorization": bearer }
 			})
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : [])
@@ -81,32 +87,10 @@ function Assignment(props) {
 				});
 		}
 		fetchFiles();
-	}, []);
+	}, [shouldUpdate]);
 
-	// TODO: get the id of the class to set up the file upload
-	const [fileForm , setFileForm] = useState(null);
-	useEffect(() => {
-		const fetchFileForm = async () => {
-			const token = sessionStorage.getItem("jwt");
-			const bearer = 'Bearer ' + token;
-
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}`, {
-				headers: {
-					'Authorization': bearer
-				}
-			})
-				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : null)
-				.then(course => {
-					if(course){
-						setFileForm(<FileForm courseId={course.courseID} assignmentId={assignmentId} classInstanceId={course.classInstanceID}/> );
-					}
-				})
-		}
-		fetchFileForm();
-	}, []);
-
-
+	/* This function makes the assignment page update */
+	const update = () => setShouldUpdate(shouldUpdate + 1);
 
 	return (
 		<div className="assignment">
@@ -115,7 +99,11 @@ function Assignment(props) {
 			<div className="files">
 				<div className="file-list">
 					<h4>Assignment files</h4>
-					{fileForm}
+					<FileForm 
+						updateCallback={update}
+						courseId={course.courseID} 
+						assignmentId={assignmentId} 
+						classInstanceId={course.classInstanceID} />
 					<ul>
 						{assignmentFiles.map(file => <FileItem file={file} />)}
 					</ul>
@@ -200,13 +188,31 @@ function FileItem({ file }) {
 }
 
 /* Handles uploading a file */
-function FileForm(props){
+function FileForm(props) {
 	const assignmentId = props.assignmentId;
 	const classInstanceId = props.classInstanceId;
 	const courseId = props.courseId;
+
+	const onSubmit = async (event) => {
+		event.preventDefault();
+		const form = event.target;
+		const formData = new FormData(form);
+		await fetch(`${apiLink}/files/${classInstanceId}/${courseId}`,{
+			method: 'post',
+			body: formData
+		})
+			.then(res => res.json())
+			.then(res => {
+				alert(res.message);
+				props.updateCallback();
+			})
+			.catch(err => console.log(err));
+	}
+
 	return (
 		<div className="file-form">
 			<form
+				onSubmit={onSubmit}
 				method="post"
 				action={`${apiLink}/files/${classInstanceId}/${courseId}`}
 				encType="multipart/form-data">
@@ -219,34 +225,4 @@ function FileForm(props){
 	);
 }
 
-/* organizes the list of files received from the api 
- * into a list of student objects, each containing a list of files
- * */
-const organizeStudents = (studentFiles) => {
-	const result = [];/* The final result */
-	/* Keeps track of the current student id */
-	let lastStudentId = -1;
-	/* Keeps track of the current student index */
-	let currStudent = -1;
-	for (let i = 0; i < studentFiles.length; i++) {
-		const studentFile = studentFiles[i];
-
-		/* If the file belongs to a new student this means that
-		 * we now have to create a new student object*/
-		if (studentFile.studentID != lastStudentId) {
-			lastStudentId = studentFile.studentID;
-			currStudent++;
-			result[currStudent] = {
-				id: studentFile.studentID,
-				firstname: studentFile.firstname,
-				lastname: studentFile.lastname,
-				files: []
-			}
-		}
-
-		result[currStudent].files.push(studentFile);
-	}
-	return result;
-}
-
-export {AssignmentList, Assignment};
+export { AssignmentList, Assignment };

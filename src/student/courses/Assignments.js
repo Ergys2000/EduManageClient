@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Link, useRouteMatch, useParams } from 'react-router-dom';
+import { Link, useRouteMatch, useParams, useHistory } from 'react-router-dom';
 import apiLink from "../../API";
 import { FileListItem } from "./FileList";
 import { CourseContext } from "./Course";
@@ -40,6 +40,7 @@ function AssignmentItem(props) {
 	return (
 		<div className="assignment">
 			<Link to={`${url}/${props.assignment.id}`}>{props.assignment.title}</Link>
+			<p>Due: {props.assignment.due}</p>
 		</div>
 	);
 }
@@ -49,6 +50,8 @@ function Assignment(props) {
 	const studentId = useContext(StudentContext);
 	const course = useContext(CourseContext);
 	const { assignmentId } = useParams();
+
+	const [shouldUpdate, setShouldUpdate] = useState(0);
 
 	/* The files that the student has uploaded so far */
 	const [files, setFiles] = useState([]);
@@ -67,7 +70,7 @@ function Assignment(props) {
 				});
 		}
 		fetchFiles();
-	}, []);
+	}, [shouldUpdate]);
 
 	/* Holds the information about the assignment, like title and description */
 	const [assignment, setAssignment] = useState(null);
@@ -85,7 +88,7 @@ function Assignment(props) {
 				});
 		}
 		fetchAssignment();
-	}, []);
+	}, [shouldUpdate]);
 
 	/* Holds the list of files included in this assignment, like the test that
 	 * you have to solve*/
@@ -102,8 +105,9 @@ function Assignment(props) {
 				.then(files => setAssignmentFiles(files));
 		}
 		fetchFiles();
-	}, []);
+	}, [shouldUpdate]);
 
+	const update = () => setShouldUpdate(shouldUpdate+1);
 
 	return (
 		<div className="assignment">
@@ -118,8 +122,12 @@ function Assignment(props) {
 				</div>
 				<div className="file-list">
 					<h4>My files</h4>
-					<FileForm classInstanceId={course.classInstanceID}
-						studentId={studentId} courseId={course.id} assignmentId={assignmentId} />
+					<FileForm 
+						classInstanceId={course.classInstanceID}
+						studentId={studentId} 
+						courseId={course.id} 
+						updateCallback={update}
+						assignmentId={assignmentId} />
 					<ul>
 						{files.map(file => <StudentFile key={file.id} file={file} />)}
 					</ul>
@@ -145,17 +153,35 @@ function StudentFile({file}) {
 
 /* Handles uploading a file to the server */
 function FileForm(props) {
+
 	const classInstanceId = props.classInstanceId;
 	const studentId = props.studentId;
 	const courseId = props.courseId;
 	const assignmentId = props.assignmentId;
+
+	const onSubmit = async (event) => {
+		event.preventDefault();
+		const form = event.target;
+		const formData = new FormData(form);
+		await fetch(`${apiLink}/files/${classInstanceId}/${courseId}/${studentId}`,{
+			method: 'post',
+			body: formData
+		})
+			.then(res => res.json())
+			.then(res => {
+				alert(res.message);
+				props.updateCallback();
+			})
+			.catch(err => console.log(err));
+	}
 	return (
 		<form
+			onSubmit={onSubmit}
 			action={`${apiLink}/files/${classInstanceId}/${courseId}/${studentId}`}
 			method="post"
 			encType="multipart/form-data">
 
-			<input name="assignmentID" value={assignmentId} hidden="true" type="text" readOnly="true" />
+			<input name="assignmentID" value={assignmentId} hidden={true} type="text" readOnly={true} />
 			<input name="file" type="file" />
 			<input type="submit" />
 

@@ -1,4 +1,9 @@
 @import 'components/_colors.scss';
+@import 'components/sidenav';
+@import 'components/schedule';
+@import 'components/courses';
+@import 'components/home';
+
 .app{
 	margin: 0;
 	padding: 0;
@@ -12,11 +17,7 @@
 }
 
 .StudentPage{
-	@import 'components/sidenav';
-	@import 'components/schedule';
-	@import 'components/courses';
 	@import 'components/grades';
-	@import 'components/home';
 	position: absolute;
 	min-height: 100%;
 	min-width: 100%;
@@ -25,13 +26,10 @@
 	padding: 0;
     text-align: center;
 }
+
 .TeacherPage{
-	@import 'components/sidenav';
-	@import 'components/schedule';
-	@import 'components/courses';
 	@import 'components/teacher-grades';
 	@import 'components/session';
-	@import 'components/home';
 	position: absolute;
 	min-height: 100%;
 	min-width: 100%;

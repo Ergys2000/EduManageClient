@@ -185,7 +185,7 @@ function CourseRow(props) {
 	}, []);
 
 	const onClick = () => {
-		history.push(`courses/${course.id}`);
+		history.push(`/s/${studentId}/courses/${course.id}`);
 	}
 	return (
 		<tr onClick={onClick}>
@@ -199,18 +199,19 @@ function CourseRow(props) {
 /* Displays profile information about the student */
 function ProfileInfo(props) {
 	const student = props.student ? props.student : {};
+	const history = useHistory();
 	return (
 		<div className="profile">
 			<div className="head">
 				<h3>Profile information</h3>
-				<button>Update</button>
+				<button onClick={() => history.push(`home/profile`)}>Update</button>
 			</div>
 			<div className="labels">
-				<p>Name: </p>
-				<p>Surname: </p>
+				<p>Firstname: </p>
+				<p>Lastname: </p>
 				<p>Email: </p>
 				<p>Address: </p>
-				<p>Number: </p>
+				<p>Phone Number: </p>
 				<p>Age: </p>
 				<p>Gender: </p>
 				<p>Nationality: </p>
@@ -220,7 +221,7 @@ function ProfileInfo(props) {
 				<p>{student.lastname}</p>
 				<p>{student.email}</p>
 				<p>{student.address}</p>
-				<p>{student.number}</p>
+				<p>{student.phone}</p>
 				<p>{student.age}</p>
 				<p>{student.gender}</p>
 				<p>{student.nationality}</p>

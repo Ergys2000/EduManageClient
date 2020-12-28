@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import apiLink from "../../API";
+import {organizeSchedule} from '../../Utils';
 
 /* The component which displays the whole table */
 function TableContainer(props) {
@@ -75,43 +76,6 @@ function TableElement(props) {
 			<h4>{props.name}</h4>
 		</div>
 	);
-}
-
-// this function is used to organize the schedule data into day specific data
-function organizeSchedule(schedule_data) {
-
-	let result = []; // the final result
-	// the below variables determine where a new hour will be inserted
-	let currDayIndex = -1, currHourIndex = 0;
-
-	// lastDayName represents the name of the last day we were adding into
-	// we use it to determine when we need to insert hours into another day
-	let lastDayName = "";
-
-	for (let i = 0; i < schedule_data.length; i++) {
-
-		let row = schedule_data[i];
-
-		// if the day name has changed
-		if (lastDayName !== row.day_name) {
-			// modify and increment the variables
-			lastDayName = row.day_name;
-			currDayIndex++;
-			currHourIndex = 0;
-			// initialize the day object in the correct index
-			result[currDayIndex] = { name: lastDayName, hours: [], day: row.day };
-		}
-
-		result[currDayIndex].hours[currHourIndex] = {
-			hour: row.hour,
-			course_name: row.course_name,
-			course_category: row.course_category,
-			courseID: row.courseID
-		};
-
-		currHourIndex++;
-	}
-	return result;
 }
 
 function Timeline(props) {

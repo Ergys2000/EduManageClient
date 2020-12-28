@@ -5,6 +5,7 @@ import Schedule from './schedule/Schedule';
 import Courses from './courses/CourseRoute';
 import Class from './Class';
 import Home from './home/Home';
+import Profile from './home/Profile';
 
 export const TeacherContext = React.createContext(null);
 
@@ -19,8 +20,11 @@ function Teacher() {
 					<Route exact path={`${match.path}/`}>
 						<Redirect to={`${match.url}/home`} />
 					</Route>
-					<Route path={`${match.path}/home`}>
+					<Route exact path={`${match.path}/home`}>
 						<Home teacherId={id} />
+					</Route>
+					<Route exact path={`${match.path}/home/profile`}>
+						<Profile />
 					</Route>
 					<Route path={`${match.path}/class`}>
 						<Class />

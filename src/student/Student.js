@@ -1,15 +1,16 @@
 import React from 'react';
-import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
+import { Route, Switch, Redirect, useParams, useRouteMatch } from 'react-router-dom';
 import NavBar from './NavBar';
 import Home from './home/Home';
 import Schedule from './schedule/Schedule';
 import Courses from './courses/Courses';
+import Profile from './home/Profile';
 
 export const StudentContext = React.createContext(null);
 
 function Student() {
 	const { id } = useParams();
-	const { path } = useRouteMatch();
+	const { url, path } = useRouteMatch();
 
 	return (
 		<StudentContext.Provider value={id}>
@@ -21,11 +22,15 @@ function Student() {
 					</Route>
 
 					<Route exact path={`${path}/`}>
-						<Home />
+						<Redirect to={`${url}/home`} />
 					</Route>
 
 					<Route exact path={`${path}/home`}>
 						<Home />
+					</Route>
+
+					<Route exact path={`${path}/home/profile`}>
+						<Profile />
 					</Route>
 
 					<Route exact path={`${path}/schedule`}>
