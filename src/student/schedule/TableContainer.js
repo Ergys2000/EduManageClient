@@ -71,8 +71,16 @@ function Column(props) {
 function TableElement(props) {
 	/* use the history hook to redirect the user */
 	const history = useHistory();
+
+	/* Use use this variable to make the element clickable if it is not empty */
+	const clickable = props.id ? "clickable" : "";
+	const onClick = () => {
+		if(props.id && props.name) {
+			history.push(`courses/${props.id}`);
+		}
+	}
 	return (
-		<div className="element" onClick={() => history.push(`courses/${props.id}`)}>
+		<div className={"element " + clickable} onClick={onClick}>
 			<h4>{props.name}</h4>
 		</div>
 	);

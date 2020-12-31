@@ -9,8 +9,10 @@ import { organizeStudents } from '../../Utils';
 function AssignmentList(props) {
 	const teacherId = useContext(TeacherContext);
 	const course = useContext(CourseContext);
-	const [assignments, setAssignments] = useState([]);
 
+	const [shouldUpdate, setShouldUpdate] = useState(0);
+
+	const [assignments, setAssignments] = useState([]);
 	useEffect(() => {
 		const fetchAssignments = async () => {
 			const token = sessionStorage.getItem("jwt");
@@ -25,11 +27,13 @@ function AssignmentList(props) {
 				})
 		}
 		fetchAssignments();
-	}, []);
+	}, [teacherId, course.id, shouldUpdate]);
+
+	const update = () => setShouldUpdate(shouldUpdate + 1);
 
 	return (
 		<div className="assignment-list">
-			<AssignmentForm />
+			<AssignmentForm updateCallback={update} />
 			{assignments.map(a => <AssignmentItem key={a.id} assignment={a} />)}
 		</div>
 	);
@@ -92,6 +96,8 @@ function AssignmentForm(props) {
 			.then(res => {
 				if(res.status === "OK") {
 					alert("Assignment added successfully!");
+					/* This function updates the assignment list */
+					props.updateCallback();
 				} else {
 					alert("Could not add assignment!");
 				}

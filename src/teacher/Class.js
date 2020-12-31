@@ -1,25 +1,16 @@
 import { useState, useEffect, useContext } from 'react';
 import { useParams, Link, Switch, useRouteMatch, Route } from 'react-router-dom';
-import Attendance from './courses/Attendance';
-import Session from './courses/AttendanceSession';
 import apiLink from "../API";
-import {TeacherContext} from "./Teacher";
+import { TeacherContext } from "./Teacher";
 import { organizeGrades } from '../Utils';
 
 function Class(props) {
 	const { path } = useRouteMatch();
-	const teacherId = useContext(TeacherContext);
 	return (
 		<div className="option">
 			<Switch>
 				<Route exact path={`${path}/`}>
 					<CourseList />
-				</Route>
-				<Route exact path={`${path}/:courseId/attendance`}>
-					<Attendance teacherId={teacherId}/>
-				</Route>
-				<Route exact path={`${path}/:courseId/attendance/:sessionId`}>
-					<Session teacherId={teacherId} />
 				</Route>
 				<Route exact path={`${path}/:courseId/grades`}>
 					<StudentList />
@@ -30,8 +21,9 @@ function Class(props) {
 }
 
 function CourseList(props) {
-	const [courses, setCourses] = useState([]);
 	const teacherId = useContext(TeacherContext);
+
+	const [courses, setCourses] = useState([]);
 	useEffect(() => {
 		const fetchCourses = async () => {
 			const token = sessionStorage.getItem("jwt");
@@ -48,10 +40,10 @@ function CourseList(props) {
 				});
 		}
 		fetchCourses();
-	}, []);
+	}, [teacherId]);
 	return (
 		<div className="Course-List">
-			{courses.map(x => CourseListItem({ course: x }))}
+			{courses.map(x => <CourseListItem key={x.id} course={x} />)}
 		</div>
 	);
 }
@@ -66,10 +58,6 @@ function CourseListItem(props) {
 			</div>
 
 			<div className="Course-Body">
-				<Link to={`${url}/${props.course.id}/attendance`}>
-					<i className="material-icons">chevron_right</i>
-					<p>Attendance</p>
-				</Link>
 				<Link to={`${url}/${props.course.id}/grades`}>
 					<i className="material-icons">chevron_right</i>
 					<p>Grades</p>
@@ -82,12 +70,13 @@ function CourseListItem(props) {
 }
 
 function StudentList(props) {
+
 	const teacherId = useContext(TeacherContext);
 
 	const { courseId } = useParams();
 
 	const [students, setStudents] = useState([]);
-	useEffect(async () => {
+	useEffect(() => {
 		const fetchCourseGrades = async () => {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = 'Bearer ' + token;
@@ -106,8 +95,10 @@ function StudentList(props) {
 					setStudents(elements);
 				});
 		}
+
 		fetchCourseGrades();
-	}, []);
+
+	}, [teacherId, courseId]);
 
 	return (
 		<div className="student-list">
@@ -116,7 +107,6 @@ function StudentList(props) {
 	);
 }
 
-// TODO display the grades of each student
 function Grades(props) {
 	const [hidden, setHidden] = useState(true);
 

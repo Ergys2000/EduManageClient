@@ -3,6 +3,7 @@
 	flex-direction: row;
 	justify-content: center;
 }
+
 .timeline-column{
 	margin-top: 70px;
 	.element{
@@ -11,6 +12,7 @@
 		margin-bottom: 20px;
 	}
 }
+
 .column{
 	h2{
 		margin-right: 10px;
@@ -36,6 +38,10 @@
 	.element:nth-child(even){
 		background-color: $secondary;
 		color: $onSecondary;
+	}
+	.clickable:hover {
+		background-color: $primary;
+		color: $onPrimary;
 	}
 
 }
