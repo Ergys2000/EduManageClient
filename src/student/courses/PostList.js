@@ -27,19 +27,20 @@ function PostList(props) {
 				.then(res => res.json())
 				.then(res => {
 					if (res.status === "OK") {
-						const posts = res.result.map(post => <PostItem key={post.id} post={post} />);
-						setPosts(posts);
+						setPosts(res.result);
+					} else {
+						alert(res.message);
 					}
 				});
 		}
 
 		fetchPosts();
-	}, [shouldUpdate]);
+	}, [shouldUpdate, course.id, studentId]);
 
 	return (
 		<div className="post-list">
 			<PostForm updateCallback={() => setShouldUpdate(shouldUpdate + 1)} />
-			{posts}
+			{posts.map(post => <PostItem key={post.id} post={post} />)}
 		</div>
 	);
 }
@@ -64,9 +65,11 @@ function PostForm(props) {
 	const studentId = useContext(StudentContext);
 	const course = useContext(CourseContext);
 
+	const [shown, setShown] = useState(false);
+
 	const [post, setPost] = useState({
-		title: "Post title",
-		body: "Post body"
+		title: "",
+		body: ""
 	});
 
 	const handleChange = (event) => {
@@ -104,19 +107,38 @@ function PostForm(props) {
 			.then(res => res.json())
 			.then(res => res.status === "OK" ? res.result : null)
 			.then(result => {
-				alert("Post added successfully!");
-				updatePostList();
+				if (result) {
+					alert("Post added successfully!");
+					updatePostList();
+					setShown(false);
+				} else {
+					alert(result);
+				}
 			}).catch(err => console.log(err));
 	}
+
+	const cancel = (event) => {
+		event.preventDefault();
+		setShown(false);
+	}
 	return (
-		<form onSubmit={onSubmit}>
-			<input type="text" onChange={handleChange} name="title" placeholder="Post title" value={post.title} />
-			<br />
-			<textarea onChange={handleChange} name="body" rows="10" cols="30" value={post.body} />
-			<br />
-			<input type="submit" />
-		</form>
+		<div className="post-form">
+			<button onClick={() => setShown(true)} className={shown ? "hidden" : "shown"} >Post</button>
+			<form onSubmit={onSubmit} className={shown ? "shown" : "hidden"}>
+				<label>
+					Title<br/>
+					<input type="text" onChange={handleChange} name="title" placeholder="Post title" value={post.title} />
+				</label>
+				<label>
+					Body<br/>
+					<textarea onChange={handleChange} name="body" rows="10" cols="30" placeholder="Post body" value={post.body} />
+				</label>
+				<button type="submit">Add post</button>
+				<button onClick={cancel}>Cancel</button>
+			</form>
+		</div>
 	);
 
 }
+
 export default PostList;

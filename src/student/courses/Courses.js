@@ -24,7 +24,7 @@ function Courses(props) {
 function CourseList(props) {
 	const [courses, setCourses] = useState([]);
 	const studentId = useContext(StudentContext);
-	useEffect(async () => {
+	useEffect(() => {
 		const fetchCourses = async () => {
 
 			const token = sessionStorage.getItem("jwt");
@@ -57,7 +57,7 @@ function CourseListItem(props) {
 		<div className="Course-Info-Item">
 
 			<div className="Course-Header">
-				<Link to={`${url}/${props.course.id}`}>{props.course.name}</Link>
+				<Link to={`${url}/${props.course.id}/posts`}>{props.course.name}</Link>
 			</div>
 
 			<div className="Course-Body">

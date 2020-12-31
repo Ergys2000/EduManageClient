@@ -7,8 +7,7 @@ import Attendance from './Attendance';
 import Session from './AttendanceSession';
 import AddSession from './AddSession';
 import Grades from './Grades';
-import AddGrades from './AddGrades';
-import Home from './Home';
+import AddGrades, { AddSingleGrade } from './AddGrades';
 import apiLink from "../../API";
 import { TeacherContext } from "../Teacher";
 
@@ -44,15 +43,15 @@ function Course(props) {
 				<Switch>
 
 					<Route exact path={`${path}/`}>
-						<Redirect to={`${url}/home`} />
-					</Route>
-
-					<Route exact path={`${path}/home`}>
-						<Home />
+						<Redirect to={`${url}/posts`} />
 					</Route>
 
 					<Route exact path={`${path}/posts`}>
 						<PostList />
+					</Route>
+
+					<Route exact path={`${path}/assignments`}>
+						<AssignmentList />
 					</Route>
 
 					<Route exact path={`${path}/assignments`}>
@@ -87,6 +86,10 @@ function Course(props) {
 						<AddGrades />
 					</Route>
 
+					<Route exact path={`${path}/grades/addsingle`} >
+						<AddSingleGrade />
+					</Route>
+
 				</Switch>
 			</div>
 		</CourseContext.Provider>
@@ -94,42 +97,16 @@ function Course(props) {
 }
 
 function NavBar(props) {
-	const courseId = props.courseId;
-	const teacherId = props.teacherId;
+	const course = useContext(CourseContext);
 
 	const { url } = useRouteMatch();
 
-	const [courseName, setCourseName] = useState("Course name");
-	useEffect(() => {
-		const fetchCourseName = async () => {
-			const token = sessionStorage.getItem("jwt");
-			const bearer = 'Bearer ' + token;
-
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${courseId}`, {
-				headers: {
-					'Authorization': bearer
-				}
-			})
-				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : {})
-				.then(course => setCourseName(course.name));
-		}
-		fetchCourseName();
-	}, []);
-
-	const [onFocus, setFocus] = useState("home");
+	const [onFocus, setFocus] = useState("posts");
 
 	return (
 		<div className="navbar">
-			<h1>{courseName}</h1>
+			<h1>{course.name}</h1>
 			<ul>
-				<li>
-					<Link
-						to={`${url}/home`}
-						className={onFocus === "home" ? "active" : ""}
-						onClick={() => setFocus("home")}
-					>Home</Link>
-				</li>
 				<li>
 					<Link
 						to={`${url}/posts`}

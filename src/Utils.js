@@ -40,6 +40,7 @@ const organizeSchedule = (schedule_data) => {
 		}
 
 		result[currDayIndex].hours[currHourIndex] = {
+			id: row.id,
 			hour: row.hour,
 			course_name: row.course_name,
 			course_category: row.course_category,
@@ -106,7 +107,7 @@ const organizeStudents = (studentFiles) => {
 
 		/* If the file belongs to a new student this means that
 		 * we now have to create a new student object*/
-		if (studentFile.studentID != lastStudentId) {
+		if (studentFile.studentID !== lastStudentId) {
 			lastStudentId = studentFile.studentID;
 			currStudent++;
 			result[currStudent] = {

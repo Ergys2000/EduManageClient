@@ -37,7 +37,7 @@ function Course(props) {
 				<Switch>
 
 					<Route exact path={`${path}/`}>
-						<Redirect to={`${url}/home`} />
+						<Redirect to={`${url}/posts`} />
 					</Route>
 
 					<Route exact path={`${path}/posts`}>
@@ -81,13 +81,6 @@ function NavBar(props) {
 		<div className="navbar">
 			<h1>{course.name}</h1>
 			<ul>
-				<li>
-					<Link
-						to={`${url}/home`}
-						className={onFocus === "home" ? "active" : ""}
-						onClick={() => setFocus("home")}
-					>Home</Link>
-				</li>
 				<li>
 					<Link
 						to={`${url}/posts`}

@@ -112,7 +112,7 @@ function ProfileInfo(props) {
 				<p>{teacher.lastname}</p>
 				<p>{teacher.email}</p>
 				<p>{teacher.address}</p>
-				<p>{teacher.number}</p>
+				<p>{teacher.phone}</p>
 				<p>{teacher.age}</p>
 				<p>{teacher.gender}</p>
 				<p>{teacher.nationality}</p>

@@ -11,7 +11,13 @@ function Profile(props) {
 	 * We use the useEffect hook to connect to the database and get the
 	 * current info about the student, then the student can modify them
 	 * */
-	const [student, setStudent] = useState({});
+	const [student, setStudent] = useState({
+		firstname: "",
+		lastname: "",
+		email: "",
+		address: "",
+		phone: ""
+	});
 	useEffect(() => {
 		const fetchStudent = async () => {
 			const token = sessionStorage.getItem("jwt");
@@ -25,7 +31,7 @@ function Profile(props) {
 				.catch(err => console.log(err));
 		}
 		fetchStudent();
-	}, []);
+	}, [studentId]);
 
 	/* This function is used for handling form changes */
 	const handleChange = (event) => {
@@ -92,31 +98,32 @@ function Profile(props) {
 
 	return (
 		<div className="option">
-			<h2>Update profile info</h2>
-			<form className="student-form" onSubmit={onSubmit}>
-				<h2>Student id: {studentId}</h2>
-				<label>
-					Firstname:
+			<div className="profile-form">
+				<h2>Update profile info</h2>
+				<form className="student-form" onSubmit={onSubmit}>
+					<label>
+						Firstname:
 					<input onChange={handleChange} name="firstname" value={student.firstname} />
-				</label>
-				<label>
-					Lastname:
+					</label>
+					<label>
+						Lastname:
 					<input onChange={handleChange} name="lastname" value={student.lastname} />
-				</label>
-				<label>
-					Email:
+					</label>
+					<label>
+						Email:
 					<input type="email" onChange={handleChange} name="email" value={student.email} />
-				</label>
-				<label>
-					Address:
+					</label>
+					<label>
+						Address:
 					<input onChange={handleChange} name="address" value={student.address} />
-				</label>
-				<label>
-					Phone number:
+					</label>
+					<label>
+						Phone number:
 					<input onChange={handleChange} name="phone" value={student.phone} />
-				</label>
-				<button>Update</button>
-			</form>
+					</label>
+					<button>Update</button>
+				</form>
+			</div>
 		</div>
 	);
 }

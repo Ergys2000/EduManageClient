@@ -22,13 +22,13 @@ function AssignmentList(props) {
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(assignments => {
 					setAssignments(assignments);
-				})
+				}).catch(err => console.log(err));
 		}
 		fetchAssignments();
 	}, []);
 
 	return (
-		<div className="assignments">
+		<div className="assignment-list">
 			{assignments.map(a => <AssignmentItem key={a.id} assignment={a} />)}
 		</div>
 	);
@@ -39,8 +39,11 @@ function AssignmentItem(props) {
 	const { url } = useRouteMatch();
 	return (
 		<div className="assignment">
-			<Link to={`${url}/${props.assignment.id}`}>{props.assignment.title}</Link>
-			<p>Due: {props.assignment.due}</p>
+			<div className="title">
+				<i className="material-icons">folder</i>
+				<Link to={`${url}/${props.assignment.id}`}>{props.assignment.title}</Link>
+			</div>
+			<p>Due {props.assignment.due}</p>
 		</div>
 	);
 }

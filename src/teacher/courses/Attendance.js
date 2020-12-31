@@ -27,7 +27,7 @@ function Attendance(props) {
 				});
 		}
 		fetchSessions();
-	});
+	}, [teacherId, course.id]);
 
 	return (
 		<div className="sessions">

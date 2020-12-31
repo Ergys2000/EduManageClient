@@ -11,13 +11,19 @@ function Profile(props) {
 	 * We use the useEffect hook to connect to the database and get the
 	 * current info about the teacher, then the teacher can modify them
 	 * */
-	const [teacher, setTeacher] = useState({});
+	const [teacher, setTeacher] = useState({
+		firstname: "",
+		lastname: "",
+		email: "",
+		address: "",
+		phone: ""
+	});
 	useEffect(() => {
 		const fetchteacher = async () => {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = "Bearer " + token;
 			await fetch(`${apiLink}/teachers/${teacherId}`, {
-				headers: {'Authorization': bearer}
+				headers: { 'Authorization': bearer }
 			})
 				.then(res => res.json())
 				.then(res => res.status === "OK" ? res.result : {})
@@ -25,7 +31,7 @@ function Profile(props) {
 				.catch(err => console.log(err));
 		}
 		fetchteacher();
-	}, []);
+	}, [teacherId]);
 
 	/* This function is used for handling form changes */
 	const handleChange = (event) => {
@@ -37,15 +43,15 @@ function Profile(props) {
 		/* The changed value of the input field */
 		const value = target.value;
 
-		if(name === "firstname" || name === "lastname") {
-			if(!validateNameString(value)){
+		if (name === "firstname" || name === "lastname") {
+			if (!validateNameString(value)) {
 				alert(`The firstname and lastname fields should only containt letters, and be no longer than 30 characters`);
 				return;
 			}
 		}
 
 		/* Update the state if all the validations were successful */
-		setTeacher({...teacher, [name]: value});
+		setTeacher({ ...teacher, [name]: value });
 	}
 
 	/* This functions submits the information to the api and handles the
@@ -54,10 +60,10 @@ function Profile(props) {
 		event.preventDefault();
 
 		/* Check the integrity of email and phone number fields */
-		if(!validateEmail(teacher.email)){
+		if (!validateEmail(teacher.email)) {
 			alert("Invalid email");
 			return;
-		} else if(!validatePhone(teacher.phone)){
+		} else if (!validatePhone(teacher.phone)) {
 			alert("Invalid phone number");
 			return;
 		}
@@ -73,11 +79,11 @@ function Profile(props) {
 			body: JSON.stringify(teacher)
 		})
 			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result: null)
+			.then(res => res.status === "OK" ? res.result : null)
 			.then(result => {
-				if(result) {
-					result.affectedRows === 1 
-						? alert("teacher updated successfully") 
+				if (result) {
+					result.affectedRows === 1
+						? alert("teacher updated successfully")
 						: alert("Something went wrong, pleasy try again");
 				} else throw new Error("teacher could not update due to an internal error");
 			}).catch(err => alert(err.message));
@@ -86,31 +92,32 @@ function Profile(props) {
 
 	return (
 		<div className="option">
-			<h2>Update profile info</h2>
-			<form className="teacher-form" onSubmit={onSubmit}>
-				<h2>teacher id: {teacherId}</h2>
-				<label>
-					Firstname:
+			<div className="profile-form">
+				<h2>Update profile info</h2>
+				<form className="teacher-form" onSubmit={onSubmit}>
+					<label>
+						Firstname:
 					<input onChange={handleChange} name="firstname" value={teacher.firstname} />
-				</label>
-				<label>
-					Lastname:
+					</label>
+					<label>
+						Lastname:
 					<input onChange={handleChange} name="lastname" value={teacher.lastname} />
-				</label>
-				<label>
-					Email:
+					</label>
+					<label>
+						Email:
 					<input type="email" onChange={handleChange} name="email" value={teacher.email} />
-				</label>
-				<label>
-					Address:
+					</label>
+					<label>
+						Address:
 					<input onChange={handleChange} name="address" value={teacher.address} />
-				</label>
-				<label>
-					Phone number:
+					</label>
+					<label>
+						Phone number:
 					<input onChange={handleChange} name="phone" value={teacher.phone} />
-				</label>
-				<button>Update</button>
-			</form>
+					</label>
+					<button>Update</button>
+				</form>
+			</div>
 		</div>
 	);
 }

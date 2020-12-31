@@ -1,16 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import React, { useEffect, useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import apiLink from "../../API";
 import { organizeSchedule } from '../../Utils';
+import { TeacherContext } from '../Teacher';
 
 function TableContainer(props) {
+	const teacherId = useContext(TeacherContext);
 	const [days, setDays] = useState([]);
 	useEffect(() => {
 		const fetchDays = async () => {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = 'Bearer ' + token;
 
-			fetch(`${apiLink}/teachers/${props.teacherId}/schedule`, {
+			fetch(`${apiLink}/teachers/${teacherId}/schedule`, {
 				headers: {
 					'Authorization': bearer
 				}
@@ -21,7 +23,7 @@ function TableContainer(props) {
 					const days = [];
 					const schedule = organizeSchedule(scheduleRaw);
 					for (let i = 0; i < schedule.length; i++) {
-						days[i] = <Column title={schedule[i].name} hours={schedule[i].hours} />
+						days[i] = <Column key={schedule[i].day} title={schedule[i].name} hours={schedule[i].hours} />
 					}
 					setDays(days);
 				});
@@ -29,7 +31,7 @@ function TableContainer(props) {
 
 		fetchDays();
 
-	}, []);
+	}, [teacherId]);
 
 	return (
 		<div className="table-container">
@@ -43,14 +45,15 @@ function Column(props) {
 	// will hold the hours for each day
 	let hours = [];
 	// insert twelve default hours for each day
-	for(let i=0; i<12; i++)
-		hours.push( <TableElement />)
+	for (let i = 0; i < 12; i++)
+		hours.push(<TableElement key={i - 18} />)
 
 	// fill the hours if they are busy
 	for (let i = 0; i < props.hours.length; i++) {
 		const hour_index = props.hours[i].hour - 1;
-		hours[hour_index] = 
-			<TableElement key={props.hours[i].hour}
+		hours[hour_index] =
+			<TableElement
+				key={props.hours[i].id}
 				id={props.hours[i].courseID}
 				category={props.hours[i].course_category}
 				name={props.hours[i].course_name} />;
@@ -84,8 +87,8 @@ function TableElement(props) {
 function Timeline(props) {
 	const timestamps = [];
 	const start = 8;
-	for(let i=0; i<12; i++){
-		timestamps.push(<div className="element">{start+i}:00</div>)
+	for (let i = 0; i < 12; i++) {
+		timestamps.push(<div key={i} className="element">{start + i}:00</div>)
 	}
 	return (
 		<div className="timeline-column">

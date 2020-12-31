@@ -48,7 +48,7 @@ function CourseList(props){
 	}, []);
 	return (
 		<div className="Course-List">
-			{courses.map(x => CourseListItem({course: x}))}
+			{courses.map(x => <CourseListItem key={x.id} course={x} />)}
 		</div>
 	);
 }
@@ -59,7 +59,7 @@ function CourseListItem(props){
 		<div className="Course-Info-Item">
 
 			<div className="Course-Header">
-				<Link to={`${url}/${props.course.id}`}>{props.course.name}</Link>
+				<Link to={`${url}/${props.course.id}/posts`}>{props.course.name}</Link>
 			</div>
 
 			<div className="Course-Body">

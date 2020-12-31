@@ -1,17 +1,19 @@
-@import "./course";
-
+/* ====================== The course list page ======================= */
 .Course-List{
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-around;
 }
+
 .Course-Info-Item{
+
 	display: flex;
 	flex-direction: column;
 	height: 200px;
 	width: 300px;
 	margin: 20px;
+
 	.Course-Header{
 		display: flex;
 		flex-direction: column;
@@ -20,10 +22,12 @@
 		background-color: $primary;
 		flex: 1;
 	}
+
 	.Course-Header a{
 		font-size: 2em;
 		color: $onPrimary;
 	}
+
 	.Course-Body{
 		display: flex;
 		background-color: $surface;
@@ -46,3 +50,201 @@
 	}
 }
 
+/* ===================== The course page ============================= */
+.course{
+	.navbar{
+		@extend %horizontal-nav-bar;
+	}
+}
+
+/* ========= Post list ================ */
+.post-list{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+
+	.post-item{
+		border-radius: 20px;
+		background-color: $surface;
+		margin: 30px;
+		width: 50%;
+		.header{
+			padding: 20px;
+			text-align: start;
+			align-self: flex-start;
+			border-bottom: 1px solid gray;
+		}
+		.body{
+			padding: 20px;
+			text-align: start;
+		}
+	}
+}
+
+.post-form, .assignment-form {
+	@extend %form-container;
+}
+
+/* ========= General Course Files ============= */
+.file-list {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	ul{
+		min-width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		list-style-type: none;
+		li{
+			margin-bottom: 0.8vh;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			width: 60%;
+			padding: 20px;
+			background-color: $surface;
+			a{
+				color: $onSurface;
+				border-bottom: 1px solid $onSurface;
+				text-decoration: none;
+			}
+		}
+	}
+}
+
+/* ========= Assignments ===================== */
+.assignment-list {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.assignment {
+		width: 70%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom: 1px solid $onBackground;
+		a, p {
+			text-decoration:none;
+			color: $onBackground;
+		}
+		.title{
+			*{
+				margin: 1vw;
+			}
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+		}
+		&:hover{
+			a{
+				color: $secondary;
+			}
+			color: $secondary;
+		}
+
+	}
+}
+
+.assignment {
+	.files {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+
+		.student-files {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			.student{
+				margin-bottom: 1vh;
+				min-width: 100%;
+				.head{
+					padding: 0.1vh;
+					background-color: $primary;
+					color: $onPrimary;
+				}
+				.body{
+					border: 1px solid $primary;
+				}
+			}
+
+		}
+	}
+}
+
+
+/* =========== Attendance ===================== */
+.add-session, .add-grades{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-top: 50px;
+	label {
+		width: 40vw;
+		display: flex;
+		flex-direction: column;
+		margin: 0.8rem;
+		color: $onBackground;
+		input , select{
+			width: 90%;
+			border: none;
+			background-color: $surface;
+			color: $onSurface;
+			padding: 0.5rem;
+			&:focus {
+				outline-color: $secondary;
+				border: none;
+			}
+		}
+	}
+	button{
+		@extend %action-button;
+		padding: 1rem;
+	}
+
+	table{
+		width: 100%;
+		border-collapse: collapse;
+		th, td{
+			border-bottom: 1px solid $onBackground;
+			padding: 1rem;
+		}
+		td{
+			background-color: $surface;
+		}
+	}
+
+}
+
+.horizontal-divider{
+	width: 100%;
+	margin-top: 10vh;
+	margin-bottom: 10vh;
+	border-bottom: 3px dotted $primary;
+}
+
+.sessions, .session{
+	padding-top: 20px;
+	@extend %table;
+	a{
+        @extend %action-button;
+		width: 10vw;
+        min-width: 200px;
+		padding: 2vh;
+		border-radius: 4vh;
+        text-decoration: none;
+	}
+}
+
+.session{
+	button{
+		border-radius: 40%;
+	}
+}

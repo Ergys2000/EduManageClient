@@ -4,16 +4,13 @@
 	flex-direction: column;
 	align-items: center;
 	a{
-		margin: 10px;
-		padding: 8px 14px;
-		color: $onPrimary;
-		border: none;
-		background-color: $primary;
-		text-decoration: none;
-		&:hover{
-			background-color: $secondary;
-			color: $onSecondary;
-		}
+        @extend %action-button;
+        width: 10vw;
+        min-width: 200px;
+        padding: 1rem;
+        margin: 1rem;
+		border-radius: 4vh;
+        text-decoration: none;
 	}
 
 	.grades{
@@ -33,22 +30,15 @@
 			table.hidden{
 				display: none;
 			}
-			table.shown{
-				width: 100%;
-				height: 100%;
-				border-collapse: collapse;
-				background-color: $surface;
-				tr{
-					width: 100%;
-				}
-				td, th{
-					border-bottom: 1px solid $onSurface;
-					padding: 10px;
-				}
-			}
+            @extend %table;
+            td, th{
+                background-color: $surface;
+                color: $onSurface;
+            }
 		}
 	}
 }
+
 .add-grades{
 	margin-top: 50px;
 	display: flex;

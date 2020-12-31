@@ -28,11 +28,13 @@ function PostList(props) {
 					if (res.status === "OK") {
 						const posts = res.result.map(post => <PostItem key={post.id} post={post} />);
 						setPosts(posts);
+					} else {
+						console.log(res);
 					}
 				});
 		}
 		fetchPosts();
-	}, [shouldUpdate]);
+	}, [shouldUpdate, course.id, teacherId]);
 
 	return (
 		<div className="post-list">
@@ -50,6 +52,7 @@ function PostItem({ post }) {
 				<p>{post.posted_on}</p>
 			</div>
 			<div className="body">
+				<p><b>{post.title}</b></p>
 				<p>{post.body}</p>
 			</div>
 		</div>
@@ -61,9 +64,11 @@ function PostForm(props) {
 	const teacherId = useContext(TeacherContext);
 	const course = useContext(CourseContext);
 
+	const [shown, setShown] = useState(false);
+
 	const [post, setPost] = useState({
-		title: "Post title",
-		body: "Post body"
+		title: "",
+		body: ""
 	});
 
 	const handleChange = (event) => {
@@ -104,19 +109,33 @@ function PostForm(props) {
 				if (result) {
 					alert("Post added successfully!");
 					updatePostList();
+					setShown(false);
 				} else {
 					alert(result);
 				}
 			}).catch(err => console.log(err));
 	}
+
+	const cancel = (event) => {
+		event.preventDefault();
+		setShown(false);
+	}
 	return (
-		<form onSubmit={onSubmit}>
-			<input type="text" onChange={handleChange} name="title" placeholder="Post title" value={post.title} />
-			<br />
-			<textarea onChange={handleChange} name="body" rows="10" cols="30" value={post.body} />
-			<br />
-			<input type="submit" />
-		</form>
+		<div className="post-form">
+			<button onClick={() => setShown(true)} className={shown ? "hidden" : "shown"} >Post</button>
+			<form onSubmit={onSubmit} className={shown ? "shown" : "hidden"}>
+				<label>
+					Title<br/>
+					<input type="text" onChange={handleChange} name="title" placeholder="Post title" value={post.title} />
+				</label>
+				<label>
+					Body<br/>
+					<textarea onChange={handleChange} name="body" rows="10" cols="30" placeholder="Post body" value={post.body} />
+				</label>
+				<button type="submit">Add post</button>
+				<button onClick={cancel}>Cancel</button>
+			</form>
+		</div>
 	);
 
 }

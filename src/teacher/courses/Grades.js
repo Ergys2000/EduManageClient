@@ -3,6 +3,7 @@ import {useState, useEffect, useContext} from 'react';
 import apiLink from "../../API";
 import {TeacherContext} from "../Teacher";
 import {CourseContext} from "./Course";
+import {organizeGrades} from "../../Utils";
 
 function StudentList(props) {
 	const course = useContext(CourseContext);
@@ -24,7 +25,7 @@ function StudentList(props) {
 				.then(result => {
 					const students = organizeGrades(result);
 					const elements = students.map(student =>
-						<Grades name={student.firstname} grades={student.grades} key={student.id} />
+						<Grades name={student.firstname + " " + student.lastname} grades={student.grades} key={student.id} />
 					);
 					setStudents(elements);
 				});
@@ -37,13 +38,14 @@ function StudentList(props) {
 	return (
 		<div className="student-list">
 			<Link to={`${url}/add`}>ADD GRADES</Link>
+			<Link to={`${url}/addsingle`}>ADD SINGLE GRADE</Link>
 			{students}
 		</div>
 	);
 }
 
 function Grades(props) {
-	const [hidden, setHidden] = useState(true);
+	const [hidden, setHidden] = useState(false);
 
 	return (
 		<div className="grades">
@@ -76,43 +78,6 @@ function GradeRow(grade) {
 			<td>{grade.date}</td>
 		</tr>
 	);
-}
-
-function organizeGrades(grades) {
-	// the final result
-	let result = [];
-	// helps us determine if the grades have changed
-	let lastStudentId = -1;
-	// holds the current position in terms of student count
-	let currPosition = -1;
-
-	// for each grade in the list
-	for (let i = 0; i < grades.length; i++) {
-		// extract the current grade
-		const currGrade = grades[i];
-		// get only the neccessary information
-		const grade = {
-			id: currGrade.id,
-			grade: currGrade.grade,
-			weight: currGrade.weight,
-			date: currGrade.date
-		};
-		// if the student id has not changed
-		if (lastStudentId !== currGrade.studentID) {
-			// increment the counter to point to the other student
-			currPosition++;
-			lastStudentId = currGrade.studentID;
-			// create the other student entry
-			result[currPosition] = {
-				id: currGrade.studentID,
-				firstname: currGrade.firstname,
-				lastname: currGrade.lastname,
-				grades: []
-			}
-		}
-		result[currPosition].grades.push(grade);
-	}
-	return result;
 }
 
 export default StudentList;

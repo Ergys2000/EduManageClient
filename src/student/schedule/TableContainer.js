@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import apiLink from "../../API";
-import {organizeSchedule} from '../../Utils';
+import { organizeSchedule } from '../../Utils';
 
 /* The component which displays the whole table */
 function TableContainer(props) {
@@ -30,7 +30,7 @@ function TableContainer(props) {
 		}
 
 		fetchDays();
-	}, []);
+	}, [studentId]);
 
 	return (
 		<div className="table-container">
@@ -45,7 +45,7 @@ function Column(props) {
 	let hours = [];
 	// fill the hours with empty table elements
 	for (let i = 0; i < 12; i++)
-		hours.push(<TableElement />);
+		hours.push(<TableElement key={i - 12} />);
 
 	// modify each table element to represent the correct hour of the day
 	// if there is no hour at that index, then it will be left empty
@@ -54,7 +54,7 @@ function Column(props) {
 		const hour_index = props.hours[i].hour - 1;
 		hours[hour_index] =
 			<TableElement
-				key={hour_index}
+				key={props.hours[i].id}
 				id={props.hours[i].courseID}
 				category={props.hours[i].course_category}
 				name={props.hours[i].course_name} />;
