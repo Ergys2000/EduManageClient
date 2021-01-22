@@ -14,6 +14,7 @@ function Login(_props) {
 			.then(res => res.json())
 			.then(res => res.status === "OK" ? res.result : {})
 			.then(result => {
+				console.log(result);
 				if (result.authenticated) {
 					const token = result.token;
 					const id = result.id;
@@ -31,13 +32,16 @@ function Login(_props) {
 			.then(res => res.json())
 			.then(res => res.status === "OK" ? res.result : {})
 			.then(result => {
+				console.log(result);
 				if (result.authenticated) {
 					const token = result.token;
 					const id = result.id;
 					sessionStorage.setItem("jwt", token);
 					history.push(`/t/${id}`);
+				} else {
+					console.log(result);
 				}
-			});
+			}).catch(err => console.log(err));
 	}
 
 	return (

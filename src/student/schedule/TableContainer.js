@@ -21,6 +21,7 @@ function TableContainer(props) {
 				.then(res => res.status === "OK" ? res.result : [])
 				.then(schedule_data => organizeSchedule(schedule_data))
 				.then(schedule => {
+					console.log(schedule);
 					const days = [];
 					for (let i = 0; i < schedule.length; i++) {
 						days[i] = <Column key={schedule[i].day} title={schedule[i].name} hours={schedule[i].hours} />
@@ -56,7 +57,6 @@ function Column(props) {
 			<TableElement
 				key={props.hours[i].id}
 				id={props.hours[i].courseID}
-				category={props.hours[i].course_category}
 				name={props.hours[i].course_name} />;
 	}
 	return (
@@ -75,7 +75,7 @@ function TableElement(props) {
 	/* Use use this variable to make the element clickable if it is not empty */
 	const clickable = props.id ? "clickable" : "";
 	const onClick = () => {
-		if(props.id && props.name) {
+		if (props.id && props.name) {
 			history.push(`courses/${props.id}`);
 		}
 	}

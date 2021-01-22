@@ -77,7 +77,7 @@ function TableElement(props) {
 	/* Use use this variable to make the element clickable if it is not empty */
 	const clickable = props.id ? "clickable" : "";
 	const onClick = () => {
-		if(props.id && props.name) {
+		if (props.id && props.name) {
 			history.push(`courses/${props.id}`);
 		}
 	}
