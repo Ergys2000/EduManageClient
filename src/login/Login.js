@@ -1,20 +1,24 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useHistory } from 'react-router-dom';
 import apiLink from "../API";
 
-function Login(_props) {
+const Login = (_props) => {
 
 	const history = useHistory();
 
+	const [form, setForm] = useState({
+		email: "",
+		password: ""
+	});
+
 	const auth_student = async () => {
-		const email = document.getElementById("emailField").value;
-		const password = document.getElementById("passwordField").value;
+		const email = form.email;
+		const password = form.password;
 		const url = `${apiLink}/auth/auth_student?email=${email}&password=${password}`;
 		await fetch(url)
 			.then(res => res.json())
 			.then(res => res.status === "OK" ? res.result : {})
 			.then(result => {
-				console.log(result);
 				if (result.authenticated) {
 					const token = result.token;
 					const id = result.id;
@@ -25,14 +29,13 @@ function Login(_props) {
 	}
 
 	const auth_teacher = async () => {
-		const email = document.getElementById("emailField").value;
-		const password = document.getElementById("passwordField").value;
+		const email = form.email;
+		const password = form.password;
 		const url = `${apiLink}/auth/auth_teacher?email=${email}&password=${password}`;
 		await fetch(url)
 			.then(res => res.json())
 			.then(res => res.status === "OK" ? res.result : {})
 			.then(result => {
-				console.log(result);
 				if (result.authenticated) {
 					const token = result.token;
 					const id = result.id;
@@ -44,6 +47,14 @@ function Login(_props) {
 			}).catch(err => console.log(err));
 	}
 
+	const onChange = (e) => {
+		e.preventDefault();
+		const name = e.target.name;
+		const value = e.target.value;
+
+		setForm({...form, [name]: value});
+	}
+
 	return (
 		<div style={{ borderRadius: "12px" }} className="Login">
 
@@ -51,9 +62,9 @@ function Login(_props) {
 				<h2>Learning Management System</h2>
 				<br></br>
 				<h2>Login</h2>
-				<input id="emailField" placeholder="Email..." type="text" name="email" />
+				<input placeholder="Email..." type="text" name="email" value={form.email} onChange={onChange} />
 				<br></br>
-				<input id="passwordField" placeholder="Password..." type="password" name="password" />
+				<input placeholder="Password..." type="password" name="password" value={form.password} onChange={onChange} />
 				<br></br>
 				<div className="button-box">
 					<button onClick={() => auth_student()}>Login as student</button>

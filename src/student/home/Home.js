@@ -5,6 +5,7 @@ import {StudentContext} from "../Student";
 
 function Home(props) {
 	const studentId = useContext(StudentContext);
+	const history = useHistory();
 	/* This state is used to information about the student */
 	const [student, setStudent] = useState(null);
 
@@ -17,8 +18,14 @@ function Home(props) {
 			}
 		})
 			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : null)
-			.then(student => setStudent(student));
+			.then(res => {
+				if(res.status === "OK") {
+					setStudent(res.result);
+				} else {
+					alert(res.message);
+					history.push("/");
+				}
+			}).catch(_ => alert("Something went wrong"));
 	}, []);
 
 	return (
