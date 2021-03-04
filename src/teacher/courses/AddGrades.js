@@ -23,21 +23,25 @@ function AddGrades(props) {
 				}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(students => {
-					setStudents(students);
+				.then(res => {
+					if (res.status === "OK") {
+						setStudents(res.result);
 
-					// also populate the list of grades with a default value
-					const array = [];
-					for (let i = 0; i < students.length; i++)
-						array.push(4);
-					setGrades(array);
-				});
+						// also populate the list of grades with a default value
+						const array = [];
+						for (let i = 0; i < students.length; i++)
+							array.push(4);
+						setGrades(array);
+
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 
 		fetchStudents();
 
-	}, []);
+	}, [teacherId, course.id]);
 
 	// session will hold the common values for all the grades
 	const [session, setSession] = useState({
@@ -197,16 +201,20 @@ function AddSingleGrade(props) {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = "Bearer " + token;
 
-			await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/students`,{
-				headers: {'Authorization': bearer}
+			await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/students`, {
+				headers: { 'Authorization': bearer }
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(students => {
-					setStudents(students);
-					setForm({...form, 'studentId': students[0].id});
-				})
-				.catch(err => console.log(err));
+				.then(res => {
+					if(res.status === "OK") {
+						setStudents(res.result);
+						if(res.result.length > 0) {
+							setForm({...form, 'studentId': res.result[0].id});
+						}
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 
 		fetchStudents();
@@ -226,21 +234,21 @@ function AddSingleGrade(props) {
 			}
 		}
 
-		if(name === "weight") {
+		if (name === "weight") {
 			if (value > 1 || value < 0) {
 				alert("Weight cannot be bigger than 1 or smaller than 0!");
 				return;
 			}
 		}
 
-		setForm({...form, [name]: value});
+		setForm({ ...form, [name]: value });
 	}
 
 	/* Handles submitting the form in the api */
 	const onSubmit = async (event) => {
 		event.preventDefault();
 		/* input validation */
-		if(form.date === "" || form.weight === 0.0) {
+		if (form.date === "" || form.weight === 0.0) {
 			alert("Grade information is wrong!");
 			return;
 		}
@@ -249,13 +257,13 @@ function AddSingleGrade(props) {
 		const body = {
 			weight: form.weight,
 			date: form.date,
-			students: [{id: form.studentId, grade: form.grade}]
+			students: [{ id: form.studentId, grade: form.grade }]
 		};
 
 		/* Make the request */
 		const token = sessionStorage.getItem("jwt");
 		const bearer = "Bearer " + token;
-		await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/grades`,{
+		await fetch(`${apiLink}/teachers/${teacherId}/courses/${course.id}/grades`, {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json',
@@ -265,7 +273,7 @@ function AddSingleGrade(props) {
 		})
 			.then(res => res.json())
 			.then(res => {
-				if(res.status === "OK"){
+				if (res.status === "OK") {
 					alert("Grade added successfully!");
 				} else {
 					alert(res.message);
@@ -287,8 +295,8 @@ function AddSingleGrade(props) {
 			<label>
 				Select the student:
 				<select onChange={handleChange} value={form.studentId} name="studentId">
-					{students.map(student => <option 
-						key={student.id} 
+					{students.map(student => <option
+						key={student.id}
 						value={student.id}
 					>
 						{`${student.firstname} ${student.lastname}`}
@@ -305,4 +313,4 @@ function AddSingleGrade(props) {
 }
 
 export default AddGrades;
-export {AddSingleGrade};
+export { AddSingleGrade };

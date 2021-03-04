@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import apiLink from "../../API";
-import {StudentContext} from "../Student";
+import { StudentContext } from "../Student";
 
 function Home(props) {
 	const studentId = useContext(StudentContext);
@@ -19,7 +19,7 @@ function Home(props) {
 		})
 			.then(res => res.json())
 			.then(res => {
-				if(res.status === "OK") {
+				if (res.status === "OK") {
 					setStudent(res.result);
 				} else {
 					alert(res.message);
@@ -60,10 +60,13 @@ function Events(props) {
 				}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(events => {
-					setEvents(events);
-				})
+				.then(res => {
+					if (res.status === "OK") {
+						setEvents(res.result);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 
 		fetchEvents();
@@ -107,10 +110,13 @@ function Courses(props) {
 				}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(courses => {
-					setCourses(courses);
-				})
+				.then(res => {
+					if (res.status === "OK") {
+						setCourses(res.result);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 		fetchCourses();
 	}, []);
@@ -148,59 +154,62 @@ function CourseRow(props) {
 		/* This function calculates the average grade so far 
 		 * and the max. can get grade */
 		const calculateAverages = (grades) => {
-					/* The sum will hold the weighted sum of grades */
-					let sum = 0;
-					/* weightSum will hold the sum of weights */
-					let weightSum = 0;
+			/* The sum will hold the weighted sum of grades */
+			let sum = 0;
+			/* weightSum will hold the sum of weights */
+			let weightSum = 0;
 
-					/* Loop throught the grades and calculate the weighted sum
-					 * and the sum of weights*/
-					grades.forEach(grade => {
-						sum += grade.grade*grade.weight
-						weightSum += grade.weight;
-					});
-					/* we scale the average according to the sum of the weights */
-					const avg = sum / weightSum;
+			/* Loop throught the grades and calculate the weighted sum
+			 * and the sum of weights*/
+			grades.forEach(grade => {
+				sum += grade.grade * grade.weight
+				weightSum += grade.weight;
+			});
+			/* we scale the average according to the sum of the weights */
+			const avg = sum / weightSum;
 
-					/* Now we calculate the max can get value for the grade
-					 * average */
-					const maxGrade = 10;
-					const leftWeight = 1 - weightSum;
-					const maxAvg = sum + maxGrade * leftWeight;
+			/* Now we calculate the max can get value for the grade
+			 * average */
+			const maxGrade = 10;
+			const leftWeight = 1 - weightSum;
+			const maxAvg = sum + maxGrade * leftWeight;
 
-					return [avg, maxAvg];
+			return [avg, maxAvg];
 		}
 
 		const fetchGrades = async () => {
 			const token = sessionStorage.getItem("jwt");
 			const bearer = "Bearer " + token;
-			await fetch(`${apiLink}/students/${studentId}/courses/${course.id}/grades`,{
+			await fetch(`${apiLink}/students/${studentId}/courses/${course.id}/grades`, {
 				headers: {
 					'Authorization': bearer
 				}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(grades => {
-					const [avg, maxAvg] = calculateAverages(grades);
-					setAverage(avg);
-					setMaxAvg(maxAvg);
-				});
-		}
+				.then(res => {
+					if (res.status === "OK") {
+						const [avg, maxAvg] = calculateAverages(res.result);
+						setAverage(avg);
+						setMaxAvg(maxAvg);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
+	}
 
 		fetchGrades();
-	}, []);
+}, []);
 
-	const onClick = () => {
-		history.push(`/s/${studentId}/courses/${course.id}`);
-	}
-	return (
-		<tr onClick={onClick}>
-			<td>{course.name}</td>
-			<td>{average ? average.toFixed(2) : ""}</td>
-			<td>{maxAvg ? maxAvg.toFixed(2) : ""}</td>
-		</tr>
-	);
+const onClick = () => {
+	history.push(`/s/${studentId}/courses/${course.id}`);
+}
+return (
+	<tr onClick={onClick}>
+		<td>{course.name}</td>
+		<td>{average ? average.toFixed(2) : ""}</td>
+		<td>{maxAvg ? maxAvg.toFixed(2) : ""}</td>
+	</tr>
+);
 }
 
 /* Displays profile information about the student */

@@ -26,9 +26,13 @@ function Profile(props) {
 				headers: { 'Authorization': bearer }
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : {})
-				.then(student => setStudent(student))
-				.catch(err => console.log(err));
+				.then(res => {
+					if(res.status === "OK") {
+						setStudent(res.result);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 		fetchStudent();
 	}, [studentId]);

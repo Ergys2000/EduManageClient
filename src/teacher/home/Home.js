@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useHistory }  from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import apiLink from "../../API";
 import { TeacherContext } from "../Teacher";
 
@@ -18,11 +18,14 @@ function Home(props) {
 			}
 		})
 			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : null)
-			.then(teacher => {
-				setTeacher(teacher);
-			});
-	}, []);
+			.then(res => {
+				if (res.status === "OK") {
+					setTeacher(res.result);
+				} else {
+					alert(res.message);
+				}
+			}).catch(_ => console.log(_));
+	}, [teacherId]);
 
 	return (
 
@@ -55,14 +58,17 @@ function Events(props) {
 				}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(events => {
-					setEvents(events);
-				})
+				.then(res => {
+					if(res.status === "OK") {
+						setEvents(res.result);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 
 		fetchEvents();
-	}, []);
+	}, [teacherId]);
 
 	return (
 		<div className="events">
@@ -103,9 +109,6 @@ function ProfileInfo(props) {
 				<p>Email: </p>
 				<p>Address: </p>
 				<p>Number: </p>
-				<p>Age: </p>
-				<p>Gender: </p>
-				<p>Nationality: </p>
 			</div>
 			<div className="values">
 				<p>{teacher.firstname}</p>
@@ -113,9 +116,6 @@ function ProfileInfo(props) {
 				<p>{teacher.email}</p>
 				<p>{teacher.address}</p>
 				<p>{teacher.phone}</p>
-				<p>{teacher.age}</p>
-				<p>{teacher.gender}</p>
-				<p>{teacher.nationality}</p>
 			</div>
 		</div>
 	);

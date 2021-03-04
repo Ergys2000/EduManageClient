@@ -34,10 +34,13 @@ function CourseList(props) {
 				}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(courses => {
-					setCourses(courses);
-				});
+				.then(res => {
+					if (res.status === "OK") {
+						setCourses(res.result);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 		fetchCourses();
 	}, [teacherId]);
@@ -86,25 +89,28 @@ function StudentList(props) {
 				}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(result => {
-					const students = organizeGrades(result);
-					const elements = students.map(student => (
-						<Grades name={student.firstname} grades={student.grades} key={student.id} />
-					));
-					setStudents(elements);
-				});
-		}
+				.then(res => {
+					if (res.status === "OK") {
+						const students = organizeGrades(res.result);
+						const elements = students.map(student => (
+							<Grades name={student.firstname} grades={student.grades} key={student.id} />
+						));
+						setStudents(elements);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
+	}
 
 		fetchCourseGrades();
 
-	}, [teacherId, courseId]);
+}, [teacherId, courseId]);
 
-	return (
-		<div className="student-list">
-			{students}
-		</div>
-	);
+return (
+	<div className="student-list">
+		{students}
+	</div>
+);
 }
 
 function Grades(props) {

@@ -21,10 +21,13 @@ function Session(props){
 				}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK"? res.result : [])
-				.then(students => {
-					setStudents(students);
-				});
+				.then(res => {
+					if(res.status === "OK") {
+						setStudents(res.result);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 		fetchStudents();
     }, []);

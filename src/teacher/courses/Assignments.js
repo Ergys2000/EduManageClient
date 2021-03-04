@@ -21,10 +21,13 @@ function AssignmentList(props) {
 				headers: { 'Authorization': bearer }
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(assignments => {
-					setAssignments(assignments);
-				})
+				.then(res => {
+					if(res.status === "OK") {
+						setAssignments(res.result);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 		fetchAssignments();
 	}, [teacherId, course.id, shouldUpdate]);
@@ -155,10 +158,13 @@ function Assignment(props) {
 				headers: { 'Authorization': bearer }
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : null)
-				.then(assignment => {
-					setAssignment(assignment);
-				});
+				.then(res => {
+					if(res.status === "OK") {
+						setAssignment(res.result);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 		fetchAssignment();
 	}, [shouldUpdate, teacherId, course.id]);
@@ -173,10 +179,13 @@ function Assignment(props) {
 				headers: { "Authorization": bearer }
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(files => {
-					setAssignmentFiles(files);
-				});
+				.then(res => {
+					if(res.status === "OK") {
+						setAssignmentFiles(res.result);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 		fetchFiles();
 	}, [shouldUpdate]);
@@ -226,10 +235,13 @@ function StudentList(props) {
 				}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(fileList => {
-					setStudents(organizeStudents(fileList));
-				});
+				.then(res => {
+					if(res.status === "OK") {
+						setStudents(organizeStudents(res.result));
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 		fetchStudents();
 	}, []);

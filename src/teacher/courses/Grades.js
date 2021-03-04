@@ -1,14 +1,14 @@
-import {Link, useRouteMatch} from 'react-router-dom';
-import {useState, useEffect, useContext} from 'react';
+import { Link, useRouteMatch } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
 import apiLink from "../../API";
-import {TeacherContext} from "../Teacher";
-import {CourseContext} from "./Course";
-import {organizeGrades} from "../../Utils";
+import { TeacherContext } from "../Teacher";
+import { CourseContext } from "./Course";
+import { organizeGrades } from "../../Utils";
 
 function StudentList(props) {
 	const course = useContext(CourseContext);
 	const teacherId = useContext(TeacherContext);
-	const {url} = useRouteMatch();
+	const { url } = useRouteMatch();
 	const [students, setStudents] = useState([]);
 	useEffect(() => {
 
@@ -21,14 +21,17 @@ function StudentList(props) {
 				}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(result => {
-					const students = organizeGrades(result);
-					const elements = students.map(student =>
-						<Grades name={student.firstname + " " + student.lastname} grades={student.grades} key={student.id} />
-					);
-					setStudents(elements);
-				});
+				.then(res => {
+					if (res.status === "OK") {
+						const students = organizeGrades(res.result);
+						const elements = students.map(student =>
+							<Grades name={student.firstname + " " + student.lastname} grades={student.grades} key={student.id} />
+						);
+						setStudents(elements);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 
 		getCourseGrades();

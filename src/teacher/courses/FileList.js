@@ -23,9 +23,12 @@ function FileList(props) {
 			})
 				.then(res => res.json())
 				.then(res => {
-					if (res.status === "OK")
+					if(res.status === "OK") {
 						setFiles(res.result);
-				});
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 		fetchFiles();
 	}, [teacherId, course.id, shouldUpdate])

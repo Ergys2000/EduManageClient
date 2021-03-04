@@ -29,7 +29,7 @@ function PostList(props) {
 						const posts = res.result.map(post => <PostItem key={post.id} post={post} />);
 						setPosts(posts);
 					} else {
-						console.log(res);
+						alert(res.message);
 					}
 				});
 		}
@@ -104,14 +104,13 @@ function PostForm(props) {
 			body: JSON.stringify(req_body)
 		})
 			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : res.message)
-			.then(result => {
-				if (result) {
+			.then(res => {
+				if (res.status === "OK") {
 					alert("Post added successfully!");
 					updatePostList();
 					setShown(false);
 				} else {
-					alert(result);
+					alert(res.message);
 				}
 			}).catch(err => console.log(err));
 	}

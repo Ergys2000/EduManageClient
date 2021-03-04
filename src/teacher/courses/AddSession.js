@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import apiLink from "../../API";
 import { TeacherContext } from "../Teacher";
 import { CourseContext } from "./Course";
@@ -29,19 +29,24 @@ function NewSession(props) {
 				}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(students => {
-					/* Set the list of students to the recieved one */
-					setStudents(students);
+				.then(res => {
+					if (res.status === "OK") {
+						const students = res.result;
+						/* Set the list of students to the recieved one */
+						setStudents(students);
 
-					/* Create an initial array that represents how many hours 
-					 * each student attended */
-					const array = [];
-					for (let i = 0; i < students.length; i++) {
-						array[i] = 1;
+						/* Create an initial array that represents how many hours 
+						 * each student attended */
+						const array = [];
+						for (let i = 0; i < students.length; i++) {
+							array[i] = 1;
+						}
+						setAttendedList(array);
+
+					} else {
+						alert(res.message);
 					}
-					setAttendedList(array);
-				});
+				}).catch(_ => console.log(_));
 		}
 
 		fetchStudents();

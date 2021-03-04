@@ -105,14 +105,13 @@ function PostForm(props) {
 			body: JSON.stringify(req_body)
 		})
 			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : null)
-			.then(result => {
-				if (result) {
+			.then(res => {
+				if (res.status === "OK") {
 					alert("Post added successfully!");
 					updatePostList();
 					setShown(false);
 				} else {
-					alert(result);
+					alert(res.message);
 				}
 			}).catch(err => console.log(err));
 	}

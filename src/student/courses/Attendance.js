@@ -17,10 +17,13 @@ export default function Attendance(props) {
 				headers: {'Authorization': bearer}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(sessions => {
-					setSessions(sessions);
-				})
+				.then(res => {
+					if(res.status === "OK") {
+						setSessions(res.result);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 		fetchSessions();
 	}, []);

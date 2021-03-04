@@ -24,11 +24,16 @@ function Course(props) {
 				headers: {'Authorization': bearer}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : {})
-				.then(course => setCourse(course));
+				.then(res => {
+					if(res.status === "OK") {
+						setCourse(res.result);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 		fetchCourse();
-	}, []);
+	}, [studentId, courseId]);
 
 	return (
 		<CourseContext.Provider value={course}>

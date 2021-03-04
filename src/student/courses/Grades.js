@@ -20,10 +20,12 @@ function Grades(props) {
 			})
 				.then(res => res.json())
 				.then(res => {
-					if (res.status === "OK") {
+					if(res.status === "OK") {
 						setGrades(res.result);
+					} else {
+						alert(res.message);
 					}
-				});
+				}).catch(_ => console.log(_));
 		}
 
 		getGrades();

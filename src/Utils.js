@@ -44,7 +44,7 @@ const organizeSchedule = (schedule_data) => {
 			hour: row.hour,
 			course_name: row.course_name,
 			course_category: row.course_category,
-			courseID: row.courseID
+			courseInstanceID: row.courseInstanceID
 		};
 
 		currHourIndex++;

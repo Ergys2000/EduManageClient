@@ -1,15 +1,23 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Link, useParams, useRouteMatch, Route, Switch, Redirect } from 'react-router-dom';
+
 import PostList from './PostList';
 import FileList from './FileList';
+
 import { AssignmentList, Assignment } from './Assignments';
+
 import Attendance from './Attendance';
 import Session from './AttendanceSession';
 import AddSession from './AddSession';
+
 import Grades from './Grades';
 import AddGrades, { AddSingleGrade } from './AddGrades';
-import apiLink from "../../API";
+
+import Register from './Register';
+
 import { TeacherContext } from "../Teacher";
+import apiLink from "../../API";
+
 
 export const CourseContext = React.createContext({});
 
@@ -27,13 +35,16 @@ function Course(props) {
 				headers: { 'Authorization': bearer }
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : {})
-				.then(course => {
-					setCourse(course)
-				});
+				.then(res => {
+					if (res.status === "OK") {
+						setCourse(res.result);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 		fetchCourse();
-	}, []);
+	}, [teacherId, courseId]);
 
 	return (
 		<CourseContext.Provider value={course}>
@@ -76,6 +87,10 @@ function Course(props) {
 
 					<Route path={`${path}/attendance/:sessionId`} >
 						<Session />
+					</Route>
+
+					<Route exact path={`${path}/register`} >
+						<Register />
 					</Route>
 
 					<Route exact path={`${path}/grades`} >
@@ -142,8 +157,16 @@ function NavBar(props) {
 						onClick={() => setFocus("grades")}
 					>Grades</Link>
 				</li>
+				<li>
+					<Link
+						to={`${url}/register`}
+						className={onFocus === "register" ? "active" : ""}
+						onClick={() => setFocus("register")}
+					>Register</Link>
+				</li>
 			</ul>
 		</div>
 	);
 }
+
 export default Course;

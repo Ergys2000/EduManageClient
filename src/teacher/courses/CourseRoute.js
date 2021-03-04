@@ -37,11 +37,13 @@ function CourseList(props){
 				}
 			})
 			.then(res => res.json())
-			.then(res => {
-				if(res.status === "OK"){
-					setCourses(res.result);
-				}
-			});
+				.then(res => {
+					if(res.status === "OK") {
+						setCourses(res.result);
+					} else {
+						alert(res.message);
+					}
+				}).catch(_ => console.log(_));
 		}
 		fetchCourses();
 

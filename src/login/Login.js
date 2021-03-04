@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import apiLink from "../API";
 
@@ -17,15 +17,18 @@ const Login = (_props) => {
 		const url = `${apiLink}/auth/auth_student?email=${email}&password=${password}`;
 		await fetch(url)
 			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : {})
-			.then(result => {
-				if (result.authenticated) {
-					const token = result.token;
-					const id = result.id;
-					sessionStorage.setItem("jwt", token);
-					history.push(`/s/${id}`);
+			.then(res => {
+				if (res.status === "OK") {
+					if (res.result.authenticated) {
+						const token = res.result.token;
+						const id = res.result.id;
+						sessionStorage.setItem("jwt", token);
+						history.push(`/s/${id}`);
+					}
+				} else {
+					alert(res.message);
 				}
-			});
+			}).catch(err => console.log(err));
 	}
 
 	const auth_teacher = async () => {
@@ -34,15 +37,16 @@ const Login = (_props) => {
 		const url = `${apiLink}/auth/auth_teacher?email=${email}&password=${password}`;
 		await fetch(url)
 			.then(res => res.json())
-			.then(res => res.status === "OK" ? res.result : {})
-			.then(result => {
-				if (result.authenticated) {
-					const token = result.token;
-					const id = result.id;
-					sessionStorage.setItem("jwt", token);
-					history.push(`/t/${id}`);
+			.then(res => {
+				if (res.status === "OK") {
+					if (res.result.authenticated) {
+						const token = res.result.token;
+						const id = res.result.id;
+						sessionStorage.setItem("jwt", token);
+						history.push(`/t/${id}`);
+					}
 				} else {
-					console.log(result);
+					alert(res.message);
 				}
 			}).catch(err => console.log(err));
 	}
@@ -52,7 +56,7 @@ const Login = (_props) => {
 		const name = e.target.name;
 		const value = e.target.value;
 
-		setForm({...form, [name]: value});
+		setForm({ ...form, [name]: value });
 	}
 
 	return (
@@ -75,4 +79,5 @@ const Login = (_props) => {
 		</div>
 	);
 }
+
 export default Login;

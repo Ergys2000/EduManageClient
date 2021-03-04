@@ -18,27 +18,29 @@ function TableContainer(props) {
 				}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(schedule_data => organizeSchedule(schedule_data))
-				.then(schedule => {
-					console.log(schedule);
-					const days = [];
-					for (let i = 0; i < schedule.length; i++) {
-						days[i] = <Column key={schedule[i].day} title={schedule[i].name} hours={schedule[i].hours} />
+				.then(res => {
+					if (res.status === "OK") {
+						const schedule = organizeSchedule(res.result);
+						const days = [];
+						for (let i = 0; i < schedule.length; i++) {
+							days[i] = <Column key={schedule[i].day} title={schedule[i].name} hours={schedule[i].hours} />
+						}
+						setDays(days);
+					} else {
+						alert(res.message);
 					}
-					setDays(days);
-				});
-		}
+				}).catch(_ => console.log(_));
+	}
 
 		fetchDays();
-	}, [studentId]);
+}, [studentId]);
 
-	return (
-		<div className="table-container">
-			<Timeline />
-			{days}
-		</div>
-	);
+return (
+	<div className="table-container">
+		<Timeline />
+		{days}
+	</div>
+);
 }
 
 function Column(props) {
@@ -56,7 +58,7 @@ function Column(props) {
 		hours[hour_index] =
 			<TableElement
 				key={props.hours[i].id}
-				id={props.hours[i].courseID}
+				id={props.hours[i].courseInstanceID}
 				name={props.hours[i].course_name} />;
 	}
 	return (

@@ -7,7 +7,7 @@ import Class from './Class';
 import Home from './home/Home';
 import Profile from './home/Profile';
 
-export const TeacherContext = React.createContext(null);
+export const TeacherContext = React.createContext(0);
 
 function Teacher() {
 	let { id } = useParams();

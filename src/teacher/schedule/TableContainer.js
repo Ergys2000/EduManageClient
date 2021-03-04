@@ -18,15 +18,19 @@ function TableContainer(props) {
 				}
 			})
 				.then(res => res.json())
-				.then(res => res.status === "OK" ? res.result : [])
-				.then(scheduleRaw => {
-					const days = [];
-					const schedule = organizeSchedule(scheduleRaw);
-					for (let i = 0; i < schedule.length; i++) {
-						days[i] = <Column key={schedule[i].day} title={schedule[i].name} hours={schedule[i].hours} />
+				.then(res => {
+					if (res.status === "OK") {
+						const days = [];
+						const schedule = organizeSchedule(res.result);
+						for (let i = 0; i < schedule.length; i++) {
+							days[i] = <Column key={schedule[i].day} title={schedule[i].name} hours={schedule[i].hours} />
+						}
+						setDays(days);
+
+					} else {
+						alert(res.message);
 					}
-					setDays(days);
-				});
+				}).catch(_ => console.log(_));
 		}
 
 		fetchDays();
@@ -54,7 +58,7 @@ function Column(props) {
 		hours[hour_index] =
 			<TableElement
 				key={props.hours[i].id}
-				id={props.hours[i].courseID}
+				id={props.hours[i].courseInstanceID}
 				category={props.hours[i].course_category}
 				name={props.hours[i].course_name} />;
 	}
