@@ -79,6 +79,7 @@ function AssignmentForm(props) {
 			alert("Title is too long!");
 			return;
 		}
+    console.log(value);
 
 		setForm({ ...form, [name]: value });
 	}

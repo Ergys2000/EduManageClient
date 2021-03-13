@@ -60,7 +60,7 @@ function Grades(props) {
 					<thead>
 						<tr>
 							<th>Grade</th>
-							<th>Weight</th>
+							<th>Comment</th>
 							<th>Date</th>
 						</tr>
 					</thead>
@@ -77,7 +77,7 @@ function GradeRow(grade) {
 	return (
 		<tr key={grade.id}>
 			<td>{grade.grade}</td>
-			<td>{grade.weight}</td>
+			<td>{grade.comment}</td>
 			<td>{grade.date}</td>
 		</tr>
 	);

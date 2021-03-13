@@ -71,10 +71,10 @@ const organizeGrades = (grades) => {
 		const grade = {
 			id: currGrade.id,
 			grade: currGrade.grade,
-			weight: currGrade.weight,
+			comment: currGrade.comment,
 			date: currGrade.date
 		};
-		// if the student id has not changed
+		// if the student id has changed
 		if (lastStudentId !== currGrade.studentID) {
 			// increment the counter to point to the other student
 			currPosition++;

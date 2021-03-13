@@ -29,8 +29,9 @@ function AddGrades(props) {
 
 						// also populate the list of grades with a default value
 						const array = [];
-						for (let i = 0; i < students.length; i++)
+						for (let i = 0; i < res.result.length; i++) {
 							array.push(4);
+            }
 						setGrades(array);
 
 					} else {
@@ -45,7 +46,7 @@ function AddGrades(props) {
 
 	// session will hold the common values for all the grades
 	const [session, setSession] = useState({
-		weight: 0.0,
+		comment: "",
 		date: ""
 	});
 
@@ -63,11 +64,8 @@ function AddGrades(props) {
 
 	// submits the information into the api
 	const onSubmit = async () => {
-		if (session.weight === 0 ||
-			session.weight >= 1 ||
-			session.date === "") {
-
-			alert("Date is not set or weight is wrong!");
+		if (session.comment === "" || session.date === "") {
+			alert("Date is not set or comment is empty!");
 			return;
 		}
 		/* Creates an array where each element an object with a student id and
@@ -81,7 +79,7 @@ function AddGrades(props) {
 		});
 		/* Creates the body of the post request */
 		const body = {
-			weight: session.weight,
+			comment: session.comment,
 			date: session.date,
 			students: studentGradeList
 		};
@@ -130,8 +128,8 @@ function AddGrades(props) {
 	return (
 		<div className="add-grades">
 			<label>
-				Weight:
-				<input name="weight" type="number" step="0.05" value={session.weight} onChange={handleChange} />
+				Comment:
+				<input name="comment" type="text" value={session.comment} onChange={handleChange} />
 			</label>
 			<label>
 				Date:
@@ -182,12 +180,13 @@ const StudentRow = (props) => {
 /* This component is responsible for handling uploading a single student grade */
 function AddSingleGrade(props) {
 	/* Use the defined contexts */
+  const history = useHistory();
 	const teacherId = useContext(TeacherContext);
 	const course = useContext(CourseContext);
 
 	/* Will hold the controlled form information */
 	const [form, setForm] = useState({
-		weight: 0.0,
+		comment: "",
 		date: "",
 		studentId: -1,
 		grade: 4
@@ -229,14 +228,7 @@ function AddSingleGrade(props) {
 
 		if (name === "grade") {
 			if (value > 10 || value < 4) {
-				alert("Grade is wrong!");
-				return;
-			}
-		}
-
-		if (name === "weight") {
-			if (value > 1 || value < 0) {
-				alert("Weight cannot be bigger than 1 or smaller than 0!");
+				alert("Grade cannot be bigger than 10 or smaller than 4!");
 				return;
 			}
 		}
@@ -248,14 +240,14 @@ function AddSingleGrade(props) {
 	const onSubmit = async (event) => {
 		event.preventDefault();
 		/* input validation */
-		if (form.date === "" || form.weight === 0.0) {
-			alert("Grade information is wrong!");
+		if (form.date === "" || form.comment === "") {
+			alert("Either no comment or the date is not set!");
 			return;
 		}
 
 		/* Create the body of the request */
 		const body = {
-			weight: form.weight,
+			comment: form.comment,
 			date: form.date,
 			students: [{ id: form.studentId, grade: form.grade }]
 		};
@@ -275,6 +267,7 @@ function AddSingleGrade(props) {
 			.then(res => {
 				if (res.status === "OK") {
 					alert("Grade added successfully!");
+          history.push(`/t/${teacherId}/courses/${course.id}/grades`);
 				} else {
 					alert(res.message);
 				}
@@ -285,8 +278,8 @@ function AddSingleGrade(props) {
 	return (
 		<div className="add-grades">
 			<label>
-				Weight:
-				<input onChange={handleChange} value={form.weight} name="weight" type="number" step="0.05" max={1} min={0} />
+				Comment:
+				<input onChange={handleChange} value={form.comment} name="comment" type="text" />
 			</label>
 			<label>
 				Date:

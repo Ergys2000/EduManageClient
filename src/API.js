@@ -1,4 +1,4 @@
-//const apiLink = "http://3.20.203.188:5000";
 const apiLink = "http://localhost:5000";
+//const apiLink = "https://b314bb044345.ngrok.io";
 
 export default apiLink;

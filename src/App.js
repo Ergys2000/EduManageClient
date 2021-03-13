@@ -5,7 +5,7 @@ import './styles/App.scss';
 import Student from './student/Student';
 import Teacher from './teacher/Teacher';
 
-function App(_props) {
+function App(props) {
 	return (
 		<div className="app">
 			<Router>

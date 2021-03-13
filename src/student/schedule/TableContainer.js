@@ -20,6 +20,7 @@ function TableContainer(props) {
 				.then(res => res.json())
 				.then(res => {
 					if (res.status === "OK") {
+            console.log(res);
 						const schedule = organizeSchedule(res.result);
 						const days = [];
 						for (let i = 0; i < schedule.length; i++) {
